@@ -78,7 +78,7 @@ plotUnifResid <- function(n, nevents, perwidth){
 
 	library(ggplot2)
 	
-	title <- sprintf("Density of Residual Lifetimes for Uniform Distribution")
+	title <- sprintf("Density of Residual Lifetimes for Uniform Distribution\nn = %d nevents = %d perwidth = %d", n, nevents, perwidth)
 
 
 	sam <- simrenewal(runif(n), nevents, perwidth)
@@ -122,7 +122,7 @@ plotFaithfulResid <- function(nevents, perwidth){
 
 	library(ggplot2)
 
-	title <- sprintf("Density of Residual Lifetimes for Old Faithful")
+	title <- sprintf("Density of Residual Lifetimes for Old Faithful\nnevents = %d perwidth = %d",nevents, perwidth)
 
 	sam <- simrenewal(faithful$waiting, nevents, perwidth)
 
