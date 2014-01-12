@@ -1,0 +1,304 @@
+
+<body bgcolor="white">
+<h1>Homework I
+</h1>
+
+<h2>
+Due Tuesday, January 21.
+</h2>
+
+<h2>General rules on homework:</h2>
+
+<UL>
+
+<li> You are required to use 
+<a href="http://heather.cs.ucdavis.edu/~matloff/latex.html"> LaTeX</a>
+for your writeups.
+</li> </p> 
+
+<li> Submit your work as a <strong>.tar </strong> file, containing your
+<strong>.tex</strong> and <strong>.pdf</strong> files for your writeup;
+your <strong>.R</strong> files; and any image files you may have.  Do
+NOT have any subdirectories.
+</li> </p> 
+
+<li> Also include your R code as appendices in your writeup.
+</li> </p>
+
+<li> Your writeups must be of clear, professional-quality!
+</li> </p> 
+
+<li> The file name will be 
+<strong>
+email1.email2....tar
+</strong>,
+where the "email" fields are the official UCD e-mail addresses of 
+the members of your group, e.g. 
+<strong>
+jsmith.agutierrez.streddy.tjwong.tar
+</strong>
+Be sure to get those addresses exactly correct, to avoid a situation 
+in which your team member doesn't get credit.
+</li> </p> 
+
+<li> All homework must be submitted via <strong>handin</strong> on CSIF.
+</p>
+
+   <UL>
+
+   <li> The proper directory depends on the homework assignment number.
+   E.g. this current assignment  must be submitted to the directory
+   <strong>256hwk1</strong>
+   </li> </p>
+
+   <li> Your work must be submitted by 11:59 p.m. of the due date.
+   </li> </p>
+
+   <li> If you are late, submit to the "late" directory, e.g.
+   <strong>256hwk1late</strong>.  Do NOT submit to both directories!
+   </li> </p> 
+
+   <li> A grade penalty may be imposed on late work!
+   </li> </p> 
+
+   </UL>
+
+<li> Feel free to see me for clarification, hints, etc.
+</li> </p>
+
+</UL>
+
+<h2>Problem 1:</h2>
+
+<p>
+This problem concerns <i>discrete event simulation</i> (DES), used to 
+simulate queuing, inventory systems and so on.  The word <i>discrete</i> 
+refers to the fact that events occurred suddenly, rather than gradually.  
+For instance, a new job arrives and is queued, so the queue length suddenly
+increases by 1.
+</p>
+
+<p>
+There are two main programmer world views for DES, <i>event-oriented</i>
+and <i>process-oriented</i>.  The latter is in my opinion clearer, as it
+is similar to a threads model, but it is slower and more difficult to
+implement.  We will use the event-oriented approach.
+</p>
+
+<p>
+You will use the code <a href="../../132/DES/DES.R">DES.R</a>, which is a
+modification of an example from my R programming book.  The comments 
+in the file, together with the example at the end of the file, should 
+make it clear how to use the code.  
+</p>
+
+<p>
+If you wish (NOT required), you can look at my
+<a href="../../simcourse.html">online course in DES</a>, which uses the
+<a href="https://simpy.readthedocs.org/en/latest/">SimPy library</a>, a
+Python-based, process-oriented system.  Some of the examples in my
+online course there are like the machine repair problems here, though 
+again using the other world view.  
+</p>
+
+<p>
+DES programming can be rather difficult, especially during
+debugging.  Make sure you are adept at using R debugging tools. 
+</p>
+
+<p>
+DES code can also be slow.  For an overview and some solutions, see
+Revisiting the Issue of Performance Enhancement of Discrete Event
+Simulation Software (A. Bahouth, S. Crites, N. Matloff, and T.
+Williamson), <i> Proceedings of the 40th Anuual Simulation
+Symposium</i>, 2007, 114-122.  This may be useful to you in the
+<strong>Extra Credit</strong> problem below.
+</p>
+
+<p>
+One more important point:  Some of the parts of this problem appear much
+easier than they actually are.  So, be sure to 
+<strong>
+start early!
+</strong>
+</p>
+
+<p>
+Here you will simulate the machine repair example in Section 8.4 of our
+book.
+</p>
+
+<p> <OL type = "a">
+
+<li> Write DES code to verify (8.13).  Your code should use general
+values of the parameters, e.g. not hard-code the 25.0, including general
+numbers of machines.
+</li> </p>
+
+<li> Consider <b>w</b>, the long-run average number of working machines.
+</p>
+
+   <UL>
+
+   <li> Find <b>w</b> mathematically as a function of the &pi;<sub>i</sub>. 
+   </li> </p> 
+
+   <li> Extend your code in (a) to verify this value of <b>w</b> by simulation.
+   (Be careful with this.)
+   </li> </p>
+
+   </UL>
+
+<li> Now suppose it takes <b>c</b> amount of time for the 
+repairperson to be summoned when a breakdown occurs, and that only 
+one machine can be repaired at once.  Here <b>c</b> is a constant, 
+not a random variable.  
+</p>
+
+<p>
+This quantity <strong>c</strong> models the travel time for the
+repairperson to reach the machine site.  Thus, if upon completion of 
+a repair, there are other machines to be repaired, we do NOT have to
+wait <strong>c</strong> time for the next repair to begin.
+</p>
+
+<p>
+On the other hand, what if there are no more repairs to do, so the
+repairperson starts back to his office, but suddenly a machine goes
+down while he is en route?  Shouldn't the model have a delay of less
+than <strong>c</strong>?  For that matter, shouldn't <strong>c</strong>
+be modeled as a random variable, to reflect random traffic conditions
+and so on?  The answers of course are Yes.  But the complexity of a
+model can quickly get out of hand!  Trust me--you don't want it to get
+too complex in a homework assignment. :-)
+</p>
+
+Extend your code in (a) to handle this, computing the new values of 
+the &pi;<sub>i</sub>.  Run it with a few values of c, graphing your 
+results (you must use an R package, such as <strong>ggplot2</strong>).
+</li> </p>
+
+<li> 
+<strong>
+Extra Credit:
+</strong>
+</p>
+
+<p>
+Replace the R function <strong>binsearch()</strong> in <strong>DES.R</strong>
+by a C or C++ function that hopefully will be faster.  Interface the 
+rest of <strong>DES.R</strong> to this C/C++ via either 
+<strong>.C()</strong>, <strong>.Call()</strong> (built-in R functions) or
+<strong>Rcpp</strong>.  (The latter has become extremely popular, so you
+may wish to give it a try.)  Devise a timing experiment in which the
+events list is usually long, comparing the original <strong>DES.R</strong>
+to your version.  (Do NOT change the rest of <strong>DES.R</strong>.)
+</p>
+
+</OL> </p>
+
+<h2>Problem 2:</h2>
+
+<p> Here we model a call center, say staffed with advice nurses for the
+Kaiser medical system.  Say the number of nurses in the center varies
+over time, according to demand.  When fewer calls come in, we reduce the
+number of nurses--we'll call this going inactive--and increase the
+number when demand rises.  
+</p>
+
+<p>
+Let A<sub>t</sub> denote the number of active nurses at time t (either
+currently talking to a patient or available to handle a new call).
+We'll posit the following rules.
+</p>
+
+<UL>
+
+<li> There is a limit of <strong>n</strong> active nurses.  So,
+A<sub>t</sub> can never be less than 1 or greater than
+<strong>n</strong>.  This will apply implicitly to the rules below.
+</li> </p>
+
+<li> Whenever a nurse finishes a call, he/she takes the first queued
+call, if any.  If instead the queue is empty, that nurse goes inactive. 
+</li> </p> 
+
+<li> There is a limit of <strong>q</strong> queued calls.  If a call
+arrives when the queue is full, a new nurse is moved into active mode. 
+The new nurse takes the first queued call,
+but that latest incoming call is rejected, with a message, "Sorry, we
+cannot take your call..."
+</li> </p> 
+
+<li> Both <strong>n</strong> and <strong>q</strong> are assumed greater
+than 1.
+</li> </p>
+
+</UL>
+
+<p> <OL type = "a">
+
+<li> 
+In this part of the problem, we'll assume that call duration and 
+interarrival time between calls are exponentially distributed with means
+<strong>d</strong> and <strong>r</strong>, respectively.  
+The system is then a continuous-time Markov process with states (i,j),
+where i is the number of active nurses and j is the length of the queue.
+Note the double subscripting that this implies for the stationary
+probabilities and the double-double subscripts on the transition
+probabilities p.
+</p>
+
+<p> 
+Find the following, in terms of the parameters and the stationary
+probabilities &pi;:
+</p>
+
+   <UL>
+   
+   <li> Write a few of the balance equations (8.5), in terms of the
+   parameters stated above, for representative states.  (In other
+   words, show the different patterns, but don't show duplicates.)
+   Note that we will now write things like &pi;<sub>(i,j)</sub> and
+   p<sub>(i,j),(k,l)</sub>.
+   </li> </p>
+   
+   <li> Find the proportion of rejected calls.
+   </li> </p>
+   
+   <li> Find the proportion of nurse idle time (no call in progress, but
+   available to take calls)) while active.
+   </li> </p> 
+   
+   <li> Find the mean time spent in state (1,1), i.e. the long-run average
+   duration of the periods in which we are in that state.
+   </li> </p>
+   
+   <li> Suppose the system has been running for a long time, and you are
+   told that currently the queue is empty.  Find the probability that
+   X<sub>t</sub> is greater than 1.
+   </li> </p> 
+   
+   </UL>
+
+
+<li> Continue the above assumptiions, except that the policy is 
+now to reduce the number of nurses by 1 whenever <strong>p</strong > 
+amount of time passes without a new call arriving.  This replaces the 
+criterion of the queue becoming empty.  
+</p>
+
+<p>
+Note that due to the memoryless property of the exponential distribution
+family, this new criterion wouldn't make sense in that context.  So,
+here we will assume that the interarrival distribution is uniform on
+(0,2<strong>r</strong>).
+</p>
+
+<p>
+Write code using <strong> DES.R</strong> to simulate this, outputting 
+the first 2 quantities above (proportion of rejected calls, nurse idle time).
+</p>
+   
+</OL> </p>
+
