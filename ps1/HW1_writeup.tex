@@ -1,0 +1,31 @@
+ \documentclass[12pt]{article}
+\usepackage{url,graphicx,tabularx,array,geometry,amsmath,tikz}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\usetikzlibrary{arrows}
+\setlength{\parskip}{1ex} %--skip lines between paragraphs
+\setlength{\parindent}{0pt} %--don't indent paragraphs
+\newenvironment{myindentpar}[1]% %indent whole paragraph when needed
+ {\begin{list}{}%
+         {\setlength{\leftmargin}{#1}}%
+         \item[]%
+ }
+ {\end{list}}
+%-- Commands for header
+\renewcommand{\title}[1]{\textbf{#1}\\}
+\renewcommand{\line}{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}\hline\\\end{tabularx}\\[-0.5cm]}
+\newcommand{\leftright}[2]{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}#1%
+& #2\\\end{tabularx}\\[-0.5cm]}
+%\linespread{2} %-- Uncomment for Double Space
+\begin{document}
+
+\title{ECS 256: Homework 1 due 01/21/2014}
+\line
+Olga Prilepova, Christopher Patton, Alexander Rumbaugh, John Chen %-- left and right positions in the header
+ 
+
+\textbf{Problem 1}
+
+\textbf{Problem 2}
+
+\end{document}
