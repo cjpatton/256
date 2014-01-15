@@ -22,10 +22,50 @@
 \title{ECS 256: Homework 1 due 01/21/2014}
 \line
 Olga Prilepova, Christopher Patton, Alexander Rumbaugh, John Chen %-- left and right positions in the header
- 
 
-\textbf{Problem 1}
 
-\textbf{Problem 2}
+For this assignment, we adopt the following notation. Suppose $W$ is a random
+variable exponentially distrubted with mean $u$. Then $W \sim \mathcal{E}(1/u)$.
+
+\subsection*{Problem 1}
+
+
+
+\subsection*{Problem 2}
+
+\textbf{(a)} Let $D \sim \mathcal{E}(1/d)$ be a random variable corresponding 
+to the call druation and $R \sim \mathcal{E}(1/r)$ the time between queued calls. 
+The balance equations for the call system: 
+$$ \pi_{(i,j)}\lambda_{(i,j)} = \pi_{(i,j-1)}\lambda_{(i,j-1)}p_{(i,j-1)(i,j)} + 
+                                \pi_{(i,j+1)}\lambda_{(i,j+1)}p_{(i,j+1)(i,j)} 
+  \quad (\forall \quad 0 < j < q, 0 < i < n)$$
+
+$$ \pi_{(i,0)}\lambda_{(i,0)} = \pi_{(i+1,0)}\lambda_{(i+1,0)}p_{(i+1,0)(i,0)} + 
+                                \pi_{(i,1)}\lambda_{(i,1)}p_{(i,1)(i,0)}
+  \quad (\forall \quad i < n)$$
+$$ \pi_{(i,q)}\lambda_{(i,q)} = \pi_{(i-1,q)}\lambda_{(i-1,q)}p_{(i-1,q)(i,q)} + 
+                                \pi_{(i,q-1)}\lambda_{(i,q-1)}p_{(i,q-1)(i,q)}
+  \quad (\forall \quad i > 1)$$
+
+$$ \pi_{(n,0)}\lambda_{(n,0)} = \pi_{(n,1)}\lambda_{(n,1)}p_{(n,1)(n,0)} $$ 
+$$ \pi_{(1,q)}\lambda_{(1,q)} = \pi_{(1,q-1)}\lambda_{(1,q-1)}p_{(1,q-1)(1,q)} $$
+
+$$ \pi_{(1,0)} + \dots + \pi_{(1,q)} + \dots + \pi_{(n,0)} + ... + \pi_{(n,q)} = 1 $$
+
+\textit{Proportion of rejected calls.}
+
+\textit{Proportion of nurse idle time.}
+
+\textit{Mean time spent in state $(1,1)$.} The possible transitions from this state are 
+$(1,0)$ (nurse finishes call, takes next on queue) and $(1,2)$ (call comes in 
+before nurse finishes with current call). The time spent in this state is then 
+$Z_{(1,1)} = \min \{ D, R \}$. By theorem, $Z_{(1,1)} \sim \mathcal{E}(1/d + 1/r)$. Thus,
+the mean time spent in this state is $$ \frac{1}{\frac{1}{d} + \frac{1}{r}} $$ 
+
+\textit{Given the queue is emtpy, long-run probability that $A_t$ is greater than 1.} 
+The sum of the stationary probabilities where $j=0$ and $i>1$: 
+$$ \sum_{i=2}^n{\pi_{(i,0)}} $$
+
+
 
 \end{document}
