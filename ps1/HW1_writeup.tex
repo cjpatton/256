@@ -25,7 +25,8 @@ Olga Prilepova, Christopher Patton, Alexander Rumbaugh, John Chen %-- left and r
 
 
 For this assignment, we adopt the following notation. Suppose $W$ is a random
-variable exponentially distrubted with mean $u$. Then $W \sim \mathcal{E}(1/u)$.
+variable exponentially distrubted with mean $\mu$. Then 
+$W \sim \mathcal{E}(\frac{1}{\mu})$.
 
 \subsection*{Problem 1}
 
@@ -52,15 +53,17 @@ $$ \pi_{(1,q)}\lambda_{(1,q)} = \pi_{(1,q-1)}\lambda_{(1,q-1)}p_{(1,q-1)(1,q)} $
 
 $$ \pi_{(1,0)} + \dots + \pi_{(1,q)} + \dots + \pi_{(n,0)} + ... + \pi_{(n,q)} = 1 $$
 
-\textit{Proportion of rejected calls.}
+\textit{Proportion of rejected calls.} The long-run probability that the call center
+is in a state in which it's rejecting calls is the following quantity: 
+$$ \sum_{i=1}^n{\pi_{(i,q)}}$$
 
-\textit{Proportion of nurse idle time.}
+\textit{Proportion of nurse idle time.} \textbf{TODO}
 
 \textit{Mean time spent in state $(1,1)$.} The possible transitions from this state are 
 $(1,0)$ (nurse finishes call, takes next on queue) and $(1,2)$ (call comes in 
 before nurse finishes with current call). The time spent in this state is then 
 $Z_{(1,1)} = \min \{ D, R \}$. By theorem, $Z_{(1,1)} \sim \mathcal{E}(1/d + 1/r)$. Thus,
-the mean time spent in this state is $$ \frac{1}{\frac{1}{d} + \frac{1}{r}} $$ 
+the mean time spent in this state is: $$ \frac{1}{\frac{1}{d} + \frac{1}{r}} $$ 
 
 \textit{Given the queue is emtpy, long-run probability that $A_t$ is greater than 1.} 
 The sum of the stationary probabilities where $j=0$ and $i>1$: 
