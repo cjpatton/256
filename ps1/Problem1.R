@@ -156,64 +156,102 @@ delfcfsqueuehead <- function(queue) {
    list(qhead=qhead,newqueue=newqueue)
 }
 
-# test; M/M/1 queue--exponential ("Markov" job interarrivals,
-# exponential service times, 1 server
-mm1 <- function(meaninterarrv,meansrv,timelim,dbg=F) {
-   simlist <- newsim(dbg)
-   simlist$reactevent <- mm1react  # defined below
-   simlist$arrvrate <- 1 / meaninterarrv
-   simlist$srvrate <- 1 / meansrv
-   simlist$totjobs <- 0
-   simlist$totwait <- 0.0
-   simlist$queue <- NULL
-   simlist$srvrbusy <- F
-   # defining job numbers is good practice, always invaluable during
-   # debugging
-   simlist$jobnum <- 0
-   # event type codes: 1 for arrival, 2 for service completion;
-   # set up first event, including info on this job's arrival time for
-   # later use in finding mean wait until job done
-   timeto1starrival <- rexp(1,simlist$arrvrate)
-   jobnum <- simlist$jobnum + 1
-   simlist$jobnum <- jobnum
-   schedevnt(timeto1starrival,1,simlist,c(timeto1starrival,jobnum))
-   mainloop(simlist,timelim)
-   # should print out 1 / (srvrate - arrvrate)
-   cat("mean wait:  ")
-   print(simlist$totwait / simlist$totjobs)
+
+
+
+## Start of our code.
+
+
+
+# Event types
+# 1 - machine failed
+# 2 - machine repaired
+factory <- function(u, r, k, timelim, dbg=F) {
+  simlist <- newsim(dbg)
+  simlist$reactevent <- factoryreact
+  
+  simlist$lambda_u = 1/u
+  simlist$lambda_r = 1/r
+  simlist$k <- k # total machines
+  simlist$i <- k # up machines
+  simlist$time <- rep(0, k)
+
+  # First event is a machine failure. 
+  ttf <- min(rexp(k, 1/u))
+  simlist$totaltime <- ttf
+  simlist$time[k] <- ttf
+  schedevnt(ttf, 1, simlist)
+
+  # Enter main loop. 
+  mainloop(simlist, timelim)
+
+  # Report average number of machines running. 
+  simlist$time <- simlist$time / simlist$totaltime
+  w <- 0
+  for (i in 1 : k) 
+  {
+    w <- w + (simlist$time[i] * i)    
+  }
+  print("Average number of machines running")
+  print(w)
 }
 
-# what new events are triggered by the occurrence of an old one?
-mm1react <- function(evnt,simlist) {
-   etype <- evnt[2]
-   if (etype == 1) {  # job arrival
-      # schedule next arrival
-      timeofnextarrival <- simlist$currtime + rexp(1,simlist$arrvrate)
-      jobnum <- simlist$jobnum + 1
-      simlist$jobnum <- jobnum
-      schedevnt(timeofnextarrival,1,simlist,c(timeofnextarrival,jobnum))
-      # start newly-arrived job or queue it
-      if (!simlist$srvrbusy) {  # start job service
-         simlist$srvrbusy <- T
-         srvduration <- rexp(1,simlist$srvrate)
-         schedevnt(simlist$currtime+srvduration,2,simlist,evnt[3:4])
-      } else {  # add to queue
-         simlist$queue <- appendtofcfsqueue(simlist$queue,evnt)
-      }
-   } else if (etype == 2) {  # job completion
-      # bookkeeping
-      simlist$totjobs <- simlist$totjobs + 1
-      simlist$totwait <- simlist$totwait + simlist$currtime - evnt[3]
-      simlist$srvrbusy <- F
-      # check queue for waiting jobs
-      if (!is.null(simlist$queue)) {
-         tmp <- delfcfsqueuehead(simlist$queue)
-         job <- tmp$qhead
-         simlist$queue <- tmp$newqueue
-         # start job service
-         simlist$srvrbusy <- T
-         srvduration <- rexp(1,simlist$srvrate)
-         schedevnt(simlist$currtime+srvduration,2,simlist,job[3:4])
-      }
-   } 
+# Our reactevent(). Transition to new state 
+# and generate next event. 
+factoryreact <- function(evnt, simlist) {
+  etype <- evnt[2] 
+  
+  # Transition state. 
+
+  if (etype == 1) # failure
+  {
+    simlist$i = simlist$i - 1
+  }
+
+  else if (etype == 2) # repair
+  {
+    simlist$i = simlist$i + 1
+  }
+
+  # Choose next event. 
+
+  if (simlist$i == 0) 
+  {
+    tte <- min(rexp(simlist$k, simlist$lambda_r))
+    etype <- 2
+  }
+  
+  else if (simlist$i == simlist$k)
+  {
+    tte <- min(rexp(simlist$k, simlist$lambda_u))
+    etype <- 1
+    simlist$time[simlist$i] <- simlist$time[simlist$i] + tte
+  }
+
+  else 
+  {
+    ttf <- min(rexp(simlist$i, simlist$lambda_u))
+    ttr <- min(rexp(simlist$k - simlist$i, simlist$lambda_r))
+    if (ttf < ttr)
+    {
+      tte <- ttf
+      etype <- 1
+    }
+    else 
+    {
+      tte <- ttr
+      etype <- 2
+    }
+    simlist$time[simlist$i] <- simlist$time[simlist$i] + tte
+  }
+
+  schedevnt(simlist$currtime + tte, etype, simlist)
+  simlist$totaltime <- simlist$totaltime + tte
+
+  #print("----------")
+  #print(simlist$i)
+  #print("next event")
+  #print(etype)
+  #print(simlist$currtime)
+
 }
