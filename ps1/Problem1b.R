@@ -163,26 +163,35 @@ delfcfsqueuehead <- function(queue) {
 
 
 
-# Event types
-# 1 - machine failed
-# 2 - machine repaired
 factory <- function(u, r, k, timelim, dbg=F) {
+  # Event types: 
+  # 1 - machine failed
+  # 2 - machine repaired
+  # An event is a tuple c(time, event_type). 
+
+  # Set up simulation list, specify event handler. 
   simlist <- newsim(dbg)
   simlist$reactevent <- factoryreact
   
+  # Parameters required by factoryreact()
   simlist$lambda_u = 1/u
   simlist$lambda_r = 1/r
   simlist$k <- k # total machines
-  simlist$i <- k # up machines
+  simlist$i <- k # up machines (initial state)
   simlist$time <- rep(0, k)
 
-  # First event is a machine failure. 
+  # We must generate the first event and handle it. 
+  # Since the simulation starts with all of the 
+  # machines running, the first event will be a 
+  # failure. 
   ttf <- min(rexp(k, 1/u))
-  simlist$totaltime <- ttf
+  simlist$totaltime <- ttf # Another parameter: maintain the duration
+                           # of the simulation. Used to calculate the 
+                           # average number of machines running. 
   simlist$time[k] <- ttf
   schedevnt(ttf, 1, simlist)
 
-  # Enter main loop. 
+  # Enter main loop (calls factoryreact()). 
   mainloop(simlist, timelim)
 
   # Report average number of machines running. 
