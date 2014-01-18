@@ -360,7 +360,7 @@ cc2breact <- function(evnt, simlist) {
 
   		simlist$i_i <- simlist$i_i + 1
 
-  		if(simlist$p <= 0){ # if no timeout value
+  		if(simlist$p <= 0 && simlist$i_n > 1){ # if no timeout value and more than 1 active nurse
   			simlist$i_i <- simlist$i_i - 1
   			simlist$i_n <- simlist$i_n - 1
   		}
