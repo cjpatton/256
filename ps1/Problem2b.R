@@ -249,141 +249,192 @@ cc2breact <- function(evnt, simlist) {
   
   # Transition state. 
 
-  if (etype == 1) # call arrived
-  {
-	simlist$reset <- T
+  if (etype == 1){ # call arrived
+
+	  simlist$reset <- T
     simlist$nextTimeout <- simlist$currtime + simlist$p
-	simlist$tot <- simlist$tot + 1
+	  simlist$tot <- simlist$tot + 1
 
-	if(simlist$i_i > 0){ # if idle nurses to take call (queue empty)
+    print ("-----Call arrived at time-----")
+    print (evnt[1])
+
+	  if(simlist$i_i > 0){ # if idle nurses to take call (queue empty)
 		
-		# active time calculations
+  		# active time calculations
 
-		# Essentially, I want to do this calculation whenever the idle or active 
-		# list changes, for any reason. $lasttime will be set to the last time it changed.
+  		# Essentially, I want to do this calculation whenever the idle or active 
+  		# list changes, for any reason. $lasttime will be set to the last time it changed.
 
-		delta <- simlist$currtime - simlist$lasttime
+  		delta <- simlist$currtime - simlist$lasttime
+  		
+  		simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
+  		simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
+  		simlist$lasttime <- simlist$currtime
+
+  		# Now that that's sorted, we can move on
+
+  		simlist$i_i <- simlist$i_i - 1
+
+  		# new event: call ended
+  		tte <- rexp(1, simlist$lambda_d)
+  		schedevnt(simlist$currtime + tte, 2, simlist)
+  		
+      print ("an idle nurse takes the call")
 		
-		simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
-		simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
-		simlist$lasttime <- simlist$currtime
-
-		# Now that that's sorted, we can move on
-
-		simlist$i_i <- simlist$i_i - 1
-
-		# new event: call ended
-		tte <- rexp(1, simlist$lambda_d)
-		schedevnt(simlist$currtime + tte, 2, simlist)
+	  } else if(simlist$i_q < simlist$q){ # if queue not full, no nurses to take call
 		
-		
-	}
-	else if(simlist$i_q < simlist$q){ # if queue not full, no nurses to take call
-		
-		simlist$i_q <- simlist$i_q + 1
+		    simlist$i_q <- simlist$i_q + 1
+      
+      print ("no nurse call take the call, queue is not full")
+	  } else { # queue full, call dropped, new active nurse
+    
+		  simlist$rej <- simlist$rej + 1
 
-	}
-    else # queue full, call dropped, new active nurse
-    {
-		simlist$rej <- simlist$rej + 1
+		  if(simlist$i_n < simlist$n){ # if nurse limit not reached
 
-		if(simlist$i_n < simlist$n){ # if nurse limit not reached
+  			# active time calculations
 
-			# active time calculations
-
-			delta <- simlist$currtime - simlist$lasttime
-		
-			simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
-			simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
-			simlist$lasttime <- simlist$currtime
+  			delta <- simlist$currtime - simlist$lasttime
+  		
+  			simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
+  			simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
+  			simlist$lasttime <- simlist$currtime
 
 
-			# Add one nurse, take call from queue
-			simlist$i_n = simlist$i_n + 1
-			simlist$i_q = simlist$i_q - 1
+  			# Add one nurse, take call from queue
+  			simlist$i_n = simlist$i_n + 1
+  			simlist$i_q = simlist$i_q - 1
 
-			# new event: call ended
-			tte <- rexp(1, simlist$lambda_d)
-			schedevnt(simlist$currtime + tte, 2, simlist)
-		}
+  			# new event: call ended
+  			tte <- rexp(1, simlist$lambda_d)
+  			schedevnt(simlist$currtime + tte, 2, simlist)
+  		}
+
+      print ("queue is full, grab new nurse, drop top call")
     }
 
+    print ("Stats so far:")
+    print ("total calls")
+    print (simlist$tot)
+    print ("total rejected calls")
+    print (simlist$rej)
+    print ("active nurses")
+    print (simlist$i_n)
+    print ("idle nurses")
+    print (simlist$i_i)
+    print ("active nurse time")
+    print (simlist$activeTime)
+    print ("idle nurse time")
+    print (simlist$idleTime)
 
-	# new event: call arrival
-	tta <- runif(1, 0, 2*simlist$r)
-	schedevnt(simlist$currtime + tta, 1, simlist)
+  	# new event: call arrival
+  	tta <- runif(1, 0, 2*simlist$r)
+  	schedevnt(simlist$currtime + tta, 1, simlist)
 
-  }
+  } else if (etype == 2) { # call ended
 
-  else if (etype == 2) # call ended
-  {
+    print ("-----Call ended at time-----")
+    print (evnt[1])
 
-	if(simlist$i_q > 0){ # calls in queue
-		simlist$i_q <- simlist$i_q - 1
-		
- 		# new event: call ended
-		tte <- rexp(1, simlist$lambda_d)
-		schedevnt(simlist$currtime + tte, 2, simlist)
-	}
+  	if(simlist$i_q > 0){ # calls in queue
 
-	else{ # queue empty, new idle nurse
+  		simlist$i_q <- simlist$i_q - 1
+  		
+   		# new event: call ended
+  		tte <- rexp(1, simlist$lambda_d)
+  		schedevnt(simlist$currtime + tte, 2, simlist)
 
-		# active time calculations
+      print ("there are calls in queue ")
 
-		delta <- simlist$currtime - simlist$lasttime
-		
-		simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
-		simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
-		simlist$lasttime <- simlist$currtime
+  	} else { # queue empty, new idle nurse
 
-		# new idle nurse
+  		# active time calculations
 
-		simlist$i_i <- simlist$i_i + 1
+  		delta <- simlist$currtime - simlist$lasttime
+  		
+  		simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
+  		simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
+  		simlist$lasttime <- simlist$currtime
 
-		if(simlist$p <= 0){ # if no timeout value
-			simlist$i_i <- simlist$i_i - 1
-			simlist$i_n <- simlist$i_n - 1
-		}
-	}
+  		# new idle nurse
 
-  }
+  		simlist$i_i <- simlist$i_i + 1
 
-  else if (etype == 3) # timeout
-  {
-	if(simlist$reset) 
-	{
-		# timeout has been reset by a call arriving
-		simlist$reset <- F
-	}
-	else if (simlist$i_n == 1){
-		# only one nurse left
-		# Reset timeout
-		simlist$nextTimeout <- simlist$currtime + simlist$p
-	}
-	else if (simlist$i_i > 0){ # Some idle nurses ( >1)
-		# active time calculations	
+  		if(simlist$p <= 0){ # if no timeout value
+  			simlist$i_i <- simlist$i_i - 1
+  			simlist$i_n <- simlist$i_n - 1
+  		}
 
-		delta <- simlist$currtime - simlist$lasttime
-		
-		simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
-		simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
-		simlist$lasttime <- simlist$currtime
+      print("queue is empty - new idle nurse")
+	  }
 
-		# remove nurses from active pool
+    print ("Stats so far:")
+    print ("total calls")
+    print (simlist$tot)
+    print ("total rejected calls")
+    print (simlist$rej)
+    print ("active nurses")
+    print (simlist$i_n)
+    print ("idle nurses")
+    print (simlist$i_i)
+    print ("active nurse time")
+    print (simlist$activeTime)
+    print ("idle nurse time")
+    print (simlist$idleTime)
+  } else if (etype == 3) { # timeout
+    
+    print ("-----Timeout happened at time-----")
+    print (evnt[1])
 
-		simlist$i_n <- simlist$i_n - 1
-		simlist$i_i <- simlist$i_i - 1
+  	if(simlist$reset) {
 
-		# reset timeout
-		simlist$nextTimeout <- simlist$currtime + simlist$p
+      print ("previously arrived call has reset this arrival")
+  		# timeout has been reset by a call arriving
+  		simlist$reset <- F
+  	} else if (simlist$i_n == 1) {
+  		# only one nurse left
+  		# Reset timeout
+  		simlist$nextTimeout <- simlist$currtime + simlist$p
 
-	}
-	else{ # no idle nurses
-		simlist$nextTimeout <- simlist$currtime + simlist$p
-	}
-	# new event : next timeout
+      print ("only one nurse is left, reset timeout") #probably don't even need to reset it, the next call that arrives will reset it
+  	} else if (simlist$i_i > 0) { # Some idle nurses ( >1)
+  		# active time calculations	
 
-	schedevnt(simlist$nextTimeout, 3, simlist)
+  		delta <- simlist$currtime - simlist$lasttime
+  		
+  		simlist$activeTime <- simlist$activeTime + (simlist$i_n * delta)
+  		simlist$idleTime <- simlist$idleTime + (simlist$i_i * delta)
+  		simlist$lasttime <- simlist$currtime
+
+  		# remove nurses from active pool
+
+  		simlist$i_n <- simlist$i_n - 1
+  		simlist$i_i <- simlist$i_i - 1
+
+  		# reset timeout
+  		simlist$nextTimeout <- simlist$currtime + simlist$p
+      print ("there are idle nurses, one of them is sent to inactive")
+  	} else { # no idle nurses
+  		simlist$nextTimeout <- simlist$currtime + simlist$p
+      print ("no idle nurses - reset timer?") # is this correct logic? what if there are active nurses that are on the phone and when the next call is finished, a nurse should be sent home?
+  	}
+  	# new event : next timeout
+
+  	schedevnt(simlist$nextTimeout, 3, simlist)
+
+    print ("Stats so far:")
+    print ("total calls")
+    print (simlist$tot)
+    print ("total rejected calls")
+    print (simlist$rej)
+    print ("active nurses")
+    print (simlist$i_n)
+    print ("idle nurses")
+    print (simlist$i_i)
+    print ("active nurse time")
+    print (simlist$activeTime)
+    print ("idle nurse time")
+    print (simlist$idleTime)
 
   }
 
@@ -395,13 +446,5 @@ cc2breact <- function(evnt, simlist) {
   # of these things run in parallel, so I schedule multiple events
   # at once. Because of the memoryless property, this is equivalent
   # to scheduling them sequentially.
-
-
-
-  #print("----------")
-  #print(simlist$i)
-  #print("next event")
-  #print(etype)
-  #print(simlist$currtime)
 
 }
