@@ -222,8 +222,10 @@ cc2b <- function(d, r, n, q, p, timelim, dbg=F) {
   # The way I'm configuring this, there is also a running timeout event.
   # This will just continually run, setting the next timeout to the value above.
   # so I need to start this event as well.
-  schedevnt(p, 3, simlist)
 
+  if(p > 0){ # only start it if there is a positive timeout value! Otherwise, ignore.
+  	schedevnt(p, 3, simlist)
+  }
   # Running totals for dropped calls
   simlist$rej <- 0
   simlist$tot <- 0
@@ -337,6 +339,11 @@ cc2breact <- function(evnt, simlist) {
 		# new idle nurse
 
 		simlist$i_i <- simlist$i_i + 1
+
+		if(simlist$p <= 0){ # if no timeout value
+			simlist$i_i <- simlist$i_i - 1
+			simlist$i_n <- simlist$i_n - 1
+		}
 	}
 
   }
@@ -377,6 +384,7 @@ cc2breact <- function(evnt, simlist) {
 	# new event : next timeout
 
 	schedevnt(simlist$nextTimeout, 3, simlist)
+
   }
 
 
