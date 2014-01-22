@@ -161,24 +161,39 @@ delfcfsqueuehead <- function(queue) {
 
 ## Start of our code.
 
+library(ggplot2)
+
+# Plot long run probabilties of each state.
 plotc <- function(c){
   u <- 20
   r <- 8
-  timelim <- 30
+  timelim <- 10000
   c_column <- rep(NA, length(c))
   p0_column <- rep(NA, length(c))
   p1_column <- rep(NA, length(c))
   p2_column <- rep(NA, length(c))
   for (c_i in c){
-    result_vector = repairman(u, r, c_i, timelim)
+    result_vector = mr1c(u, r, c_i, timelim)
     c_column[c_i] = c_i
     p0_column[c_i] = result_vector[1]
     p1_column[c_i] = result_vector[2]
     p2_column[c_i] = result_vector[3]
   }
-  X <- data_frame(c_column, p0_column, p1_column, p2_column)
-  print(X)
+  X <- data.frame(c_column, p0_column, p1_column, p2_column)
+
+  ggplot(X) + geom_line(aes(y=p0_column, x=c_column, color="red")) + 
+              geom_line(aes(y=p1_column, x=c_column, color="green")) + 
+              geom_line(aes(y=p2_column, x=c_column, color="blue")) +
+              xlab("Repair man's commute (c)") + ylab("Probability") + 
+              scale_colour_manual(name = "State", 
+                                  labels = c("2", "1", "0"),
+                                  values = c("red", "green", "blue")) +
+              ggtitle("Long-run Probabilities of Each State \n (u=20, r=8, 2 Machines)")
+
 }
+
+
+
 
 #1.c
 #event: curtime eventtype(1=fail,2=repair) machine_num(1,2) timeUp timeDown
@@ -213,7 +228,7 @@ mr1c <- function(u, r, c, timelim, dbg=F) {
   print (simlist$totaltime)
   print("pi for each state: ")
   print(simlist$results/simlist$totaltime)
-  return simlist$results/simlist$totaltime
+  return (simlist$results/simlist$totaltime)
 }
 
 mr1creact <- function(evnt, simlist) {
@@ -249,14 +264,14 @@ mr1creact <- function(evnt, simlist) {
 
     simlist$lasttimedown <- curtime
 
-    print ("--------current time-----------")
-    print (curtime)
-    print ("---machine broke---")
-    print (machnum)
-    print ("time till fix: ")
-    print (ttr + waittime)
-    print ("stats - time in each state {0,1,2}")
-    print (simlist$results)
+#    print ("--------current time-----------")
+#    print (curtime)
+#    print ("---machine broke---")
+#    print (machnum)
+#    print ("time till fix: ")
+#    print (ttr + waittime)
+#    print ("stats - time in each state {0,1,2}")
+#    print (simlist$results)
 
   } else { #a machine is repaired
 
@@ -282,12 +297,12 @@ mr1creact <- function(evnt, simlist) {
 
     simlist$lasttimeup <- curtime
 
-    print ("------current time-------------")
-    print (curtime)
-    print ("---machine repaired---")
-    print (machnum)
-    print ("stats - time in each state {0,1,2}")
-    print (simlist$results)
+#    print ("------current time-------------")
+#    print (curtime)
+#    print ("---machine repaired---")
+#    print (machnum)
+#    print ("stats - time in each state {0,1,2}")
+#    print (simlist$results)
 
   }
 }
