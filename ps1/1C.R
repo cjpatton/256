@@ -182,16 +182,16 @@ plotc <- function(c){
 
 #1.c
 #event: curtime eventtype(1=fail,2=repair) machine_num(1,2) timeUp timeDown
-#repairman: status(1=offsite,2=onsite) time_when_will_be_available
+#mr1c: status(1=offsite,2=onsite) time_when_will_be_available
 
-repairman <- function(u, r, c, timelim, dbg=F) {
+mr1c <- function(u, r, c, timelim, dbg=F) {
   simlist <- newsim(dbg)
-  simlist$reactevent <- repairmanreact
+  simlist$reactevent <- mr1creact
   simlist$lambda_u = 1/u
   simlist$lambda_r = 1/r
-  simlist$c <- c #time it take for the repairman to get to the machines
-  repairman <- c(1, 0) #offsite, available since time 0 [only matters for onsite]
-  simlist$repairman <- repairman
+  simlist$c <- c #time it take for the mr1c to get to the machines
+  mr1c <- c(1, 0) #offsite, available since time 0 [only matters for onsite]
+  simlist$mr1c <- mr1c
 
   #start with both machines running. find time when each one will fail
   ttf1 <- rexp(1, simlist$lambda_u)
@@ -206,7 +206,7 @@ repairman <- function(u, r, c, timelim, dbg=F) {
   simlist$lastnumofmachines = 2
   simlist$lasttimeup = 0
   simlist$lasttimedown = 0 
-  #Enter main loop. event types and all logic happens via repairmanreact function
+  #Enter main loop. event types and all logic happens via mr1creact function
   mainloop(simlist, timelim) #note that the last even with time over the time limit with break the simulation and the stats for the other machine will not be complete(as it doesn't get to finish the last event)
 
   print("total time:")
@@ -216,7 +216,7 @@ repairman <- function(u, r, c, timelim, dbg=F) {
   return simlist$results/simlist$totaltime
 }
 
-repairmanreact <- function(evnt, simlist) {
+mr1creact <- function(evnt, simlist) {
   curtime <- evnt[1]
   etype <- evnt[2] 
   machnum <- evnt[3]
@@ -235,16 +235,16 @@ repairmanreact <- function(evnt, simlist) {
       simlist$totaltime <- simlist$totaltime + delta_uptime
     }
         
-    if (simlist$repairman[1]==1){ #remairman is offsite
+    if (simlist$mr1c[1]==1){ #remairman is offsite
       ttr <- rexp(1, simlist$lambda_r) #time till repair end
       waittime <- simlist$c
 
     } else{ #repairer is on site
       ttr <- rexp(1, simlist$lambda_r) #time till repair end
-      waittime <- simlist$repairman[2]
+      waittime <- simlist$mr1c[2]
     } 
     
-    simlist$repairman <- c(2,ttr + waittime) #new waittime till repairman will be free
+    simlist$mr1c <- c(2,ttr + waittime) #new waittime till mr1c will be free
     schedevnt(curtime + ttr + waittime, 2, simlist, c(machnum))
 
     simlist$lasttimedown <- curtime
@@ -272,10 +272,10 @@ repairmanreact <- function(evnt, simlist) {
       simlist$totaltime <- simlist$totaltime + delta_downtime
     }
 
-    if (curtime >= simlist$repairman[2]){ #repairman is free to go, the other machine is still up, because if it went down the repairman's availability time would have been updated
-      simlist$repairman <- c(1,0)
+    if (curtime >= simlist$mr1c[2]){ #mr1c is free to go, the other machine is still up, because if it went down the mr1c's availability time would have been updated
+      simlist$mr1c <- c(1,0)
     } else{
-      #nothing changes for the repairman if he isn't free to go
+      #nothing changes for the mr1c if he isn't free to go
     }
     ttf <- rexp(1, simlist$lambda_u) #time till next failure
     schedevnt(simlist$currtime + ttf, 1, simlist, c(machnum))

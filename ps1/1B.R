@@ -163,7 +163,7 @@ delfcfsqueuehead <- function(queue) {
 
 
 
-factory <- function(u, r, k, timelim, dbg=F) {
+mr1b <- function(u, r, k, timelim, dbg=F) {
   # Event types: 
   # 1 - machine failed
   # 2 - machine repaired
@@ -171,9 +171,9 @@ factory <- function(u, r, k, timelim, dbg=F) {
 
   # Set up simulation list, specify event handler. 
   simlist <- newsim(dbg)
-  simlist$reactevent <- factoryreact
+  simlist$reactevent <- mr1breact
   
-  # Parameters required by factoryreact()
+  # Parameters required by mr1breact()
   simlist$lambda_u = 1/u
   simlist$lambda_r = 1/r
   simlist$k <- k # total machines
@@ -191,7 +191,7 @@ factory <- function(u, r, k, timelim, dbg=F) {
   simlist$time[k] <- ttf
   schedevnt(ttf, 1, simlist)
 
-  # Enter main loop (calls factoryreact()). 
+  # Enter main loop (calls mr1breact()). 
   mainloop(simlist, timelim)
 
   # Report average number of machines running. 
@@ -207,7 +207,7 @@ factory <- function(u, r, k, timelim, dbg=F) {
 
 # Our reactevent(). Transition to new state 
 # and generate next event. 
-factoryreact <- function(evnt, simlist) {
+mr1breact <- function(evnt, simlist) {
   etype <- evnt[2] 
   
   # Transition state. 
