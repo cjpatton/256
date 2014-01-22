@@ -161,6 +161,25 @@ delfcfsqueuehead <- function(queue) {
 
 ## Start of our code.
 
+plotc <- function(c){
+  u <- 20
+  r <- 8
+  timelim <- 30
+  c_column <- rep(NA, length(c))
+  p0_column <- rep(NA, length(c))
+  p1_column <- rep(NA, length(c))
+  p2_column <- rep(NA, length(c))
+  for (c_i in c){
+    result_vector = repairman(u, r, c_i, timelim)
+    c_column[c_i] = c_i
+    p0_column[c_i] = result_vector[1]
+    p1_column[c_i] = result_vector[2]
+    p2_column[c_i] = result_vector[3]
+  }
+  X <- data_frame(c_column, p0_column, p1_column, p2_column)
+  print(X)
+}
+
 #1.c
 #event: curtime eventtype(1=fail,2=repair) machine_num(1,2) timeUp timeDown
 #repairman: status(1=offsite,2=onsite) time_when_will_be_available
@@ -194,6 +213,7 @@ repairman <- function(u, r, c, timelim, dbg=F) {
   print (simlist$totaltime)
   print("pi for each state: ")
   print(simlist$results/simlist$totaltime)
+  return simlist$results/simlist$totaltime
 }
 
 repairmanreact <- function(evnt, simlist) {
