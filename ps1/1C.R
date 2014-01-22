@@ -161,106 +161,115 @@ delfcfsqueuehead <- function(queue) {
 
 ## Start of our code.
 
+#1.c
+#event: curtime eventtype(1=fail,2=repair) machine_num(1,2) timeUp timeDown
+#mr1c: status(1=offsite,2=onsite) time_when_will_be_available
 
-
-factory <- function(u, r, k, timelim, dbg=F) {
-  # Event types: 
-  # 1 - machine failed
-  # 2 - machine repaired
-  # An event is a tuple c(time, event_type). 
-
-  # Set up simulation list, specify event handler. 
+mr1c <- function(u, r, c, timelim, dbg=F) {
   simlist <- newsim(dbg)
-  simlist$reactevent <- factoryreact
-  
-  # Parameters required by factoryreact()
+  simlist$reactevent <- mr1creact
   simlist$lambda_u = 1/u
   simlist$lambda_r = 1/r
-  simlist$k <- k # total machines
-  simlist$i <- k # up machines (initial state)
-  simlist$time <- rep(0, k)
+  simlist$c <- c #time it take for the mr1c to get to the machines
+  mr1c <- c(1, 0) #offsite, available since time 0 [only matters for onsite]
+  simlist$mr1c <- mr1c
 
-  # We must generate the first event and handle it. 
-  # Since the simulation starts with all of the 
-  # machines running, the first event will be a 
-  # failure. 
-  ttf <- min(rexp(k, 1/u))
-  simlist$totaltime <- ttf # Another parameter: maintain the duration
-                           # of the simulation. Used to calculate the 
-                           # average number of machines running. 
-  simlist$time[k] <- ttf
-  schedevnt(ttf, 1, simlist)
+  #start with both machines running. find time when each one will fail
+  ttf1 <- rexp(1, simlist$lambda_u)
+  ttf2 <- rexp(1, simlist$lambda_u)
 
-  # Enter main loop (calls factoryreact()). 
-  mainloop(simlist, timelim)
+  #schedule them (scheduer will sort them by whichever occurs first)
+  schedevnt(ttf1, 1, simlist, c(1)) #c(1st machine)
+  schedevnt(ttf2, 1, simlist, c(2)) 
 
-  # Report average number of machines running. 
-  simlist$time <- simlist$time / simlist$totaltime
-  w <- 0
-  for (i in 1 : k) 
-  {
-    w <- w + (simlist$time[i] * i)    
-  }
-  print("Average number of machines running")
-  print(w)
+  simlist$results = c(0,0,0) # times for 0 machines simlist$results[1], 1 machine: simlist$results[2], 2 machines working, simlist$results[3] 
+  simlist$totaltime = 0
+  simlist$lastnumofmachines = 2
+  simlist$lasttimeup = 0
+  simlist$lasttimedown = 0 
+  #Enter main loop. event types and all logic happens via mr1creact function
+  mainloop(simlist, timelim) #note that the last even with time over the time limit with break the simulation and the stats for the other machine will not be complete(as it doesn't get to finish the last event)
+
+  print("total time:")
+  print (simlist$totaltime)
+  print("pi for each state: ")
+  print(simlist$results/simlist$totaltime)
 }
 
-# Our reactevent(). Transition to new state 
-# and generate next event. 
-factoryreact <- function(evnt, simlist) {
+mr1creact <- function(evnt, simlist) {
+  curtime <- evnt[1]
   etype <- evnt[2] 
-  
-  # Transition state. 
+  machnum <- evnt[3]
 
-  if (etype == 1) # failure
-  {
-    simlist$i = simlist$i - 1
-  }
 
-  else if (etype == 2) # repair
-  {
-    simlist$i = simlist$i + 1
-  }
+  if (etype == 1){ #machine breaks
 
-  # Choose next event. 
-
-  if (simlist$i == 0) 
-  {
-    tte <- min(rexp(simlist$k, simlist$lambda_r))
-    etype <- 2
-  }
-  
-  else if (simlist$i == simlist$k)
-  {
-    tte <- min(rexp(simlist$k, simlist$lambda_u))
-    etype <- 1
-    simlist$time[simlist$i] <- simlist$time[simlist$i] + tte
-  }
-
-  else 
-  {
-    ttf <- min(rexp(simlist$i, simlist$lambda_u))
-    ttr <- min(rexp(simlist$k - simlist$i, simlist$lambda_r))
-    if (ttf < ttr)
-    {
-      tte <- ttf
-      etype <- 1
+    delta_uptime <- curtime - simlist$lasttimeup 
+    if (simlist$lastnumofmachines == 2){
+      simlist$lastnumofmachines = 1
+      simlist$results[3] <- simlist$results[3] + delta_uptime
+      simlist$totaltime <- simlist$totaltime + delta_uptime
+    } else { #1 machine was up
+      simlist$lastnumofmachines = 0
+      simlist$results[2] <- simlist$results[2] + delta_uptime
+      simlist$totaltime <- simlist$totaltime + delta_uptime
     }
-    else 
-    {
-      tte <- ttr
-      etype <- 2
+        
+    if (simlist$mr1c[1]==1){ #remairman is offsite
+      ttr <- rexp(1, simlist$lambda_r) #time till repair end
+      waittime <- simlist$c
+
+    } else{ #repairer is on site
+      ttr <- rexp(1, simlist$lambda_r) #time till repair end
+      waittime <- simlist$mr1c[2]
+    } 
+    
+    simlist$mr1c <- c(2,ttr + waittime) #new waittime till mr1c will be free
+    schedevnt(curtime + ttr + waittime, 2, simlist, c(machnum))
+
+    simlist$lasttimedown <- curtime
+
+    print ("--------current time-----------")
+    print (curtime)
+    print ("---machine broke---")
+    print (machnum)
+    print ("time till fix: ")
+    print (ttr + waittime)
+    print ("stats - time in each state {0,1,2}")
+    print (simlist$results)
+
+  } else { #a machine is repaired
+
+    delta_downtime <- curtime - simlist$lasttimedown
+    
+    if (simlist$lastnumofmachines == 0){ #[the downtime of this machine is how long we had 1 machines running] 
+      simlist$lastnumofmachines = 1
+      simlist$results[1] <- simlist$results[1] + delta_downtime
+      simlist$totaltime <- simlist$totaltime + delta_downtime
+    } else { #1 machine was up [the downtime of this machine is how long we had 1 machine running]
+      simlist$lastnumofmachines = 2
+      simlist$results[2] <- simlist$results[2] + delta_downtime
+      simlist$totaltime <- simlist$totaltime + delta_downtime
     }
-    simlist$time[simlist$i] <- simlist$time[simlist$i] + tte
+
+    if (curtime >= simlist$mr1c[2]){ #mr1c is free to go, the other machine is still up, because if it went down the mr1c's availability time would have been updated
+      simlist$mr1c <- c(1,0)
+    } else{
+      #nothing changes for the mr1c if he isn't free to go
+    }
+    ttf <- rexp(1, simlist$lambda_u) #time till next failure
+    schedevnt(simlist$currtime + ttf, 1, simlist, c(machnum))
+
+    simlist$lasttimeup <- curtime
+
+    print ("------current time-------------")
+    print (curtime)
+    print ("---machine repaired---")
+    print (machnum)
+    print ("stats - time in each state {0,1,2}")
+    print (simlist$results)
+
   }
-
-  schedevnt(simlist$currtime + tte, etype, simlist)
-  simlist$totaltime <- simlist$totaltime + tte
-
-  #print("----------")
-  #print(simlist$i)
-  #print("next event")
-  #print(etype)
-  #print(simlist$currtime)
-
 }
+
+######## end of problem 1c ####
