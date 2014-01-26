@@ -1,0 +1,144 @@
+
+<body bgcolor="white"> 
+<h1>Homework I
+</h1>
+
+<h2>
+Due Thursday, January 30.
+</h2>
+
+<p>
+<b> Needed background: </b>  Except for Problem 3, you only need
+lecture material up through Chapter 9, on mixture distributions.
+Problem 2 requires knowledge of covariance matrices and random
+vectors, so you'll need to read Chapter 13.  In Problem 3, you'll need
+the first few pages of Chapter 10, which will be covered in lecture. 
+</p>
+
+<p>
+<b>Reminder:</b>  A simulation <i>simulates</i>.  In the problems below,
+I have you write simulation code to check your math derivation.  If your
+simulation in Problem 1, for example, were to make use of (9.6), it wouldn't 
+be an independent check of your math; be sure your simulation simulates the
+process being modeled, rather than being a full or partial rehash of the
+math.
+</p>
+
+<h2>Problem 1</h2>
+
+<p> <OL type = "a">
+
+<li> In the coin-flips-with-bonus example in Section 9.5,
+use the Law of Total Variance to find Var(X), where X is the total
+number of heads, regardless of whether bonus or nonbonus.  
+Use simulation (ordinary, not DES) to find the variance AND the mean EX.  
+Recall that there is a more detailed derivation <a
+href="Bonus.pdf">here</a>.
+</li> </p> 
+
+<li> Do the same as in part (a), for the trapped-miner example, Section
+9.4, finding Var(Y), where Y is the time needed to reach safety.  In the 
+<a href="http://heather.cs.ucdavis.edu/~matloff/132/PLN/ProbStatBook.pdf">
+constantly updated version of our book</a>, I've added more detail for
+this example too.
+</li> </p> 
+
+</OL> </p>
+
+<h2>Problem 2</h2>
+
+<p> This problem involves the Law of Total Variance, Equation (9.8) 
+in our book.  
+</p>
+
+<p> The first part of this problem will consist of finding, and
+<i>understanding</i>, a proof of (9.8).  There are many on the Web,
+including on Wikipedia.  They all make use of the famous relation, 
+</p>
+
+<p>
+Var(Z) = E(Z<sup>2</sup>) - (EZ)<sup>2</sup>  
+</p>
+
+<p>
+I generally like Wikipedia (I use it myself), but in this case their 
+proof is confusing.  Among other things, it's sloppy about the use of 
+parentheses, dropping them sometimes when needed.  The derivation <a
+href="http://math.la.asu.edu/~jtaylor/teaching/Fall2010/STP421/lectures/lecture24.pdf">here</a>
+is more careful.  You may find it helpful to write something like
+Q = E(Y | X), as I have in the book and in class.
+</p>
+
+<p>
+So, first make sure you understand the derivation.  I am asking you to
+go to the Web for this, because I want you to have experience in finding
+and understanding research results on the Web.  (You do not write up
+this part of the problem; it's just for preparation for parts (a) and
+(b) below.)
+</p>
+
+<p> <OL type = "a">
+
+<li> Derive the extension of (9.8) for vector-valued Y:
+</p>
+
+<p>
+Cov(Y) = E[Cov(Y | X)] + Cov[E(Y | X)]
+</p>
+
+<p>
+where Cov() denotes the covariance matrix of a random vector.
+</p>
+
+<p>
+Your derivation must be use matrix expressions only, instead of
+analyzing individual elements.  You should find Equation (13.53)
+especially helpful; note that it is the analog of
+</p>
+
+<p>
+Var(Z) = E(Z<sup>2</sup>) - (EZ)<sup>2</sup>  
+</p>
+</li> </p>
+
+<li> Use the formula you derive in (a) to find &rho;(X,Y) in Section
+9.5, where X is the total number of heads and Y is number of nonbonus
+heads.  (That function name is "rho," not "p"; it denotes correlation.)
+Confirm via simulation.
+</li> </p> 
+
+
+</OL> </p>
+
+<h2>Problem 3</h2>
+
+<p>
+Consider a discrete-time Markov chain with finite state space and
+stationary distribution &pi;.  Suppose the states indicate the quantity
+of something, e.g. the amount of inventory in the model in Sec. 4.7.
+(All of the examples in Chapter 4 have numeric states.)  Assume
+that the initial state X<sub>0</sub> is random, with distribution &pi;.  
+Note that that implies that X<sub>1</sub>, X<sub>2</sub>, ... will 
+all have this distribution.  
+</p>
+
+<p>
+Write an R function with call form
+</p>
+
+<pre>
+mccor(tm,k)
+</pre>
+
+<p>
+that finds &rho;(X<sub>i</sub>,X<sub>i+j</sub>), j = 1,2,...,k.  
+(Be sure you understand that this quantity does not depend on i.)
+The return value will be a k-element vector.
+</p>
+
+<p>
+Note:  Do not use simulation.  Your code must calculate the exact
+correlations.
+</p>
+
+
