@@ -68,4 +68,51 @@ We are interesting the variance of $Y$, the time it takes to escape the mine. We
 \end{equation*}
 We know that Var($U_{i}$|N) is independent because the miner's choice of door does not depend of a previous choice. Since we are conditioning this event on there being N attempts, the values of the first N-1 attempts will either be 3 or 5. So the variance of an individual attempt in this case is 1. The variance of the $N^{th}$ attempt is 0 because that attempt always is the same tunnel.
 
+2a) \newline
+
+For a vector $Q$ of random variables $(Q_1,..Q_n)$ we have:
+\begin{equation*}
+	\begin{aligned}
+	Cov(Q)	&= E(QQ') - E(Q)E(Q') &(\textrm{by 13.53})\\
+	\end{aligned}
+\end{equation*}
+
+Let $Q=Y|X$, where $Y$ is vector valued. 
+Then:
+\begin{equation*}
+	\begin{aligned}
+	Cov(Y|X) &= E\big((Y|X)(Y|X)'\big) - E(Y|X)E(Y|X)' &(\textrm{by 13.53})\\
+	\end{aligned}
+\end{equation*}
+
+Taking expected value of both sides we have:
+\begin{equation*}
+	\begin{aligned}
+	E\big(Cov(Y|X)\big) &= E\Big(E\big((Y|X)(Y|X)'\big) - E(Y|X)E(Y|X)'\Big)\\
+	              &= E\Big(E\big((Y|X)(Y|X)'\big)\Big) - E\Big(E(Y|X)E(Y|X)'\Big)\\
+	              &= E(YY') - E\Big(E(Y|X)E(Y|X)'\Big) &(\textrm{by Law of Tot. Expect.})\\
+	\end{aligned}
+\end{equation*}
+
+Now let $Q=E(Y|X)$, where $Y$ is vector valued. 
+Then:
+\begin{equation*}
+	\begin{aligned}
+	Cov(E(Y|X)) &= E\big(E(Y|X)E(Y|X)'\big) - E\big(E(Y|X)\big)E\big(E(Y|X)\big)' &(\textrm{by 13.53})\\
+	              &= E\big(E(Y|X)E(Y|X)'\big) - E(Y)E(Y)' &(\textrm{by Law of Tot. Expect.})\\
+	\end{aligned}
+\end{equation*}
+
+Summing up the left sides and the right sides of these 2 equations we get:
+
+\begin{equation*}
+	\begin{aligned}
+	E\big(Cov(Y|X)\big) + Cov(E(Y|X)) &= E(YY') - E\Big(E(Y|X)E(Y|X)'\Big) \\&+ E\big(E(Y|X)E(Y|X)'\big) - E(Y)E(Y)'\\
+	E\big(Cov(Y|X)\big) + Cov(E(Y|X)) &= E(YY') - E(Y)E(Y)' \\
+	E\big(Cov(Y|X)\big) + Cov(E(Y|X)) &= Cov(Y) &(\textrm{by 13.53})\\
+	\end{aligned}
+\end{equation*}
+
+2.b Yet to be done
+
 \end{document}
