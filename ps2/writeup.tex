@@ -118,6 +118,229 @@ Summing up the left sides and the right sides of these 2 equations we get:
 
 TODO. 
 
+First, just an equation to remind us of what we're actually trying to find here, the correlation between $X$ and $Y$.
+
+\begin{equation*}
+	\begin{aligned}
+	\rho(X,Y) &=& \frac{Cov(X, Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}} \\
+	\end{aligned}
+\end{equation*}
+
+But $X$ is too complicated and annoying to work with, so we're going to change the random vector to find the correlation matrix of from $(X,Y)'$ to $(B,Y)'$, where $B$ is the random variable that expresses the number of bonus heads flipped, via eq. 13.54. Then we'll expand that forumla out so we know what the final equation we need to solve for is.
+
+\begin{equation*}
+	\begin{aligned}\left(\begin{array}{c}
+			X\\
+			Y
+		\end{array}\right) & = \left(\begin{array}{c}
+			B+Y\\
+			Y
+		\end{array}\right)\\
+ 		& = \left(\begin{array}{cc}
+			1 & 1\\
+			0 & 1
+		\end{array}\right)\left(\begin{array}{c}
+			B\\
+			Y
+		\end{array}\right)
+	\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+	\begin{aligned}
+	Cov\big[(X,Y)'\big] &= \left(
+		\begin{array}{cc}
+			Var(X) & Cov(X,Y) \\
+			Cov(X,Y) & Var(Y)
+		\end{array}
+	\right)\\
+	&= \left(
+		\begin{array}{cc}
+			1 & 1\\
+			0 & 1
+		\end{array}
+		\right)
+		Cov\big[(B,Y)'\big]
+		\left(
+		\begin{array}{cc}
+			1 & 0\\
+			1 & 1
+		\end{array}
+		\right) & (\textrm{By 13.54}) \\
+	&= \left(
+		\begin{array}{cc}
+			1 & 1\\
+			0 & 1
+		\end{array}
+		\right)
+		\left(
+		\begin{array}{cc}
+			Var(B) & Cov(B,Y) \\
+			Cov(B,Y) & Var(Y)
+		\end{array}
+		\right)
+		\left(
+		\begin{array}{cc}
+			1 & 0\\
+			1 & 1
+		\end{array}
+		\right) \\
+	&= \left(
+		\begin{array}{cc}
+			Var(B) + Cov(B,Y) & Cov(B,Y) + Var(Y)\\
+			Cov(B,Y) & Var(Y)
+		\end{array}
+		\right)
+		\left(
+		\begin{array}{cc}
+			1 & 0\\
+			1 & 1
+		\end{array}
+		\right) \\
+	&= \left(
+		\begin{array}{cc}
+			Var(B) + Var(Y) + 2Cov(B,Y) & Cov(B,Y) + Var(Y)\\
+			Cov(B,Y) + Var(Y) & Var(Y)
+		\end{array}
+		\right)
+	\end{aligned}
+\end{equation*}
+
+Now that we know the final form, we'll go back and calculate $Cov[(B,Y)']$. From the problem \textbf{2.a}, we have the following.
+
+\begin{equation*}
+	\begin{aligned}
+	Cov(W) &= E\big(Cov(W|Z)\big) + Cov\big(E(W|Z)\big)\\
+	\end{aligned}
+\end{equation*}
+
+Now we'll allow $W=(B,Y)'$ and $Z=Y$ in order to calculate for $Cov\big[(B,Y)'\big]$.
+
+\begin{equation*}
+	\begin{aligned}
+	Cov\big((B,Y)'\big) &= E\big[Cov((B,Y)'|Y)\big] + Cov\big[E((B,Y)'|Y)\big]\\
+	\end{aligned}
+\end{equation*}
+
+Now we'll consider each half of that individually, then add them together. First, let's consider the random variable $Q_c = Cov\big((B,Y)'|Y\big)$
+
+\begin{equation*}
+	\begin{aligned}
+		Cov\big((B,Y)' | Y\big) &=
+		\begin{cases}
+			\textrm{for $i$ from $0..k$} \\
+			Cov((B,Y)'|Y=i)\: w.p.\binom{k}{i} 0.5^k
+		\end{cases}
+		\\
+	\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+	\begin{aligned}
+		Cov\big((B,Y)' | Y=i\big) &=
+		 \left(
+		\begin{array}{cc}
+			Var(B|Y=i) & Cov(B,Y|Y=i)\\
+			Cov(B,Y | Y=i) & Var(Y|Y=i)
+		\end{array}
+		\right) \\
+		&=
+		 \left(
+		\begin{array}{cc}
+			i/4 & Cov(B,Y|Y=i)\\
+			Cov(B,Y | Y=i) & 0
+		\end{array}
+		\right) \\
+	\end{aligned}
+\end{equation*}
+
+
+\begin{equation*}
+	\begin{aligned}
+		Cov\big(B,Y | Y=i\big) &=
+		E(BY|Y=i) - E(B|Y=i) * E(Y|Y=i)\\
+		& = E(iB|Y=i) - i * E(B|Y=1)\\
+		& = i*E(B|Y=i) - i * E(B|Y=1)\\
+		& = 0
+	\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+	\begin{aligned}
+		Cov\big((B,Y)' | Y=i\big) &=
+		 \left(
+		\begin{array}{cc}
+			i/4 & 0\\
+			0 & 0
+		\end{array}
+		\right) \\
+	\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+	\begin{aligned}
+		E\Big[Cov\big((B,Y)' | Y=i\big)\Big] &=
+		\sum_{i=0}^{k} 
+		\left(
+		\begin{array}{cc}
+			i/4 & 0\\
+			0 & 0
+		\end{array}
+		\right) * \binom{k}{i} 0.5^k\\
+	\end{aligned}
+\end{equation*}
+
+(( Should be able to reduce that, don't remember how. Do double check my work on those covariances. I am reasonably certain they all zero out, which would be greatand makes intuitive sense to me (the covariance of anything with a scalar, which (Y|y=i) is, is 0) but I'm not 100\% confident about it ))
+
+Now then, onto the other half, $Cov\big[E((B,Y)'|Y)\big]$ First, that expected value part.
+
+\begin{equation*}
+	\begin{aligned}
+		E\big((B,Y)' | Y\big) &=
+		\begin{cases}
+			\textrm{for $i$ from $0..k$} \\
+			E((B,Y)'|Y=i)\: w.p.\binom{k}{i} 0.5^k
+		\end{cases}
+		\\
+	\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+	\begin{aligned}
+		E\big((B,Y)' | Y=i\big) &=
+		 \left(
+		\begin{array}{c}
+			E(B|Y=i) \\
+			E(Y|Y=i)
+		\end{array}
+		\right) \\
+		&=
+		 \left(
+		\begin{array}{c}
+			i/2 \\
+			i
+		\end{array}
+		\right) \\
+	\end{aligned}
+\end{equation*}
+
+(( Okay, here's the point at which I get stuck. We now need to get the covariance matrix of this. Hmm... Covariance is the hardest one by far. I think the two variances are pretty easy, fairly sure they fall out from the variance of the binomial. I'll write up the matrix form of what we need, hopefully Olga has made progress by the time I wake up.))
+
+\begin{equation*}
+	\begin{aligned}
+		Cov\big[E((B,Y)' | Y)\big] &=
+		 \left(
+		\begin{array}{cc}
+			Var(E(B|Y)) & Cov\big(E(B|Y),E(Y|Y)\big)\\
+			Cov\big(E(B|Y),E(Y|Y)\big) & Var(E(Y|Y))
+		\end{array}
+		\right) \\
+	\end{aligned}
+\end{equation*}
+
+
+
+
 \pagebreak
 \textbf{Problem 3} 
 
