@@ -24,7 +24,7 @@
 \line
 Olga Prilepova, Christopher Patton, Alexander Rumbaugh, John Chen, Thomas Provan
 
-1a)\newline
+\textbf{Problem 1.a}\\
 A coin is flipped $k$ times with $p$ probability of heads. For each head, the coin is flipped one additional time (a bonus flip). The number of bonus flips is referred to as $Y$ and the total number of heads $X$\newline
 \newline
 Var(X) can be found using the Law of Total Variance, and properties of binomial distributions. We will also need to use part of the derivation of EX:
@@ -47,7 +47,7 @@ Var(X) can be found using the Law of Total Variance, and properties of binomial 
 	\end{aligned}
 \end{equation*}
 
-1b)\newline
+\textbf{Problem 1.b}\\
 In the trapped miner example, a miner chooses between three doors with only one leading to safety after $2$ hours. The other two doors lead back to the door room after $3$ and $5$ hours respectively.\newline
 \newline
 We are interesting the variance of $Y$, the time it takes to escape the mine. We will build upon Ahmed Ahmedin's solution to EY, where N refers to the total attempts needed to escape and $U_{i}$ refers to the time spent traveling on the $i^{th}$ attempt. 
@@ -67,5 +67,85 @@ We are interesting the variance of $Y$, the time it takes to escape the mine. We
 	\end{aligned}
 \end{equation*}
 We know that Var($U_{i}$|N) is independent because the miner's choice of door does not depend of a previous choice. Since we are conditioning this event on there being N attempts, the values of the first N-1 attempts will either be 3 or 5. So the variance of an individual attempt in this case is 1. The variance of the $N^{th}$ attempt is 0 because that attempt always is the same tunnel.
+
+\pagebreak
+\textbf{Problem 2.a}\\
+For a vector $Q$ of random variables $(Q_1,..Q_n)$ we have:
+\begin{equation*}
+	\begin{aligned}
+	Cov(Q)	&= E(QQ') - E(Q)E(Q') &(\textrm{by 13.53})\\
+	\end{aligned}
+\end{equation*}
+
+Let $Q=Y|X$, where $Y$ is vector valued. 
+Then:
+\begin{equation*}
+	\begin{aligned}
+	Cov(Y|X) &= E\big((Y|X)(Y|X)'\big) - E(Y|X)E(Y|X)' &(\textrm{by 13.53})\\
+	\end{aligned}
+\end{equation*}
+
+Taking expected value of both sides we have:
+\begin{equation*}
+	\begin{aligned}
+	E\big(Cov(Y|X)\big) &= E\Big(E\big((Y|X)(Y|X)'\big) - E(Y|X)E(Y|X)'\Big)\\
+	              &= E\Big(E\big((Y|X)(Y|X)'\big)\Big) - E\Big(E(Y|X)E(Y|X)'\Big)\\
+	              &= E(YY') - E\Big(E(Y|X)E(Y|X)'\Big) &(\textrm{by Law of Tot. Expect.})\\
+	\end{aligned}
+\end{equation*}
+
+Now let $Q=E(Y|X)$, where $Y$ is vector valued. 
+Then:
+\begin{equation*}
+	\begin{aligned}
+	Cov(E(Y|X)) &= E\big(E(Y|X)E(Y|X)'\big) - E\big(E(Y|X)\big)E\big(E(Y|X)\big)' &(\textrm{by 13.53})\\
+	              &= E\big(E(Y|X)E(Y|X)'\big) - E(Y)E(Y)' &(\textrm{by Law of Tot. Expect.})\\
+	\end{aligned}
+\end{equation*}
+
+Summing up the left sides and the right sides of these 2 equations we get:
+
+\begin{equation*}
+	\begin{aligned}
+	E\big(Cov(Y|X)\big) + Cov(E(Y|X)) &= E(YY') - E\Big(E(Y|X)E(Y|X)'\Big) \\&+ E\big(E(Y|X)E(Y|X)'\big) - E(Y)E(Y)'\\
+	E\big(Cov(Y|X)\big) + Cov(E(Y|X)) &= E(YY') - E(Y)E(Y)' \\
+	E\big(Cov(Y|X)\big) + Cov(E(Y|X)) &= Cov(Y) &(\textrm{by 13.53})\\
+	\end{aligned}
+\end{equation*}
+
+
+\textbf{Problem 2.b} 
+
+TODO. 
+
+\pagebreak
+\textbf{Problem 3} 
+
+$$\rho(X_{i+j}, X_i) = \frac{\text{Cov}(X_{i+j}, X_i)}
+                 {\sqrt{\text{Var}(X_{i+j})} \cdot \sqrt{\text{Var}(X_i)}} $$ 
+
+A couple things we noticed: 
+$$ E(X_i) = \sum_{l=1}^n{l\cdot\pi_l} $$ 
+$$ E(X_{i+j} | X_i) = \sum_{l=1}^n{l \cdot m^j_{k,l}} $$
+where $M^j$ is the transition matrix $M \cdot M \cdots M$ ($j$ times), and 
+$X_i = k$. First, let's derive $\text{Cov}(X_{i+j}, X_i)$. 
+$$ \text{Cov}(X_{i+j}, X_i) = E(X_{i,j}X_i) - E(X_{i+j})E(X_i) $$
+Suppose $Q = X_{i,j}X_i$. By the law of total expectations, $ E(Q) = E(E(Q|X_i))$.
+Thus, 
+\begin{equation*}
+  \begin{aligned}
+    E(X_{i,j}X_i) &= \sum_{l=1}^n{ \pi_l l \cdot E(X_{i+j} | X_i)} \\
+                  &= \sum_{l=1}^n{ \Bigg[ \pi_l l \cdot \Big[ 
+                         \sum_{k=1}^n{k \cdot m^j_{l,k}} \Big]} \Bigg]. \\
+  \end{aligned}
+\end{equation*}
+Since $X_{i,j}$ and $X_i$ have the same distribution ($\Pi$), the covariance becomes
+$$ \text{Cov}(X_{i+j}, X_i) =  \sum_{l=1}^n{ \Bigg[ \pi_l l \cdot \Big[ 
+                                     \sum_{k=1}^n{k \cdot m^j_{l,k}} \Big]} \Bigg]
+                              - (EX_i)^2.$$
+
+Next, we derive $\text{Var}(X_{i,j})$ and $\text{Var}(X_i)$. \textbf{TODO}
+
+
 
 \end{document}
