@@ -230,32 +230,55 @@ Simulation proves this.
 
 \pagebreak
 \textbf{Problem 3} 
-
+Let $X_i$ denote the state of the machine at time index $i$, where $X_0  
+\sim \Pi$, the stationary distributions of the states. Finally, suppose there are $n$ states, 
+named numerically 1 to $n$. We want to compute
 $$\rho(X_{i+j}, X_i) = \frac{\text{Cov}(X_{i+j}, X_i)}
                  {\sqrt{\text{Var}(X_{i+j})} \cdot \sqrt{\text{Var}(X_i)}} $$ 
+for all $1 \le j \le k$ and some $k$. We can simplify the denomonator by realizing 
+that, since $X_i$ and $X_{i+j}$ are drawn from the same distribution, they have
+the same variance. The equation becomes: 
+$$\rho(X_{i+j}, X_i) = \frac{\text{Cov}(X_{i+j}, X_i)}
+                 {\text{Var}(X_{i})}. $$
+By definition, the expected value of $X_i$ is
+$$ E(X_i) = \sum_{l=1}^n{l\cdot\pi_l}. $$ 
+Thus, 
+$$ \text{Var}(X_i) = E(X_i^2) - (EX_i)^2 =
+  \sum_{l=1}^n{(l^2\pi_l)} - \Big[ \sum_{l=1}^n{l \pi_l} \Big]^2.$$ 
 
-A couple things we noticed: 
-$$ E(X_i) = \sum_{l=1}^n{l\cdot\pi_l} $$ 
-$$ E(X_{i+j} | X_i) = \sum_{l=1}^n{l \cdot m^j_{k,l}} $$
+Now, let's derive $\text{Cov}(X_{i+j}, X_i)$. For this, we also need the expected
+value of $X_{i+j}$:
+$$ E(X_{i+j} | X_i) = \sum_{k=1}^n{k \cdot m^j_{l,k}} $$
 where $M^j$ is the transition matrix $M \cdot M \cdots M$ ($j$ times), and 
-$X_i = k$. First, let's derive $\text{Cov}(X_{i+j}, X_i)$. 
-$$ \text{Cov}(X_{i+j}, X_i) = E(X_{i,j}X_i) - E(X_{i+j})E(X_i) $$
+$X_i = l$. 
+$$ \text{Cov}(X_{i+j}, X_i) = E(X_{i+j}X_i) - E(X_{i+j})E(X_i) $$
 Suppose $Q = X_{i,j}X_i$. By the law of total expectations, $ E(Q) = E(E(Q|X_i))$.
 Thus, 
 \begin{equation*}
   \begin{aligned}
-    E(X_{i,j}X_i) &= \sum_{l=1}^n{ \pi_l l \cdot E(X_{i+j} | X_i)} \\
+    E(X_{i+j}X_i) &= \sum_{l=1}^n{ \pi_l l \cdot E(X_{i+j} | X_i)} \\
                   &= \sum_{l=1}^n{ \Bigg[ \pi_l l \cdot \Big[ 
                          \sum_{k=1}^n{k \cdot m^j_{l,k}} \Big]} \Bigg]. \\
   \end{aligned}
 \end{equation*}
-Since $X_{i,j}$ and $X_i$ have the same distribution ($\Pi$), the covariance becomes
+Since $X_{i+j}$ and $X_i$ have the same distribution ($\Pi$), the covariance becomes
 $$ \text{Cov}(X_{i+j}, X_i) =  \sum_{l=1}^n{ \Bigg[ \pi_l l \cdot \Big[ 
                                      \sum_{k=1}^n{k \cdot m^j_{l,k}} \Big]} \Bigg]
                               - (EX_i)^2.$$
 
-Next, we derive $\text{Var}(X_{i,j})$ and $\text{Var}(X_i)$. \textbf{TODO}
+We can now write code to calculate the correlation of $X_i$ and $X_{i+j}$. The following
+function \texttt{mccor(tm, k)} returns a vector corresponding to 
+$\rho(X_i, X_{i+1}) \dots \rho(X_i, X_k)$. 
 
+\lstset{
+  basicstyle=\small,
+  stringstyle=\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1, 
+  numbersep=5pt,
+  language=R }
 
+\lstinputlisting{3pretty.R}
 
 \end{document}
