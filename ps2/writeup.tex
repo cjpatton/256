@@ -126,15 +126,39 @@ First, just an equation to remind us of what we're actually trying to find here,
 
 From the problem \textbf{2.a}, we have the following.
 
-Let $B=X-Y$ and use that random variable in the following computations.
-
 \begin{equation*}
 	\begin{aligned}
-	Cov(W) &= E\big(Cov(W|Z)\big) + Cov\big(E(W|Z)\big)\\
+		Cov\big((X,Y)'\big) &=
+		 \left(
+		\begin{array}{cc}
+			Var(X) & Cov(X,Y)\\
+			Cov(X,Y) & Var(Y)
+		\end{array}
+		\right) \\
+		&= \left(
+		\begin{array}{cc}
+			E\big(Var(X|Y)\big) & E\big(Cov(X,Y|Y)\big) \\
+			E\big(Cov(X,Y|Y)\big) & E\big(Var(Y|Y)\big) \\
+		\end{array}
+		\right) \\
+		&+ \left(
+		\begin{array}{cc}
+			Var\big(EX|Y)\big) & Var\big(EX,EY|Y)\big) \\
+			Var\big(EX,EY|Y)\big) & Var\big(EY|Y)\big) \\
+		\end{array}
+		\right) \\
 	\end{aligned}
 \end{equation*}
 
-Now we'll allow $W=(B,Y)'$ and $Z=Y$ in order to calculate $Cov(B,Y)'$.
+And since the summation of matrices is by element we can just focus on the following formula:
+
+\begin{equation*}
+	\begin{aligned}
+	Cov(X,Y) &= E\big[Cov(X,Y|Y)\big] + Cov\big[E(X,Y|Y)\big]\\
+	\end{aligned}
+\end{equation*}
+
+Let $B=X-Y$ and use that random variable in the following computations.
 
 \begin{equation*}
 	\begin{aligned}
@@ -163,7 +187,7 @@ Now we'll allow $W=(B,Y)'$ and $Z=Y$ in order to calculate $Cov(B,Y)'$.
 	Cov\big(E(B,Y|Y)\big) &= \big(Var(EB + EY|Y) - Var(EB|Y) - Var(EY|Y)\big)/2 \\
 	        &= \big(Var(1.5Y) - Var(0.5Y) - Var(Y)\big)/2 \\
 	        &= \big(2.25Var(Y) - 0.25Var(Y) - Var(Y)\big)/2 \\
-	        &= Var(Y) \\
+	        &= Var(Y)/2 \\
 	\end{aligned}
 \end{equation*}
 
@@ -172,9 +196,10 @@ Hence:
 \begin{equation*}
 	\begin{aligned}
 	Cov\big(B,Y\big) &= 0 + Var(Y)\\
-	&= Var(Y)\\
-	&= kp(1-p)\\
-	&= 0.25k\\
+	&= Var(Y)/2\\
+	&= kp(1-p)/2\\
+	&= 0.25k/2\\
+	&= 0.125k\\
 	\end{aligned}
 \end{equation*}
 
@@ -194,13 +219,14 @@ Now we have all the ingredients to find the correlation:
 	\begin{aligned}
 	\rho(X,Y) &= \frac{Cov(X, Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}} \\
 	       &= \frac{Cov\big(B,Y\big) + Var(Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}} \\
-	       &= \frac{0.25k + 0.25k}{\sqrt{0.6875k}\sqrt{0.25k}} \\
-	       &= \frac{0.5k}{k\sqrt{0.6875}\sqrt{0.25}} \\
-	       &= \frac{0.5}{\sqrt{0.6875*0.25}} \\
-	       &= 1.2\\
+	       &= \frac{0.125k + 0.25k}{\sqrt{0.6875k}\sqrt{0.25k}} \\
+	       &= \frac{0.375k}{k\sqrt{0.6875}\sqrt{0.25}} \\
+	       &= \frac{0.375}{\sqrt{0.6875*0.25}} \\
+	       &= 0.904\\
 	\end{aligned}
 \end{equation*}
 
+Simulation proves this. 
 
 \pagebreak
 \textbf{Problem 3} 
