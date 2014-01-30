@@ -1,6 +1,6 @@
 threeheads = function(nreps, k){
   statetab = matrix(ncol=k+1)
-  states = c(0,1,2)
+  states = c(1,2,3)
   corvec1 = c()
   corvec2 = c()
   pivec = c(0.5714286,0.2857143,0.1428571)
@@ -10,8 +10,8 @@ threeheads = function(nreps, k){
       coinv = sample(1:2,1)
       if(coinv == 2)#heads
         nextstate = statev[j-1] + 1
-      else { nextstate = 0 }
-      if(nextstate == 3){ nextstate = 0 }
+      else { nextstate = 1 }
+      if(nextstate == 4){ nextstate = 1 }
       statev = c(statev, nextstate)
     }
     statetab = rbind(statetab,statev)
