@@ -6,5 +6,6 @@ bonusflip = function(nrep, p, k){
     totalheads = numheads+bonusheads
     headsvec = c(headsvec,totalheads) 
   }
+  cat("E(x): ", mean(headsvec))
   cat("Var(X): ", var(headsvec))
 }

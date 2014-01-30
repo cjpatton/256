@@ -1,30 +1,63 @@
- \documentclass[12pt]{article}
+
+\documentclass[letter]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{ulem}
+\usepackage{graphics}
+\usepackage{sidecap}
+\usepackage{wrapfig}
+\usepackage[toc,page]{appendix}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
 \usepackage{url,graphicx,tabularx,array,geometry,amsmath,tikz}
 \usepackage{algorithm}% http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 \usepackage{listings}
 \usetikzlibrary{arrows}
-\setlength{\parskip}{1ex} %--skip lines between paragraphs
-\setlength{\parindent}{0pt} %--don't indent paragraphs
 \newenvironment{myindentpar}[1]% %indent whole paragraph when needed
  {\begin{list}{}%
          {\setlength{\leftmargin}{#1}}%
          \item[]%
  }
  {\end{list}}
-%-- Commands for header
-\renewcommand{\title}[1]{\textbf{#1}\\}
-\renewcommand{\line}{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}\hline\\\end{tabularx}\\[-0.5cm]}
-\newcommand{\leftright}[2]{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}#1%
-& #2\\\end{tabularx}\\[-0.5cm]}
-%\linespread{2} %-- Uncomment for Double Space
+
+\usepackage{hyperref}
+\usepackage{parskip}
+
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black
+}
+
+\def\dashuline{\bgroup 
+  \ifdim\ULdepth=\maxdimen  % Set depth based on font, if not set already
+	  \settodepth\ULdepth{(j}\advance\ULdepth.4pt\fi
+  \markoverwith{\kern.15em
+	\vtop{\kern\ULdepth \hrule width .3em}%
+	\kern.15em}\ULon}
+\setlength\parindent{2em}
+
+\newcounter{foot}
+\setcounter{foot}{1}
+
+\author{Olga Prilepova, Christopher Patton, Alexander Rumbaugh, \\ John Chen, Thomas Provan}
+
+\date{\today}
+\title{ECS256 - Homework II}
+	
 \begin{document}
+\maketitle
 
-\title{ECS 256 - Problem set 2}
-\line
-Olga Prilepova, Christopher Patton, Alexander Rumbaugh, John Chen, Thomas Provan
-
-\textbf{Problem 1.a}\\
+\subsection*{Problem 1.a
+\footnote{Simulation code \texttt{1A.R}.}}
 A coin is flipped $k$ times with $p$ probability of heads. For each head, the coin is flipped one additional time (a bonus flip). The number of bonus flips is referred to as $Y$ and the total number of heads $X$\newline
 \newline
 Var(X) can be found using the Law of Total Variance, and properties of binomial distributions. We will also need to use part of the derivation of EX:
@@ -47,7 +80,8 @@ Var(X) can be found using the Law of Total Variance, and properties of binomial 
 	\end{aligned}
 \end{equation*}
 
-\textbf{Problem 1.b}\\
+\subsection*{Problem 1.b 
+\footnote{Simulation code \texttt{1B.R}.}}
 In the trapped miner example, a miner chooses between three doors with only one leading to safety after $2$ hours. The other two doors lead back to the door room after $3$ and $5$ hours respectively.\newline
 \newline
 We are interesting the variance of $Y$, the time it takes to escape the mine. We will build upon Ahmed Ahmedin's solution to EY, where N refers to the total attempts needed to escape and $U_{i}$ refers to the time spent traveling on the $i^{th}$ attempt. 
@@ -68,8 +102,7 @@ We are interesting the variance of $Y$, the time it takes to escape the mine. We
 \end{equation*}
 We know that Var($U_{i}$|N) is independent because the miner's choice of door does not depend of a previous choice. Since we are conditioning this event on there being N attempts, the values of the first N-1 attempts will either be 3 or 5. So the variance of an individual attempt in this case is 1. The variance of the $N^{th}$ attempt is 0 because that attempt always is the same tunnel.
 
-\pagebreak
-\textbf{Problem 2.a}\\
+\subsection*{Problem 2.a}
 For a vector $Q$ of random variables $(Q_1,..Q_n)$ we have:
 \begin{equation*}
 	\begin{aligned}
@@ -114,7 +147,7 @@ Summing up the left sides and the right sides of these 2 equations we get:
 \end{equation*}
 
 
-\textbf{Problem 2.b} 
+\subsection*{Problem 2.b} 
 
 First, just an equation to remind us of what we're actually trying to find here, the correlation between $X$ and $Y$.
 
@@ -226,10 +259,11 @@ Now we have all the ingredients to find the correlation:
 	\end{aligned}
 \end{equation*}
 
-Simulation proves this. 
+Simulation validates this result.\footnote{See \texttt{1B.R}.}
 
-\pagebreak
-\textbf{Problem 3} 
+\subsection*{Problem 3
+\footnote{See \texttt{3.R} for code and the simulation we used to validate this result.}
+} 
 Let $X_i$ denote the state of the machine at time index $i$, where $X_0  
 \sim \Pi$, the stationary distributions of the states. Finally, suppose there are $n$ states, 
 named numerically 1 to $n$. We want to compute
@@ -267,7 +301,7 @@ $$ \text{Cov}(X_{i+j}, X_i) =  \sum_{l=1}^n{ \Bigg[ \pi_l l \cdot \Big[
                               - (EX_i)^2.$$
 
 We can now write code to calculate the correlation of $X_i$ and $X_{i+j}$. The following
-function \texttt{mccor(tm, k)} returns a vector corresponding to 
+function \texttt{mccor(tm, K)} returns a vector corresponding to 
 $\rho(X_i, X_{i+1}) \dots \rho(X_i, X_k)$. 
 
 \lstset{
