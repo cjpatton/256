@@ -30,6 +30,9 @@ mccor <- function(tm, K) {
   # corr = Correlations. 
   corr <- c()
 
+  # Mj = transition matrix at time i+j. 
+  Mj <- tm 
+
   i <- 1
   for(j in 1 : K) {
 
@@ -37,7 +40,7 @@ mccor <- function(tm, K) {
     for (l in 1 : n) {
       inner_sum <- 0
       for (k in 1 : n) {
-        inner_sum <- inner_sum + (k * tm[l,k])
+        inner_sum <- inner_sum + (k * Mj[l,k])
       }
       outer_sum <- outer_sum + (l * Pi[l] * inner_sum)
     }
@@ -46,7 +49,7 @@ mccor <- function(tm, K) {
     numer <- outer_sum - mu^2
 
     corr <- c(corr, c(numer / denom))
-    tm <- tm %*% tm # Next M^j. 
+    Mj <- Mj %*% tm # Next Mj. 
   }
 
   # Result is c(rho(Xi, Xi+1), rho(Xi, Xi+2) ... rho(Xi, Xi+k)). 
