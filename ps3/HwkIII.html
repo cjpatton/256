@@ -1,0 +1,485 @@
+
+<body bgcolor="white"> 
+<h1>Homework III
+</h1>
+
+<h2>
+Due Monday, February 17
+</h2>
+
+<h2>Problem 1:</h2>
+
+<p>
+Consider the tree-search model in Sec. 10.5.5.  (It's also used for
+modeling other things, such as neuron firing.)  Assume the chain is
+positive recurrent.
+</p>
+
+<p> <OL type = "a">
+
+<li> Find closed-form expressions for
+&pi;<sub>i</sub>
+and 
+ET<sub>i0</sub>
+for i = 0,1,2,..., as expressions in the q<sub>j</sub>.
+</li> </p>
+
+<li> Evaluate 
+&pi;<sub>2</sub>
+and 
+ET<sub>20</sub>
+in the case of 0.5 = q<sub>0</sub> = q<sub>1</sub> = ...
+Box your answers!
+</li> </p>
+
+<li> Find the rate of backtracks per unit time, as functions of the
+&pi;<sub>i</sub>.
+</li> </p> 
+
+</OL> </p>
+
+<h2>Problem 2:</h2>
+
+<p>
+(Long prologue, but to make a bad paraphrasing of a famous saying,
+"Those who ignore prologues are doomed." :-) )
+</p>
+
+<p>
+In class we briefly discussed the <i>method of stages</i>, whose
+motivation is to approximate non-Markov processes by Markovian ones.
+</p>
+
+<p>
+Think of the <i>Erlang distribution</i>, Section 5.6.5.  It's the
+distribution of the sum of r independent random variables that have
+exponential distributions with the same value for their &lambda; 
+parameter.  Consider the M/M/1 queue model--single server with 
+exponential distributions for interarrival and service times--but
+modified so that interarrival times have an Erlang distribution with r =
+2. 
+By setting up artificial states, this becomes a Markov chain.  Our state
+space would consist of pairs (i,j), where i is the number of jobs
+currently in the system (including one being served, if any), and j =
+1,2 tells us whether we are in "stage 1" or "stage 2" of the arrival of
+the next job.
+</p>
+
+<p>
+Note carefully that those "stages" are fictional, not physical.
+Presumably we've collected data on interarrival times and found that an
+Erlang distribution with r = 2 provides a good fit, that's all.
+</p>
+
+<p>
+At any rate, we would now have a Markov chain.  We would now solve for
+the &pi; etc., and work as usual.  And of course we could do the same
+kind of thing if service times were Erlang distributed.
+</p>
+
+<p>
+So,
+<i>
+our requirement that distributions in Markov chains be
+exponential can be generalized to Erlang distributions.
+</i>
+</p>
+
+<p>
+Now suppose we have two categories of jobs.  If interarrival and service
+times are exponential (with different &lambda; values for different
+categories, four values in all), we have a Markov chain.  But the above
+reasoning shows that we would also have a Markovian system if the
+interarrival and/or service times had Erlang distributions within each
+category.
+</p>
+
+<p>
+In other words, 
+<i>
+our requirement that distributions in Markov chains be
+exponential can be further generalized to mixtures of Erlang 
+distributions.</i>  (But with the categories being artificial, just like
+the stages above.)
+</p>
+
+<p>
+That's nice, but we can go even further.  To do this, let's first
+establish that
+<i> any constant can be approximated by an Erlang distribution with
+large r.
+</i>
+</p>
+
+<p>
+Here's why.  Let's first introduce a measure of dispersion for a random
+variable Q called the <i>coefficient of variation</i> of Q, defined to
+be the ratio of its standard deviation to its mean.  Intuitively, if that
+coefficient is small, then Q just doesn't vary much.  If coefficient is
+really small, then Q is nearly constant.
+</p>
+
+<p>
+Now consider a set of i.i.d. random variables V<sub>1</sub>,
+..., V<sub>k</sub>, each having mean &mu; and variance
+&sigma;<sup>2</sup>.  Let T be their total, and look at its coefficient
+of variation:
+</p>
+
+<p>
+(n &sigma;<sup>2</sup>)<sup>0.5</sup> / (n &mu;)
+</p>
+
+<p>
+That ratio does go to 0 as k goes to infinity.  So, <i>for large r, 
+Erlang-distributed random variables are approximately contant</i>.
+</p>
+
+<p>
+Moreover, as one student cleverly phrased it in class (who was it?: I
+want to give him Extra Credit), <i>any distribution can be 
+approximated by a mixture of constants</i>.  For instance, we could 
+find the deciles of the given distribution, giving us 10 constants 
+with mixture probabilities 0.1 each.  
+</p>
+
+<p>
+So...finally, here are the problem specs:
+</p>
+
+<p> <OL type = "a">
+
+<li>
+Put this all together to write a function that approximates the
+distribution of a given nonnegative random variable by a mixture of 
+Erlangs.  Your code must be in a file <b>ErlangMix.R</b>, and have 
+call form 
+</p>
+
+<pre>
+erlangmix(r,nmix=NULL,qftn=NULL,const=NULL)
+</pre>
+
+<p>
+where
+</p>
+
+   <UL>
+
+   <li> <b>r</b> is the desired value for the Erlang parameter r
+   (presumed the same for all components)
+   </li> </p>
+
+   <li> <b>nmix</b> is the desired number of components in the mixture;
+   for use only if <b>const</b> is NULL
+   </li> </p>
+
+   <li> <b>qftn</b> is the quantile function for the given
+   distribution, with a single argument <b>q</b> for which the function
+   returns F<sub>X</sub><sup>-1</sup>(q) for a random variable X having
+   the given distribution; must allow vector inputs; for use only if 
+   <b>nmix</b> > 1 and <b>const</b> is NULL </li> </p>
+
+   <li> <b>const</b> is the value of a constant that we wish to
+   approximate; for use only if <b>nmix</b> and <b>qftn</b> are NULL
+   </li> </p>
+
+   </UL>
+
+<p>
+The function is designed to handle not only a mixture but also the
+approximation of a constant random variable.  In the latter case, only a
+single Erlang is used.
+</p>
+
+<p>
+In the mixture case, the code takes the constants in the "mixture of 
+constants" notion mentioned above to be <b>nmix</b> numbers in (0,1) 
+that partition that interval into <b>nmix</b>+1 equal-width subintervals.  
+</p>
+
+<p>
+The return value of the function will be an R list, whose first element
+<b>r</b> is the input parameter <b>r</b>.  The second element, named
+<b>lamb</b>, will consist of the value(s) of &lambda;.  In the 
+constant case, there will be only one such value, and there will be <b
+>nmix</b> of them in the mixture case.  
+</p>
+
+<p>
+Check for error combinations in which an argument is NULL but it
+shouldn't be, or <i>vice versa</i>.  Call <b>stop()</b> with a 
+message if such an error is encountered.
+</p>
+
+<p>
+<b>Example:</b>
+</p>
+
+<pre>
+> test
+function() {
+   # consider the density having the value 2t on (0,1); its quantile
+   # function is the sqrt function
+   qf <- function(q) sqrt(q)
+   erlangmix(500,250,qf)
+}
+> test()
+$r
+[1] 500
+
+$lamb
+  [1] 7921.4898 5601.3391 4573.4742 3960.7449 3542.5979 3233.9347 2994.0417
+  [8] 2800.6696 2640.4966 2504.9950 2388.4190 2286.7371 2197.0260 2117.1072
+ [15] 2045.3199 1980.3724 1921.2435 1867.1130 1817.3144 1771.2990 1728.6108
+...
+[232]  520.0713  518.9540  517.8440  516.7410  515.6451  514.5561 513.4739
+[239]  512.3986  511.3300  510.2680  509.2126  508.1638  507.1214 506.0854
+[246]  505.0557  504.0323  503.0151  502.0040  500.9990 
+</pre>
+
+</li> </p>
+
+<li>
+Write a <b>ggplot2</b> function <b>plottermix()</b>, stored in that 
+same file, with the call form
+</p>
+
+<pre>
+plottermix(ermixobj,plotint)
+</pre>
+
+<p>
+
+whose goal is to assess how well the approximation is working.
+Here <b>ermixobj</b> is an object returned from <b>erlangmix()</b> and 
+<b>plotint</b> is a vector of length 2, giving the interval ("x axis") 
+over which the function is to be plotted.  
+</p>
+
+<p>
+There are lots of ways to do this.  For instance, plugging "function
+plotting ggplot2" into Google yields
+<a href="http://docs.ggplot2.org/current/stat_function.html">this site</a>.
+</p>
+
+<p>
+For each of the distributions below, display a graph that plots the
+given density and its method-of-stages approximation, for two values of
+<b>nmix</b> and two values of <b>r</b>.
+</p>
+
+   <UL>
+
+   <li> U(10,15)
+   </li> </p>
+
+   <li> N(10,4)
+   </li> </p>
+
+   </UL>
+
+</OL> </p>
+
+<h2>Problem 3:</h2>
+
+<p>
+The purpose of this problem is to develop a tool for exploring what
+density functions correspond to various hazard functions.
+</p>
+
+<p> <OL type = "a">
+
+<li> 
+
+<p>
+Write a function <b>htof()</b>, stored in <b>HtoF.R</b>, with call form
+</p>
+
+<pre>
+htof(hftn,t,lower)
+</pre>
+
+<p>
+where:
+</p>
+
+<UL>
+
+<li>
+<b>hftn</b> is the hazard function, conforming to the argument
+<b>f</b> in <b>integrate()</b>
+</li> </p>
+
+<li> <b>t</b> is a vector of values at which the density function is to
+be evaluated
+</li> </p>
+
+<li> <b>lower</b> is as in <b>integrate()</b>
+</li> </p>
+
+</UL>
+
+
+The 
+return value is the vector of the density 
+function values.  
+</li> </p>
+
+<li>
+<p>
+Use your function to plot the densities corresponding to the following
+hazard functions:
+</p>
+
+<UL>
+
+<li> some constant; note that for <b>integrate()</b> the constant function
+with value v must be written as
+</p>
+
+<pre>
+function(u) rep(v,length(u))
+</pre>
+
+<p>
+to make it vectorizable.
+</li> </p>
+
+<li> some IFR hazard function
+</li> </p>
+
+<li> some DFR hazard function
+</li> </p>
+
+<li> some "W-shaped," i.e down, then up, then down, then up  (hint: fit 
+a polynomial) 
+</li> </p>  
+
+</UL>
+
+<p>
+The specifics of the hazard functions in the second, third and fourth cases 
+are up to you.  
+</p>
+</li> </p>
+
+</OL> </p>
+
+<h2>Problem 4:</h2>
+
+<p>
+"I'm at the Old Faithful geyser in Yellowstone National Park.  How long
+will I have to wait for the next eruption?"
+</p>
+
+<p>
+This problem involves the <b>faithful</b> data set, a built-in data set 
+in R.  Type
+</p>
+
+<pre>
+> ?faithful
+</pre>
+
+<p>
+to learn more.  Recall that we saw it earlier, in 
+<a href="http://heather.cs.ucdavis.edu/~matloff/256/Mixtools.pdf">this
+supplement to our book</a>.  Let L denote the random variable measuring
+intereruption time.  (Note:  The sample size here is rather small, so
+we can't expect too much accuracy.)
+</p>
+
+<p> <OL type = "a">
+
+<li> Compute and plot a nonparametric density estimate of f<sub>L</sub>.
+(<i>Nonparametric</i> means we aren't assuming some parametric model,
+say normal or exponential.)  You can read ahead to Chapter 19 if you
+wish, but really it's just a glorified histogram.  The <b>ggplot2</b>
+function <b>geom_density()</b> will give you what you need.
+</li> </p>
+
+<li> Superimpose on the same graph the estimated density computed in the
+EM example.  This gives you a chance to compare nonparametric and
+parametric approaches.
+</li> </p>
+
+<li> Write a function <b>simrenewal()</b>, stored in
+<b>SimRenewal.R</b>, with call form 
+</p>
+
+<pre>
+simrenewal(w,nevents,perwidth)
+</pre>
+
+<p>
+where:
+</p>
+
+   <UL>
+
+   <li> <b>w</b> is a vector of wait times
+   </li> </p> 
+
+   <li> <b>nevents</b>, the number of renewals to simulate
+   </li> </p>
+
+   <li> <b>perwidth</b>, the sampling period width
+   </li> </p>
+
+   </UL>
+
+<p>
+The function will return the residual life values at the observation
+points, defined below.  (Needless to say, your function must be 
+general, not tailored to the Old Faithful application.)
+</p>
+
+<p>
+The function name says it all!  We take the <b>w</b> data, treat it as
+a sample from f<sub>L</sub>, then simulate a renewal process from 
+that distribution.  We'll observe the simulated process at various
+points, which will produce simulated residual lifetimes.
+</p>
+
+<p>
+We'll observe this simulated process at times consisting of all 
+multiples of <b>perwidth</b> (until we go past the end of the simulated
+process).  We want to have a lot of observation points, just as we 
+want to run any simulation for a long time.  So, the larger we set <b>
+nevents</b>, the better.  
+</p>
+
+<p>
+The theory in Section 11.3 of our book is asymptotic, meaning that it
+assumes that at our observation time--e.g. the time we arrive at the 
+bus stop in the bus example--the system has been running for a long time.
+So, our observations at larger multiples of <b>perwidth</b> are more
+informative than the earlier ones; some analysts might even delete the
+earlier ones.  But on the other hand, we want a large "sample," so let's
+use all of our observation data.
+</p>
+
+<p>
+The function <b>simrenewal()</b> returns a sample from f<sub>D</sub>,
+where D is the residual life.
+</p>
+</li> </p> 
+
+<li> Test your function in (c) by generating <b>w</b> from a known
+distribution, U(0,1). Use your function to estimate f<sub>D</sub>, and
+then plot your estimate, together with (11.21), on the same graph for
+comparison.
+</li> </p>
+
+<li> Apply your function in (c) to the Old Faithful data, to get an
+estimate for f<sub>D</sub>.  Plot that estimate and an alternative
+estimate using Eqn. (11.21), on the same graph.  
+</li> </p> 
+
+<li> Using your function in (c), estimate ED for Old Faithful.  Then 
+find an alternate estimate, using the results from the aforementioned 
+EM analysis and Eqn.  (11.31).  Box your answers!
+</li> </p> 
+
+</OL> </p>
