@@ -302,7 +302,7 @@ $$ \text{Cov}(X_{i+j}, X_i) =  \sum_{l=1}^n{ \Bigg[ \pi_l l \cdot \Big[
 
 We can now write code to calculate the correlation of $X_i$ and $X_{i+j}$. The following
 function \texttt{mccor(tm, K)} returns a vector corresponding to 
-$\rho(X_i, X_{i+1}) \dots \rho(X_i, X_k)$. 
+$\rho(X_i, X_{i+1}) \dots \rho(X_i, X_{i+k})$. 
 
 \lstset{
   basicstyle=\small,
