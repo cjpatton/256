@@ -3,10 +3,11 @@
 library(mixtools)
 library(ggplot2)
 
-#4.a
+#4.a ##############################
 p<-ggplot(data.frame(faithful))
 p+geom_density(aes(x=faithful$waiting))
 
+#4.b ##############################
 simulateFromDist <- function(n,p1,m1,s1,m2,s2){
 	k1 <- p1*n #proportion of type 1
 	k2 <- n-k1+1 #proportion of type 2
