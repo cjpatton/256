@@ -59,7 +59,35 @@
 \subsection*{Problem 1.a}
 First, we'll derive $\pi_i$. The definition of the tree searching markov model leads to the 
 following set of balance equations for the long-run state probabilities: 
-$$ \pi_i = \pi_{i-1}q_{i-1} \text{ $\forall i \ge 1$, and } $$
-$$ \pi_0 = \sum_{i=1}^\infty{\pi_i(1-q_i)}.  $$ 
+$$ \pi_i = \pi_{i-1}q_{i-1} = \pi_0 \prod_{j=0}^{i-1}{q_j} \quad \text{ for $i\ge 1$, and } $$
+$$ \pi_0 = \sum_{i=1}^\infty{\pi_i(1-q_i)} \quad \text{ for $i=0$. } $$ 
+This definition for $\pi_0$ is a bit unweildy. We can also think of this quantity as one 
+over the expected recurrance time, as in eq. (10.63) in the book: 
+\begin{equation*}
+  \begin{aligned}
+         \pi_0 &= \frac{1}{E(T_{0,0})} \\ 
+    E(T_{0,0}) &= 1 + \sum_{k \ne 0}{p_{0,k}E(T_{k,0})} \\ 
+               &= 1 + p_{0,1}E(T_{1,0}) \\
+               &= 1 + p_{0,1}(1 + \sum_{k \ne 0}{p_{1,k}E(T_{k,0})}) \\ 
+               &= 1 + p_{0,1}(1 + p_{1,2}E(T_{2,0})) \\
+               &= 1 + p_{0,1}(1 + p_{1,2}(1 + \sum_{k \ne 0}{p_{2,k}E(T_{k,0})})) \\
+               &= 1 + p_{0,1}(1 + p_{1,2}(1 + p_{2,3}E(T_{3,0}))) 
+  \end{aligned}
+\end{equation*}
+and so on. This unravels into a familiar closed form:   
+\begin{equation*}
+  \begin{aligned}
+      E(T_{0,0}) &= 1 + q_0(1 + q_1(1 + q_2(1 + \dots ) \dots ))) \\ 
+                 &= 1 + q_0 + q_0q_1 + q_0q_1q_2 + \dots \\
+                 &= 1 + \sum_{i=0}^\infty{\big[\prod_{j=0}^{i-1}{q_j}\big]}
+  \end{aligned}
+\end{equation*}
+If the model is positive recurrent, then there exists some value $R$ such that
+$$ R = \sum_{i=0}^\infty{\big[\prod_{j=0}^{i-1}{q_j}\big]} < \infty. $$
+Thus, 
+$$ \pi_0 = \frac{1}{1 + R}\text{, and} $$ 
+$$ \pi_i = \frac{\prod_{j=0}^{i-1}{q_j}}{1 + R}. $$
+
+Next, we'll derive $E(T_{i,0})$. 
 
 \end{document}
