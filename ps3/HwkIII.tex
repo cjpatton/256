@@ -79,11 +79,11 @@ and so on. This unravels into a familiar closed form:
   \begin{aligned}
       E(T_{0,0}) &= 1 + q_0(1 + q_1(1 + q_2(1 + \dots ) \dots ))) \\ 
                  &= 1 + q_0 + q_0q_1 + q_0q_1q_2 + \dots \\
-                 &= 1 + \sum_{i=0}^\infty{\big[\prod_{j=0}^{i-1}{q_j}\big]}
+                 &= 1 + \sum_{i=1}^\infty{\big[\prod_{j=0}^{i-1}{q_j}\big]}
   \end{aligned}
 \end{equation*}
 If the model is positive recurrent, then there exists some value $R$ such that
-$$ R = \sum_{i=0}^\infty{\big[\prod_{j=0}^{i-1}{q_j}\big]} < \infty. $$
+$$ R = \sum_{i=1}^\infty{\big[\prod_{j=0}^{i-1}{q_j}\big]} < \infty. $$
 Thus, 
 $$ \pi_i = \frac{\prod_{j=0}^{i-1}{q_j}}{1 + R} \quad \text{ for $i \ge 0$. } $$
 
@@ -94,8 +94,21 @@ Next, $E(T_{i,0})$ follows a similar pattern.
       E(T_{i,0}) &= 1 + \sum_{k \ne 0}{p_{i,k}E(T_{k,0})} \\ 
                  &= 1 + p_{i,i+1}E(T_{j+1,0}) \\
                  &= 1 + q_i + q_iq_{i+1} + q_iq_{i+1}q_{i+2} + \dots \\
-                 &= 1 + \sum_{j=i}^\infty{\Big[ \prod_{k=0}^{j-1}{q_k} \Big]}.
+                 &= 1 + \sum_{j=i}^\infty{\Big[ \prod_{k=i}^{j}{q_k} \Big]}.
   \end{aligned}
 \end{equation*}
+
+
+\subsection*{Problem 1.b}
+If $q_i = 0.5$ for all $i$, then $R$ is a geometric series that indeed converges. 
+$$ \pi_2 = \frac{0.5 \cdot 0.5}{1 + \sum_{i=1}^\infty{0.5^{i-1}}} = 
+           \frac{0.25}{1+2} \approx 0.083. $$
+
+$$ E(T_{2,0}) = 1 + \sum_{j=2}^\infty{0.5^{j-2}} 
+              = 1 + \sum_{j=1}^\infty{0.5^{j-1}} = 1 + 2 = 3. $$
+
+\subsection*{Problem 1.c}
+The rate of backtracking, in terms of the stationary probabilities $\pi_i$, is simply
+$$ \sum_{i=1}^\infty{\pi_i(1 - q_i)}. $$
 
 \end{document}
