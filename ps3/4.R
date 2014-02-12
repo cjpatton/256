@@ -28,4 +28,10 @@ sim_waiting<-simulateFromDist(length(faithful$waiting),0.361,54.6,5.87,80.1,5.87
 data <- rbind( data.frame(type="non-parametrical", lr=faithful$waiting), data.frame(type="parametrical", lr=sim_waiting))
 m <- ggplot(data, aes(x=lr)) 
 m <- m + geom_density(aes(fill=factor(type)), size=2, alpha=.4) 
+
+#save m
+pdf('plot4b.pdf')
 m
+dev.off()
+
+
