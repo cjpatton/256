@@ -38,9 +38,9 @@ func3 = function(x) rep(5,length(x))
 t = (1:100)/20
 plot3 = plothtof(func3,t,0,"5")
 
-func4 = function(x) {(x-1)*(x+1)*(x-2)*(x+2)}
-t = (1:100)/20
-plot4 = plothtof(func4,t,0,"(x-1)(x+1)(x-2)(x+2)")
+func4 = function(x) {(x-1)*(x-.5)*(x-1.5)*(x-2)}
+t = (0:100)/20
+plot4 = plothtof(func4,t,0,"(x-0.5)(x-1)(x-1.5)(x-2)")
 
 
 
