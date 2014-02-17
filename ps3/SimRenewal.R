@@ -150,4 +150,17 @@ plotFaithfulResid <- function(nevents, perwidth){
 #m <- m + geom_density(aes(fill=factor(type)), size=2, alpha=.4) 
 
 
+calcED <- function(nevents, perwidth){
+
+	
+	sam <- simrenewal(faithful$waiting, nevents, perwidth)
+
+	res1 <- mean(sam)
+	sprintf("From SimRenewal() :: ED = %f", res1)
+
+
+
+
+}
+
 

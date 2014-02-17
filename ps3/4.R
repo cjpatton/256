@@ -23,6 +23,8 @@ str(mixout)
 # $ mu        : num [1:2] 54.6 80.1
 # $ sigma     : num [1:2] 5.87 5.87
 
+
+# Is it necessary to simulate this? Can we plot the function directly?
 sim_waiting<-simulateFromDist(length(faithful$waiting),0.361,54.6,5.87,80.1,5.87)
 
 data <- rbind( data.frame(type="non-parametrical", lr=faithful$waiting), data.frame(type="parametrical", lr=sim_waiting))
@@ -34,4 +36,7 @@ pdf('plot4b.pdf')
 m
 dev.off()
 
+#4.f  #####################
 
+EL2 <- ( mixout$sigma[1]^2 * mixout$lambda[1] + mixout$sigma[2]^2 * mixout$lambda[2] ) + (mixout$mu[1]^2 * mixout$lambda[1] + mixout$mu[2]^2 * mixout$lambda[2])
+EL <- mixout$mu[1] * mixout$lambda[1] + mixout$mu[2] * mixout$lambda[2]
