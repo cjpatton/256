@@ -51,7 +51,7 @@
 \author{Olga Prilepova, Christopher Patton, Alexander Rumbaugh, \\ John Chen, Thomas Provan}
 
 \date{\today}
-\title{ECS256 - Homework II}
+\title{ECS256 - Homework III}
 	
 \begin{document}
 \maketitle
@@ -110,6 +110,35 @@ $$ E(T_{2,0}) = 1 + \sum_{j=2}^\infty{0.5^{j-2}}
 \subsection*{Problem 1.c}
 The rate of backtracking, in terms of the stationary probabilities $\pi_i$, is simply
 $$ \sum_{i=1}^\infty{\pi_i(1 - q_i)}. $$
+
+
+\subsection*{Problem 3}
+Given a hazard function, $h(t)$, the density function, $f(t)$, can be found as follows:
+\begin{equation*}
+  \begin{aligned}
+      f(t) = h(t) \cdot e^{-\int_0^t \mathrm{h(s)}\,\mathrm{d}s}
+  \end{aligned}
+\end{equation*}
+We looked at the following hazard functions to explore what their density would look like:
+\begin{equation*}
+  \begin{aligned}
+      h(t) &= 5 \\
+      h(t) &= 2t \\
+      h(t) &= -2t \\
+      h(t) &= (t-1)(t-2)(t-3)(t-4) \\
+  \end{aligned}
+\end{equation*}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.33]{3_constant.png}
+\includegraphics[scale=.33]{3_increasing.png}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.33]{3_decreasing.png}
+\includegraphics[scale=.33]{3_wshape.png}
+\end{figure}
+
 
 
 \subsection*{Problem 4}
