@@ -62,3 +62,92 @@ simrenewal <- function(w, nevents, perwidth){
 	return(resid)
 
 }
+
+
+residUnif <- function(x){
+
+	# 11.21 calculation
+
+	temp <- 1 - punif(x)
+	return(temp / 0.5)
+
+}
+
+
+plotUnifResid <- function(n, nevents, perwidth){
+
+	library(ggplot2)
+	
+	title <- sprintf("Density of Residual Lifetimes for Uniform Distribution")
+
+
+	sam <- simrenewal(runif(n), nevents, perwidth)
+
+	data <- rbind(data.frame(type="range", dat=c(0,1)), data.frame(type="simulation", dat=sam))
+
+	base <- ggplot(data, aes(x = dat))
+
+	#base <- ggplot(data.frame(x = c(0,1)), aes(x))
+
+	base <- base + geom_density(colour = "green") + stat_function(fun = residUnif, colour = "red")	
+
+	plot <- base + ggtitle(title) + xlab("D") + ylab("DENSITY")
+
+	return(plot)
+
+	#ggsave(filename = "test.png", plot= plot)
+
+}
+
+
+residFaithful <- function(x){
+	# Estimate by 11.21
+
+	# fd <- (1 - Fx) / EX
+	# Fx estimate <- ecdf(faithful$waiting)
+	# EX estimate <- mean(faithful$waiting)
+
+	Fx <- ecdf(faithful$waiting)
+
+	
+	temp <- 1 - Fx(x)
+	return(temp / mean(faithful$waiting))
+
+
+
+}
+
+
+plotFaithfulResid <- function(nevents, perwidth){
+
+	library(ggplot2)
+
+	title <- sprintf("Density of Residual Lifetimes for Old Faithful")
+
+	sam <- simrenewal(faithful$waiting, nevents, perwidth)
+
+
+
+	data <- rbind(data.frame(type="simulation", dat=sam))
+
+	base <- ggplot(data, aes(x = dat))
+
+	#base <- ggplot(data.frame(x = c(0,1)), aes(x))
+
+	base <- base + geom_density(colour = "green") + stat_function(fun = residFaithful, colour = "red")	
+
+	plot <- base + ggtitle(title) + xlab("D") + ylab("DENSITY")
+
+	return(plot)
+
+}
+
+#data <- rbind( data.frame(type="simulation", dat=sam))
+
+
+#data <- rbind( data.frame(type="non-parametrical", lr=faithful$waiting), data.frame(type="parametrical", lr=sim_waiting))
+#m <- ggplot(data, aes(x=lr)) 
+#m <- m + geom_density(aes(fill=factor(type)), size=2, alpha=.4) 
+
+
+
