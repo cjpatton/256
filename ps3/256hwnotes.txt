@@ -1,0 +1,40 @@
+Modelling the system as if it is a mixture of two normals, which in this case means there is some probability p that it will draw from one normal, and some probability 1-p that it will draw from the other.
+
+Let's label these normals N1 and N2, and the indicator variable that tells us which normal we picked B.
+
+D is the residual, we're looking for ED
+
+We first need EL, the expected lifetime, and E(L^2)
+
+EL = E(L | B) = { E[N1] w.p. p
+				{ E[N2] w.p. 1-p
+				
+			  =	E[N1] * p + E[N2] * (1-p)
+			  = mu_1 * p + mu_2 * (1-p)
+
+			  
+In this case, our values are p ~= 0.36, mu_1 ~= 54.6, and mu_2 ~= 80.1
+
+We also need E(L^2)... which I am bad at calculating. Hmm... okay, let's see.
+
+Var(L) = E(L^2) - (EL)^2
+
+E(L^2) = Var(L) + (EL)^2
+
+Hm...
+
+Var(L) = E[Var(L|B)] + Var[E(L|B)]
+
+
+Var(L | B) = 	{ sigma_1^2 w.p. p
+				{ sigma_2^2 w.p. 1-p
+				
+				
+Var(L) 	= ( sigma_1^2 * p + sigma_2^2 * (1-p) ) + E(E(L|B)^2) - E(L|B)^2
+
+
+E(L^2)	= ( sigma_1^2 * p + sigma_2^2 * (1-p) ) + E(E(L|B)^2) - E(L|B)^2 + (EL)^2
+
+		= ( sigma_1^2 * p + sigma_2^2 * (1-p) ) + mu_1^2 * p + mu_2^2 * (1-p)
+		
+ED 	= 	E(L^2) / (2EL)
