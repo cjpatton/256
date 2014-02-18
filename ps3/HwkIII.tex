@@ -121,7 +121,8 @@ The rate of backtracking, in terms of the stationary probabilities $\pi_i$, is s
 $$ \sum_{i=1}^\infty{\pi_i(1 - q_i)}. $$
 
 
-\subsection*{Problem 2.a}
+\pagebreak
+\subsection*{Problem 2.a\footnote{See \texttt{ErlangMix.R}.}}
     In this problem, we are given the task of generating a method-of-stages approximation of a distribution, given its quantile function.  To accomplish the approximation, we seek to combine a set of erlang distributions and receive the approximation as the sum of the erlang distributions.
 
 \subsection*{Problem 2.b}
@@ -141,12 +142,14 @@ Here, we explored the effect of different values of r and nmix on the approximat
 
 \begin{figure}[H]
 \centering
-\newpage
 \Large{For a uniform distribution with minimum = 10, maximum = 15:}\\
 \includegraphics[scale=.27]{unifdist_10_15_50_10.png}
 \includegraphics[scale=.27]{unifdist_10_15_200_10.png}\\
 \includegraphics[scale=.27]{unifdist_10_15_50_40.png}
 \includegraphics[scale=.27]{unifdist_10_15_200_40.png}\\
+\end{figure}
+\begin{figure}[H]
+\centering
 \includegraphics[scale=.54]{unifdist_10_15_800_60.png}
 \end{figure}
 
@@ -159,6 +162,9 @@ Here, we explored the effect of different values of r and nmix on the approximat
 \includegraphics[scale=.27]{normdist_10_4_100_10.png}\\
 \includegraphics[scale=.27]{normdist_10_4_10_30.png}
 \includegraphics[scale=.27]{normdist_10_4_100_30.png}\\
+\end{figure}
+\begin{figure}[H]
+\centering
 \includegraphics[scale=.54]{normdist_10_4_300_90.png}
 \end{figure}
 
@@ -197,14 +203,13 @@ We looked at the following hazard functions to explore what their density would 
 \end{figure}
 (Plots generated with \texttt{3.R}). 
 
-
+\pagebreak
 \subsection*{Problem 4.a-b}
 
 See \texttt{4.R} for generating these plots. 
 \begin{figure}[h]
  \includegraphics[scale=0.5]{plot4b.pdf}
 \end{figure}
-\pagebreak
 
 \subsection*{4.f}
 
