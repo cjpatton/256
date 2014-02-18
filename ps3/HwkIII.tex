@@ -111,10 +111,10 @@ Next, $E(T_{i,0})$ follows a similar pattern.
 \subsection*{Problem 1.b}
 If $q_i = 0.5$ for all $i$, then $R$ is a geometric series that indeed converges. 
 $$ \pi_2 = \frac{0.5 \cdot 0.5}{1 + \sum_{i=1}^\infty{0.5^{i-1}}} = 
-           \frac{0.25}{1+2} \approx 0.083. $$
+           \frac{0.25}{1+2} \approx \fbox {\parbox{0.33in}{0.083.}}$$
 
 $$ E(T_{2,0}) = 1 + \sum_{j=2}^\infty{0.5^{j-2}} 
-              = 1 + \sum_{j=1}^\infty{0.5^{j-1}} = 1 + 2 = 3. $$
+              = 1 + \sum_{j=1}^\infty{0.5^{j-1}} = 1 + 2 = \fbox{\parbox{0.12in}{3.}} $$
 
 \subsection*{Problem 1.c}
 The rate of backtracking, in terms of the stationary probabilities $\pi_i$, is simply
@@ -162,8 +162,6 @@ Here, we explored the effect of different values of r and nmix on the approximat
 \includegraphics[scale=.54]{normdist_10_4_300_90.png}
 \end{figure}
 
-\newpage
-
 The plots show that increasing textbf{r} reduces the magnitude of the error of our approximation, while textbf{nmix} controls the resolution of the approximation.  By increasing both, we can get an increasingly accurate approximation of the given distribution.
 
 \subsection*{Problem 3.a}
@@ -208,6 +206,62 @@ See \texttt{4.R} for generating these plots.
 \end{figure}
 \pagebreak
 
+\subsection*{4.f}
+
+Creating the estimate using the function is simple. Our function outputs a sample of D, so to get an estimate of ED we simply take the mean of the sample outputted by our function. Doing this for simrenewal(10000, 20) gets us an estimated ED of [\textbf{BOX THIS ANSWER} 37.247 ].
+
+The alternate estimate using Eq 11.31 is more complicated, and requires some derivation. Eq 11.31 is the following.
+
+\begin{equation}
+	ED = \frac{E(L^2)}{2EL}
+\end{equation}
+
+Where L is a random variable representing the lifetime. Now, we need to calculate $EL$ and $E(L^2)$, which we will do using the results of the EM analysis. The results from EM give us a mixture distribution of two normals, where it selects from normal $N_1(\mu_1, \sigma_1)$ with probability $p$ and $N_2(\mu_2, \sigma_2)$ with probability $p-1$. First, $EL$, using the law of total expectation. Here, we will use an indicator variable B, which will indicate which normal our mixture selected. So we'll say it's 1 with probability $p$, and 2 with probability $1-p$.
+
+\begin{equation}
+\begin{aligned}
+	EL &= E(L | B) &=  	\begin{cases}
+					E(N_1),  w.p. \; p \\
+					E(N_2),  w.p. \;1-p
+				\end{cases}  \\
+	&&= E(N_1) * p + E(N_2) \\
+	&&= mu_1 * p + mu_2 * p
+\end{aligned}
+\end{equation}
+
+Since all of those values are parameters returned by the EM analysis, we're now done with $EL$. To find $E(L^2)$, we'll work from the variance of L using the rearrangement of (3.31) from the book
+
+\begin{equation}
+	E(L^2) = Var(L) + (EL)^2
+\end{equation}
+
+We already have $EL$ from earlier, so we just need the variance of L, which we'll do using the law of total variance with the same indicator variable B. To do this, we first need $E(L|B)$, which we already have, and $Var(L|B)$, which is quite similar to $E(L|B)$
+
+\begin{equation}
+\begin{aligned}
+	Var(L | B) &=  	\begin{cases}
+					Var(N_1),  w.p. \; p \\
+					Var(N_2),  w.p. \;1-p
+				\end{cases}  \\
+		&=		\begin{cases}
+					\sigma_1^2,  w.p. \; p \\
+					\sigma_2^2,  w.p. \;1-p
+				\end{cases}  \\
+\end{aligned}
+\end{equation}
+
+Now we can continue with the law of total variance, and substitute into equation 4.3 from earlier.
+
+\begin{equation}
+\begin{aligned}
+	E(L^2) &=  E[Var(L | B)] + Var[E(L|B)] + EL^2 \\
+		&= \sigma_1^2 * p + \sigma_2^2 * (1-p) + E(E(L|B)^2) -  E(L|B)^2 + EL^2 \\
+		&= \sigma_1^2 * p + \sigma_2^2 * (1-p) + mu_1^2 * p + mu_2^2 * (1-p) -  EL^2 + EL^2 \\
+		&= \sigma_1^2 * p + \sigma_2^2 * (1-p) + mu_1^2 * p + mu_2^2 * (1-p)
+\end{aligned}
+\end{equation}
+
+Now we have $E(L^2)$ in the form of the results of the EM analysis, and we can finally calculate an ED estimate using eq (11.31), which with the paramters returned from EM analysis gave us [\textbf{BOX THIS ANSWER} 36.747], a reasonably close estimate to our simulations estimate.
 
 
 \end{document}
