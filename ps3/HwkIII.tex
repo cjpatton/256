@@ -211,7 +211,20 @@ See \texttt{4.R} for generating these plots.
  \includegraphics[scale=0.5]{figures/plot4b.pdf}
 \end{figure}
 
-\subsection*{4.f}
+\subsection*{Problem 4.c}
+\lstinputlisting{SimRenewal.R}
+
+\pagebreak
+\subsection*{Problem 4.d-e}
+In the following plots, the red line results from eq. (11.21) and the green line
+is the simulated estimate. 
+\begin{figure}[H]
+\centering
+  \includegraphics[scale=0.5]{figures/4d.png}
+  \includegraphics[scale=0.5]{figures/4e.png}
+\end{figure}
+
+\subsection*{Problem 4.f}
 
 Creating the estimate using the function is simple. Our function outputs a sample of D, so to get an estimate of ED we simply take the mean of the sample outputted by our function. Doing this for simrenewal(10000, 20) gets us an estimated ED of \fbox{\parbox{0.42in}{37.247.}}
 
