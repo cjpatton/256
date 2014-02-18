@@ -95,21 +95,24 @@ normplot <- function(mean=10, sd=4, r=10, nmix=10, plotint=c(0,20)) {
 #------------------------------------------------------------------------------------------#
 
 # UNIFORM DISTRIBUTION(10,15)
-plotint = c(5,20);
-unifplot(min=10, max=15, r=8, nmix=5, plotint)
-unifplot(min=10, max=15, r=50, nmix=10, plotint)
-unifplot(min=10, max=15, r=50, nmix=40, plotint)
-unifplot(min=10, max=15, r=200, nmix=10, plotint)
-unifplot(min=10, max=15, r=200, nmix=40, plotint)
-unifplot(min=10, max=15, r=800, nmix=60, plotint)
-
+testUnif <- function(){
+	plotint = c(5,20);
+	unifplot(min=10, max=15, r=8, nmix=5, plotint)
+	unifplot(min=10, max=15, r=50, nmix=10, plotint)
+	unifplot(min=10, max=15, r=50, nmix=40, plotint)
+	unifplot(min=10, max=15, r=200, nmix=10, plotint)
+	unifplot(min=10, max=15, r=200, nmix=40, plotint)
+	unifplot(min=10, max=15, r=800, nmix=60, plotint)
+}
 
 #------------------------------------------------------------------------------------------#
 # NORMAL DISTRIBUTION(10,4)
-plotint = c(0,20);
-normplot(mean=10, sd=4, r=10, nmix=4, plotint)
-normplot(mean=10, sd=4, r=10, nmix=10, plotint)
-normplot(mean=10, sd=4, r=10, nmix=30, plotint)
-normplot(mean=10, sd=4, r=100, nmix=10, plotint)
-normplot(mean=10, sd=4, r=100, nmix=30, plotint)
-normplot(mean=10, sd=4, r=300, nmix=90, plotint)
+testNorm <- function(){
+	plotint = c(0,20);
+	normplot(mean=10, sd=4, r=10, nmix=4, plotint)
+	normplot(mean=10, sd=4, r=10, nmix=10, plotint)
+	normplot(mean=10, sd=4, r=10, nmix=30, plotint)
+	normplot(mean=10, sd=4, r=100, nmix=10, plotint)
+	normplot(mean=10, sd=4, r=100, nmix=30, plotint)
+	normplot(mean=10, sd=4, r=300, nmix=90, plotint)
+}
