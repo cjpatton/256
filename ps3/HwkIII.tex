@@ -69,12 +69,13 @@ First, we'll derive $\pi_i$. The definition of the tree searching markov model l
 following set of balance equations for the long-run state probabilities: 
 $$ \pi_i = \pi_{i-1}q_{i-1} = \pi_0 \prod_{j=0}^{i-1}{q_j} \quad \text{ for $i\ge 1$, and } $$
 $$ \pi_0 = \sum_{i=1}^\infty{\pi_i(1-q_i)} \quad \text{ for $i=0$. } $$ 
-This definition for $\pi_0$ is a bit unweildy. We can also think of this quantity as one 
-over the expected recurrance time, as in eq. (10.63) in the book: 
+This definition for $\pi_0$ is a bit unweildy. Since the chain is positive recurrent, we can 
+also think of this quantity as one over the expected recurrance time, as in eq. (10.63) in 
+the book: 
 \begin{equation*}
   \begin{aligned}
-         \pi_0 &= \frac{1}{E(T_{0,0})} \\ 
-    E(T_{0,0}) &= 1 + \sum_{k \ne 0}{p_{0,k}E(T_{k,0})} \\ 
+         \pi_0 &= \frac{1}{E(T_{0,0})} \\  
+    E(T_{0,0}) &= 1 + \sum_{k \ne 0}{p_{0,k}E(T_{k,0})} \quad \text{ By eq. (10.65)} \\
                &= 1 + p_{0,1}E(T_{1,0}) \\
                &= 1 + p_{0,1}(1 + \sum_{k \ne 0}{p_{1,k}E(T_{k,0})}) \\ 
                &= 1 + p_{0,1}(1 + p_{1,2}E(T_{2,0})) \\
