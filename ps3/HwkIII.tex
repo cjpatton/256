@@ -111,10 +111,10 @@ Next, $E(T_{i,0})$ follows a similar pattern.
 \subsection*{Problem 1.b}
 If $q_i = 0.5$ for all $i$, then $R$ is a geometric series that indeed converges. 
 $$ \pi_2 = \frac{0.5 \cdot 0.5}{1 + \sum_{i=1}^\infty{0.5^{i-1}}} = 
-           \frac{0.25}{1+2} \approx 0.083. $$
+           \frac{0.25}{1+2} \approx \fbox {\parbox{0.33in}{0.083.}}$$
 
 $$ E(T_{2,0}) = 1 + \sum_{j=2}^\infty{0.5^{j-2}} 
-              = 1 + \sum_{j=1}^\infty{0.5^{j-1}} = 1 + 2 = 3. $$
+              = 1 + \sum_{j=1}^\infty{0.5^{j-1}} = 1 + 2 = \fbox{\parbox{0.12in}{3.}} $$
 
 \subsection*{Problem 1.c}
 The rate of backtracking, in terms of the stationary probabilities $\pi_i$, is simply
@@ -162,9 +162,7 @@ Here, we explored the effect of different values of r and nmix on the approximat
 \includegraphics[scale=.54]{normdist_10_4_300_90.png}
 \end{figure}
 
-\newpage
-
-As can be seen, as textbf{r} modifies the magnitude of each component within the approximation while textbf{nmix} controls the resolution of the approximation.  By increasing both, we can get an increasingly accurate approximation of the given distribution.
+The plots show that increasing textbf{r} reduces the magnitude of the error of our approximation, while textbf{nmix} controls the resolution of the approximation.  By increasing both, we can get an increasingly accurate approximation of the given distribution.
 
 \subsection*{Problem 3.a}
 See \texttt{HtoF.R}. 
