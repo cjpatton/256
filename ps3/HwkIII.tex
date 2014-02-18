@@ -47,6 +47,14 @@
 
 \newcounter{foot}
 \setcounter{foot}{1}
+\lstset{
+  basicstyle=\small,
+  stringstyle=\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1, 
+  numbersep=5pt,
+  language=R }
 
 \author{Olga Prilepova, Christopher Patton, Alexander Rumbaugh, \\ John Chen, Thomas Provan}
 
@@ -149,7 +157,12 @@ Here, we explored the effect of different values of r and nmix on the approximat
 
 \newpage
 
-\subsection*{Problem 3}
+\subsection*{Problem 3.a}
+See \texttt{HtoF.R}. 
+\lstinputlisting{HtoF.R}
+
+
+\subsection*{Problem 3.b}
 Given a hazard function, $h(t)$, the density function, $f(t)$, can be found as follows:
 \begin{equation*}
   \begin{aligned}
@@ -175,7 +188,7 @@ We looked at the following hazard functions to explore what their density would 
 \includegraphics[scale=.33]{3_decreasing.png}
 \includegraphics[scale=.33]{3_wshape.png}
 \end{figure}
-
+(Plots generated with \texttt{3.R}). 
 
 
 \subsection*{Problem 4}
@@ -189,14 +202,7 @@ We looked at the following hazard functions to explore what their density would 
 \pagebreak
 
 \subsection*{Appendix}
-\lstset{
-  basicstyle=\small,
-  stringstyle=\ttfamily,
-  numbers=left,
-  numberstyle=\tiny,
-  stepnumber=1, 
-  numbersep=5pt,
-  language=R }
+
 {Problem 4}
 \lstinputlisting{4.R}
 
