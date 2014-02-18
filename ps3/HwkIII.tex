@@ -121,19 +121,22 @@ $$ \sum_{i=1}^\infty{\pi_i(1 - q_i)}. $$
 
 
 \subsection*{Problem 2.a}
-In this problem, we are given the task of generating a method-of-stages approximation of a distribution, given its quantile function.  To accomplish the approximation, we seek to combine a set of erlang distributions and receive the approximation as the sum of the erlang distributions.
+    In this problem, we are given the task of generating a method-of-stages approximation of a distribution, given its quantile function.  To accomplish the approximation, we seek to combine a set of erlang distributions and receive the approximation as the sum of the erlang distributions.
 
 \subsection*{Problem 2.b}
 
-Using the \textbf{ermixobj} object generated in Problem 2.a, we are able to generate a set of \textbf{nmix} erlang distributions with
-parameters given as:
-  Shape = \textbf{r}
-  Rate = \textbf{lamb}
+    Using the \textbf{ermixobj} object generated in Problem 2.a, we are able to generate a set of \textbf{nmix} erlang distributions with
+parameters given as:\\
+\begin{center}
+\large{
+Shape = \textbf{r}\\
+Rate = \textbf{lamb}\\
+}
+\end{center}
   
-The combination of all nmix erlang distributions yields our method-of-stages approximation of the quantile function
-fed into erlangmix() in Problem 2.a.
+The combination of all nmix erlang distributions yields our method-of-stages approximation of the quantile function fed into erlangmix() in Problem 2.a.\\
 
-Here, we explored the effect of different values of r and nmix on the approximation.
+Here, we explored the effect of different values of r and nmix on the approximation.\\
 
 \begin{figure}[H]
 \centering
@@ -158,7 +161,7 @@ Here, we explored the effect of different values of r and nmix on the approximat
 \includegraphics[scale=.54]{normdist_10_4_300_90.png}
 \end{figure}
 
-As can be seen, as r 
+As can be seen, as textbf{r} modifies the magnitude of each component within the approximation while textbf{nmix} controls the resolution of the approximation.  By increasing both, we can get an increasingly accurate approximation of the given distribution.
 
 \newpage
 
