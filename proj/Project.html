@@ -1,0 +1,348 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"></head><body bgcolor="white"> 
+<h1>Project:  "Bias, Variance and Parsimony in Regression Analysis"
+</h1>
+
+<h2>
+Important Note:
+</h2>
+
+<p>
+</p><p>
+I plan to hold most of the interactive grading during March 11-14,
+including during class time.  I can schedule some on March 17 if need
+be, but do not want to extend into the finals period.
+</p>
+
+<p>
+Grading sessions will last 40 minutes per group.  This includes a
+5-minute presentation for each group member  on some aspect of your 
+report.  (The presentations collectively need not cover your entire
+report.)  The remainder of the time will be used in the manner of an
+ordinary interactive grading session, with my asking questions on both
+the report and the general course material in the last 3-4 weeks of the
+course.
+</p>
+
+<p>
+Due date is March 10, with the same packaging rules etc. as for regular
+homework assignments.
+</p>
+
+<h2>Problem 1:</h2>
+
+<p>
+Here you will explore the bias of an approximate regression model.
+</p>
+
+<p>
+Suppose that, unknown to the modeler, X has a U(0,1) distribution and
+m<sub>X</sub>(t) = t<sup>0.75</sup>, t in (0,1).  The modeler,
+eyeballing a scatter plot of the sample data, decides to model
+m<sub>X</sub> as a straight line through the origin, i.e.
+m<sub>X</sub>(t) = &#946; t for some scalar &#946; (to be estimated 
+from the data).
+</p>
+
+<p>
+Denote the estimated regression function by mh<sub>X</sub> ("h" for
+"hat").  Find the asymptotic bias at t = 0.5.  An analytical answer is
+required, not simulation (though you may wish to simulate as a check on
+your answer).
+</p>
+
+<p>
+Hint:  Think about what the estimated &#946; converges to as the 
+sample size n goes to infinity.  (Mathematically, it does not follow 
+from U<sub>n</sub> &#8594; c that EU<sub>n</sub> &#8594; c, but don't 
+worry about this.) 
+</p>
+
+<p>
+If you don't use the hint (there are other ways to do the problem), you
+must justify your solution.
+</p>
+
+<h2>Problem 2:</h2>
+
+<p>
+<b>Prologue:</b>
+</p>
+
+<p>
+As stated in class and in our book, one of the most important goals in
+regression analysis is <i>parsimony</i>, meaning the development of a 
+model with a relatively small number of predictors.  The term <i>dimension 
+reduction</i> is often used more or less synonymously.  A related 
+term is <i>model selection</i>.
+</p>
+
+<p>
+Note carefully that there is no real "solution" available to this
+problem, though there are many different approaches in common use today.
+Here you will explore a "new" approach, basically a mini-research
+project.  (I say "new" in the sense that I haven't seen it described in
+books, research journals and the like, but I would guess that some
+people use it informally.)
+</p>
+
+<p>
+By far the most common approach to model selection is to use
+significance testing, as discussed in Section 23.15.3.1 of our book.  As
+is usually the case with testing, we especially run into problems in
+large data sets, where "everything is significant."  With a large enough
+data set, significance testing doesn't reduce the number of
+predictors in our model at all.
+</p>
+
+<p>
+It is thus desirable to have a model selection method that yields
+parsimony no matter how large the data is.  It would choose a model that
+captures <i>almost</i> all the predictive ability of the full model,
+even if n is really large (in contrast to significance testing).
+That is what we will do here.  Specifically, our approach will be this:
+</p>
+
+<blockquote>
+
+<p>
+Choose a prediction accuracy criterion (PAC) and a proportion k, small
+enough so that 1-k fits your definition of "almost."
+</p>
+
+<p>
+Then, starting with the full model (i.e. the one that uses all available
+predictor variables), delete predictors one at a time as long as the PAC
+doesn't deteriorate much.  (If it actually improves, which could happen,
+then all the better.)
+</p>
+
+<p>
+Some PACs are such that large values are more desirable
+(e.g. adjusted R<sup>2</sup>), while others are the opposite (e.g. 
+AIC).  In the former case, delete the variable if the PAC after 
+deletion is at least 1-k of the PAC before deletion; in the latter 
+case, delete if the new PAC is less than 1+k of the old one.  
+</p>
+
+<p>
+So that the procedure can also work reasonably well in smaller samples
+(or large samples with many predictors), the PAC should be chosen so
+that it incorporates some kind of protection against overfitting.
+</p>
+
+</blockquote>
+
+<p>
+Note that this is also a bias-vs.-variance issue.  Generally, the
+beta-hat values in the submodel will have lower standard errors than in
+the full model, and thus so will our predicted values in new cases.
+However, omission of predictors results in some bias in those values.
+You won't be asked to address this in your report, but you should think
+about it.
+</p>
+
+<p>
+<b>
+Problem specs:
+</b>
+</p>
+
+<p> </p><ol type="a">
+
+<li>
+Write a function <b>prsm()</b>, stored in a file <b>Parsimony.R</b>,
+with the following call form:
+<p></p>
+
+<pre>prsm(y,x,k=0.01,predacc=ar2,crit=NULL,printdel=F) 
+</pre>
+
+<p>
+with arguments as follows:
+</p>
+
+<ul>
+
+<li> <b>y:</b> The vector of response values in the data.
+</li> <p></p>
+
+<li> <b>x:</b> The matrix of predictor values.
+</li> <p></p> 
+
+<li> <b>k:</b> The "almost" measure, discussed above.
+</li> <p></p> 
+
+<li> <b>predacc:</b> The PAC function, with arguments <b>y</b> and
+<b>x</b>.  (See description of <b>ar2</b> below.)
+</li> <p></p>
+
+<li> <b>crit:</b> Either "max" or "min", depending on whether good
+values of the PAC are large or small.
+</li> <p></p>
+
+<li> <b>printdel:</b> If TRUE, gives a "progress report" as the
+computation proceeds.  Each time a predictor is deleted, the new value
+of the PAC is printed out, along with the name of the variable.
+</li> <p></p> 
+
+</ul>
+
+<p>
+Your file <b>Parsimony.R</b> will also contain functions <b>ar2()</b> 
+and <b>aiclogit()</b>, usable as the actual parameter for the formal
+parameter <b>predacc</b> in <b>prsm()</b>.  The <b>ar2()</b> function
+calls <b>lm()</b> and then calls <b>summary()</b>, and returns the 
+adjusted R<sup>2</sup> value.  In the case of <b>aiclogit</b>,
+<b>glm()</b> and <b>summary()</b> are called for the logistic model, and
+the AIC value is returned.
+</p> 
+
+<p>
+<b>Note:</b>  The computations can be quite lengthy.  For Extra Credit,
+give the user the option of doing them in parallel, using the "Snow"
+portion of R's <b>parallel</b> package.  Here you would add an argument
+<b>cls=NULL</b> for the cluster (so parallel computation is optional,
+and your code can still be run in Yingkang's tests).  It's not hard,
+even if you've never done any parallel programming; see Chapter 1
+in the <a href="http://heather.cs.ucdavis.edu/paralleldatasci.pdf">
+draft first half of my forthcoming book</a>.   Make sure your parallel
+operation gives the same answers as the serial one!
+</p>
+
+<b>Example:</b>
+
+<p>
+Pima dataset from the 
+<a href="https://archive.ics.uci.edu/ml/index.html">UCI Machine 
+Learning Repository</a>.  </p>
+</li> <p></p> 
+
+<pre>&gt; prsm(pm[,9],pm[,1:8],predacc=aiclogit,printdel=T)
+full outcome =  741.4454 
+deleted  Thick 
+new outcome =  739.4534 
+deleted  Insul 
+new outcome =  739.4617 
+deleted  Age 
+new outcome =  740.5596 
+deleted  BP 
+new outcome =  744.3059 
+[1] 1 2 6 7
+</pre>
+
+<p>
+In the end, the "recommended" predictor set consists of NPreg, Gluc, BMI
+and Genet.  Note that it is not quite as good as full predictor set,
+though the difference is tiny and subject to sampling error.
+</p>
+
+<li> Whenever one develops a new method, one should first try it 
+on simulated data, to see how well the method does in known settings.
+You'll do that in this part.
+<p></p>
+
+<p>
+Let X<sub>1</sub>,...,X<sub>10</sub> be i.i.d. U(0,1), with
+</p>
+
+<p>
+m<sub>X</sub>(t) = 
+t<sub>1</sub> +
+t<sub>2</sub> +
+t<sub>3</sub> +
+0.1 t<sub>4</sub> +
+0.01 t<sub>5</sub>
+</p>
+
+<p>
+and with the distribution of Y given X being U(m-1,m+1), where m means
+m<sub>X</sub>(t).
+</p>
+
+<p>
+The user has a sample of size n from this population, so for example the
+matrix <b>x</b> has n rows and 10 (not 5) columns.  Remember, the 
+user doesn't know the true distributions; he/she just applies an 
+ordinary linear regression model.  
+</p>
+
+<p>
+Run simulations for n = 100, 1000, 10000, 100000, with 3 runs for
+each n (i.e. a total of 12 runs).  In each case, determine what 
+predictor set <b>prsm()</b> chooses for k = 0.01 and 0.05.  Also determine
+what predictor set would be chosen if the analyst were to run the full
+model and select any predictor that is "significant" at the 5% level of
+less.
+</p>
+
+<p>
+<b>
+IN YOUR REPORT, PRESENT YOUR RESULTS IN TABULAR FORM.
+</b>
+</p>
+
+</li> <p></p>
+
+<li> Try your function on real data sets, of your choice, in all
+combinations of the following criteria:
+<p></p>
+
+<ul>
+
+<li> small n (&lt; 1000) vs. large n (&gt; 5000)
+</li> <p></p>
+
+<li> small p (&lt; 10) vs. large p (&gt; 15)
+</li> <p></p>
+
+<li> continuous (or at least ordinal) Y vs. 0-1 Y (linear for the
+first, logistic for the second)
+</li> <p></p> 
+
+</ul>
+
+<p>
+That's a total of 8 distinct data sets.  As in part (b) above, compare k
+= 0.01, k = 0.05 and the significance testing approach,
+<b>
+PRESENTING YOUR RESULTS IN TABULAR FORM.
+</b>
+</p>
+
+<p>
+Note:  With some data sets, say time series, the assumption that the 
+Y<sub>i</sub> are independent will fail.  Note this in your report, but
+do the analysis anyway.  (In various senses, the violation of the
+assumption may not be too bad.)
+</p>
+
+<p>
+<b>You must either state where the data sets are on the Web, or provide
+them to me.
+</b>
+</p>
+
+</li> <p></p>
+
+<li> Another class of possible PACs involve the "leaving
+one out" method, a form of cross-validation.  For i = 1,...,n, we
+temporarily delete observation i from our sample, fit our model to the
+remaining n-1 cases, and then predict Y<sub>i</sub>.  Our PAC 
+value is the overall accuracy of those predictions.  In the case in
+which Y = 0 or 1, we predict 1 if the estimated regression function 
+is &gt; 0.5, and predict 0 otherwise.  Our PAC value is the proportion of
+correct classifications.
+<p></p> 
+
+<p> Write the PAC for this 0-1 case, in a function named
+<b>leave1out01()</b>, stored in <b>Leave.R</b>.  (You're pretending 
+to develop a user-written function not included with the 
+<b>Parsimony.R</b> package.)  Test it on the same Pima example as 
+above.  
+</p></li> <p></p> 
+
+</ol> <p></p>
+
+
+</body></html>
