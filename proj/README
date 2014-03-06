@@ -3,7 +3,7 @@ Data sets, brought to you by
 pima.csv - Instances of diabetes in the Pima Indians. (https://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/)
   p=9, n=769
 
-adult.csv - Census data. (https://archive.ics.uci.edu/ml/datasets/Adult)
+census.csv - Census data. (https://archive.ics.uci.edu/ml/datasets/Adult)
   p=14*, n=32561 
 
 * Columns in this table have string values. These should be transformed to binary classifiers: e.g.,
