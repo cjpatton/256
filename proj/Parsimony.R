@@ -9,37 +9,42 @@
 # return the some error metric. (Calls lm().) 
 ar2 <- function(y, x, cols)
 {
+  a <- summary(lm(y ~ ., data=subset(x, select=cols)))
+  return(a$adj.r.squared)
 }
 
 # Same as ar2(), but logistic linear regression. 'y' is an indicator 
 # random variable (in {0,1}). (Calls glm().)
 aiclogit <- function(y, x, cols)
 {
+  # TODO 
 }
 
 # Reduce the parsimony of a data set for predicting the response variable 'y'. 
 # 'x' is an NxR matrix, where N is the number of samples and R the number of 
 # attributes per sample. Return a vector of column names. 
-prsm <- function(y, x, k=0.1, predacc=ar2, crit=NULL, printdel=F) 
+#  TODO How to prevent over fitting when then the data set is small? 
+#  TODO prediction accuracy criterion for aiclogit().
+prsm <- function(y, x, k=0.1, predacc=ar2, crit="max", printdel=F) 
 {
-  cols <- c()
+  orig_cols <- colnames(x)
+  cols <- orig_cols 
+  pac <- predacc(y, x, cols) 
 
-  # So I'm thinking we proceed in this way. We're gonna try various subsets
-  # of the column names until we fine one which has the lowest regression 
-  # error. Matloff tells us exactly how to proceed. 
-  # cols <- c(1 .. R) // all of the columns initially. 
-  # pac <- predacc(y, x, cols)
-  # for i <- 1 to R do
-  #   cols_new <- c(1 .. R) - c(i) // This psuedocode is supposed to mean "all 
-  #                                // columns except i"
-  #   pac_new <- predacc(y, x, cols_temp) 
-  #   if (pac - pac_new < 1 - k) 
-  #     then cols <- cols_new 
-  #          pac <- pac_new
-  #   fi
-  # done 
-  # I think if we're doing logit regression, we need to maximize pac instead of 
-  # minimize it. (Does anyone get this part.) 
-
+  for (col in orig_cols) 
+  {
+    new_cols <- setdiff(cols, col)
+    new_pac <- predacc(y, x, new_cols)        
+    if (crit == "max" & new_pac > pac | pac - new_pac < k) # ar2() case 
+    {
+      cols <- new_cols
+      pac <- new_pac
+    }
+  }
   return (cols)
 }
+
+# Testing, testing ... 
+df <- read.csv("pima.csv", header=T)
+parsimony <- prsm(df$age, subset(df, select=-c(age)), k=0.01)
+print(parsimony)
