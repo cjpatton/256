@@ -17,7 +17,9 @@ ar2 <- function(y, x, cols)
 # random variable (in {0,1}). (Calls glm().)
 aiclogit <- function(y, x, cols)
 {
-  # TODO 
+  a = (glm(formula = y ~ ., data=subset(x,select=cols))
+  return (a$aic)
+  
 }
 
 # Reduce the parsimony of a data set for predicting the response variable 'y'. 
