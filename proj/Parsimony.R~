@@ -17,7 +17,7 @@ ar2 <- function(y, x, cols)
 # random variable (in {0,1}). (Calls glm().)
 aiclogit <- function(y, x, cols)
 {
-  a = (glm(formula = y ~ ., data=subset(x,select=cols), family = binomial)
+  a = (glm(formula = y ~ ., data=subset(x,select=cols))
   return (a$aic)
   
 }
