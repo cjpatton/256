@@ -6,6 +6,10 @@ pima.csv - Instances of diabetes in the Pima Indians. (https://archive.ics.uci.e
 census.csv - Census data. (https://archive.ics.uci.edu/ml/datasets/Adult)
   p=14*, n=32561 
 
+cadata.csv - California Housing Data (http://lib.stat.cmu.edu/datasets/houses.zip)
+
+  p = 8, n=20640
+  
 * Columns in this table have string values. These should be transformed to binary classifiers: e.g.,
   occupation : {Teacher, GarbageMan, ... } => occupation_Teacher, occupation_GarbageMan, ... with 
   1 or 0 in the column. The dimension will then explode. 
