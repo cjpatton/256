@@ -30,7 +30,10 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
   orig_cols <- colnames(x)
   cols <- orig_cols 
   pac <- predacc(y, x, cols)
-  cat("full outcome = ", pac, "\n")
+  if (printdel) 
+  {
+    cat("full outcome = ", pac, "\n")
+  }
 
   for (col in orig_cols) 
   {
@@ -40,15 +43,21 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
     {
       cols <- new_cols
       pac <- new_pac
-      cat("deleted        ", col, "\n")
-      cat("new outcome  = ", pac, "\n")
+      if (printdel)
+      {
+        cat("deleted        ", col, "\n")
+        cat("new outcome  = ", pac, "\n")
+      }
     }
     else if ( crit == "min" & (new_pac <= pac | new_pac <= (1+k)*pac )) # aiclogit() case
     {
       cols <- new_cols
       pac <- new_pac
-      cat("deleted        ", col, "\n")
-      cat("new outcome  = ", pac, "\n")
+      if (printdel)
+      {
+        cat("deleted        ", col, "\n")
+        cat("new outcome  = ", pac, "\n")
+      }
     }
   }
   return (cols)
