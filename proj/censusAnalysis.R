@@ -71,7 +71,7 @@ for (i in (2 : length(cur_headers))){
 
 
 			newCol <- rep(0,nrow(df))
-			ones<-(df[index]==label)
+			ones<-(df[i]==label)
 			newCol[ones]=1	
 			###place into new matrix
 			new_mat<-cbind(new_mat,newCol)
@@ -85,6 +85,6 @@ new_df<-data.frame(new_mat)
 names(new_df)<-new_heads
 
 #################
-k<-0.01
-parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k)
-print(parsimony)
+#k<-0.01
+#parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k)
+#print(parsimony)
