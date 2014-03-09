@@ -10,6 +10,8 @@ cadata.csv - California Housing Data (http://lib.stat.cmu.edu/datasets/houses.zi
 
   p = 8, n=20640
   
+shuttle - Shuttle Data (https://archive.ics.uci.edu/ml/datasets/Statlog+%28Shuttle%29)
+  p = 9, n = 58000
 * Columns in this table have string values. These should be transformed to binary classifiers: e.g.,
   occupation : {Teacher, GarbageMan, ... } => occupation_Teacher, occupation_GarbageMan, ... with 
   1 or 0 in the column. The dimension will then explode. 

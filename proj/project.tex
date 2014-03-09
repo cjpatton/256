@@ -195,13 +195,47 @@ Finally we we look at households which positively affects house value. This is a
 
 Since we had coordinates, we decided to plot our data on a map of California using R's ggmap library. First we looked at a map of California as a whole, then zoomed into the Bay Area and the Greater Los Angeles area.
 
+\newpage
 \begin{figure}[H]
-\centering
 \includegraphics[scale=.54]{california.png}
 \includegraphics[scale=.54]{bayarea.png}
 \includegraphics[scale=.7]{losangeles.png}
 \end{figure}
-
 The visualization helps us see how housing value is clustered in the state. As one might expect, rural areas generally have lower housing value than metropolitan areas. Within the metropolitan areas there are visible divisions as well.
 
+\newpage
+Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can test our Parsimony package just fine.
+
+Here is the summary of results using Parsimony:
+
+\begin{tabular}{ | c | p{3cm} | p{3.3cm} | c  |}
+\hline
+Method&Parsimony (k=0.01) & Parsimony (k=0.05) & Significance Testing \\
+\hline
+Columns Deleted& V1,V3,V4,V6,V9 & V1,V2,V3,V4,V6,V9 & V4 \\
+\hline
+AIC & 8575.803 & 8728.906 & 8475.2 \\
+\hline
+\end{tabular}
+
+
+We also tested the various methods against a validation training set. We looked at the probability of correctly identifying a class 1 or not class 1. Also if we identified something as class 1, what was the probability it was actually class 1 and the same for not class 1.
+
+Here is a summary of the results:
+
+\begin{tabular}{ | c | p{3cm} | p{3.3cm} | c  |}
+\hline
+Method&Parsimony (k=0.01) & Parsimony (k=0.05) & Significance Testing \\
+\hline
+P(Correct ID $|$ class 1) & 0.9862345 & 0.9861474 & 0.9864959 \\
+\hline
+P(Correct ID $|$ not class 1) & 0.9285242 & 0.9285242 & 0.9169424 \\
+\hline
+P(Correct ID $|$ guess class 1) & 0.981276 & 0.9812744 & 0.9783135 \\
+\hline
+P(Correct ID $|$ guess not class 1) & 0.9466937 & 0.9463744 & 0.9470267  \\
+\hline
+\end{tabular}
+
+The results for for the different methods are very close and it is hard to detect much difference in the accuracy levels. There were slightly fewer false positives and there was a slightly better detection of negatives for the Parsimony models. By simplifying the model, there is a possibility of increased accuracy during validation runs.
 \end{document}
