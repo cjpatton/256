@@ -56,7 +56,14 @@ for (i in (2 : length(cur_headers))){
 	} else if (cur_head == "native_country") {
 		labels <- levels(factor(df$native_country))
 	} else if (cur_head == "salary") {
-		labels <- levels(factor(df$salary))
+		#0 for <=50k, 1 for >50k
+		createNewCols=FALSE
+		new_heads <- c(new_heads, cur_head)
+		newCol <- rep(0,nrow(df))
+		ones<-(df[i]==">50K")
+		newCol[ones]=1	
+		###place into new matrix
+		new_mat<-cbind(new_mat,newCol)
 	} else { #integer column
 		createNewCols=FALSE
 		new_heads <- c(new_heads, cur_head)
@@ -86,5 +93,7 @@ names(new_df)<-new_heads
 
 #################
 #k<-0.01
-#parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k)
+#parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k, printdel=T)
+#parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k, printdel=T)
+#parsimony <- prsm(new_df$age, subset(new_df, select=-c(age)), k, crit="max", printdel=T)
 #print(parsimony)
