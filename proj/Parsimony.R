@@ -27,6 +27,10 @@ aiclogit <- function(y, x, cols)
 #  TODO How to prevent over fitting when then the data set is small? 
 prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
 {
+  if (is.matrix(x))
+  {
+    x <- data.frame(x)
+  }
   orig_cols <- colnames(x)
   cols <- orig_cols 
   pac <- predacc(y, x, cols)
@@ -75,8 +79,10 @@ powerset <- function(S)
 }
 
 # Testing, testing ... 
-#df <- read.csv("pima.csv", header=T)
+df <- read.csv("pima.csv", header=T)
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
-parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
+#parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
+guy <- as.matrix(df)
+parsimony <- prsm(guy[,9], guy[,1:8], predacc=aiclogit, k=0.01, printdel=T)
 print(parsimony)
 
