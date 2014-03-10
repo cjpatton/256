@@ -67,6 +67,9 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
   return (cols)
 }
 
+
+
+# Enumerate all k-length subsets of S. Called by powerset().   
 kset <- function(S, k, i, current, e)
 {
   if (length(current) == k)
@@ -85,16 +88,16 @@ kset <- function(S, k, i, current, e)
 
   current <- current[!current==S[i]]
   kset(S, k, i+1, current, e)
-
 }
 
+# Generate the power set of S. 
 powerset <- function(S) 
 {
   e <- new.env()
   e$sets <- list(c(S))
-  for (k in length(S)-1 : 2)
+  for (k in (length(S)-1) : 2)
   {
-    kset(S, k, 0, c(), e)
+    kset(S, k, 1, c(), e)
   }
   for (s in S)
   {
@@ -108,9 +111,7 @@ df <- read.csv("pima.csv", header=T)
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
 #parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
 #print(parsimony)
-S = c(1,2,3,4)
-P <- powerset(S)
-for (col in powerset(S))
+for (col in powerset(colnames(df)))
 {
   print(col)
 }
