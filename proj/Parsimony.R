@@ -67,22 +67,86 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
   return (cols)
 }
 
-
-ksets <- function(S, k)
+# Reduce parsimony, exhaustively trying all combinations of attributes.
+prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
 {
-  # TODO 
+  if (is.matrix(x))
+  {
+    x <- data.frame(x)
+  }
+
+  cols <- colnames(x)
+  pac <- predacc(y, x)
+  
+  if (printdel) 
+  {
+    cat("full outcome = ", pac, "\n")
+  }
+
+  for (new_cols in powerset(cols))
+  {
+    new_pac <- predacc(y, subset(x, select=new_cols))
+    if (crit == "max" & (new_pac >= pac | new_pac >= (1-k)*pac)) # ar2() case 
+    {
+      cols <- new_cols
+      pac <- new_pac
+      if (printdel)
+      {
+        cat("new outcome  = ", pac, "\n")
+      }
+    }
+    else if ( crit == "min" & (new_pac <= pac | new_pac <= (1+k)*pac )) # aiclogit() case
+    {
+      cols <- new_cols
+      pac <- new_pac
+      if (printdel)
+      {
+        cat("new outcome  = ", pac, "\n")
+      }
+    }
+  }
+  return (cols)
 }
 
+# Enumerate all k-length subsets of S. Called by powerset().   
+kset <- function(S, k, i, current, e)
+{
+  if (length(current) == k)
+  {
+    e$sets <- append(e$sets, list(c(current)))
+    return()
+  }
+
+  if (i == length(S) + 1)
+  {
+    return()
+  }
+  
+  current <- append(current, S[i])
+  kset(S, k, i+1, current, e)
+
+  current <- current[!current==S[i]]
+  kset(S, k, i+1, current, e)
+}
+
+# Generate the power set of S. 
 powerset <- function(S) 
 {
-  # TODO   
+  e <- new.env()
+  e$sets <- list(c(S))
+  for (k in (length(S)-1) : 2)
+  {
+    kset(S, k, 1, c(), e)
+  }
+  for (s in S)
+  {
+    e$sets <- append(e$sets, c(s))
+  }
+  return (e$sets)
 }
 
 # Testing, testing ... 
 df <- read.csv("pima.csv", header=T)
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
-#parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
-guy <- as.matrix(df)
-parsimony <- prsm(guy[,9], guy[,1:8], predacc=aiclogit, k=0.01, printdel=T)
+parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
 print(parsimony)
-

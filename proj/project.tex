@@ -1,37 +1,63 @@
-% 
-% file: sample.tex 
-% author: Phil Rogaway
-% History: 
-%   Oct 14, 2003 - created
-%   Apr 04, 2005 - last revised 
-%
-% This is LaTeX template to get you started using LaTeX
-% for making problem-set solutions.
-%
- 
-\documentclass[11pt]{article}
+\documentclass[letter]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{ulem}
+\usepackage{graphics}
+\usepackage{sidecap}
+\usepackage{wrapfig}
+\usepackage[toc,page]{appendix}
+\usepackage{caption}
+\usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage{graphicx}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\usepackage{url,graphicx,tabularx,array,geometry,amsmath,tikz}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 \usepackage{listings}
-\setlength{\oddsidemargin}{0in}
-\setlength{\evensidemargin}{0in}
-\setlength{\textheight}{9in}
-\setlength{\textwidth}{6.5in}
-\setlength{\topmargin}{-0.5in}
+\usetikzlibrary{arrows}
+\newenvironment{myindentpar}[1]% %indent whole paragraph when needed
+ {\begin{list}{}%
+         {\setlength{\leftmargin}{#1}}%
+         \item[]%
+ }
+ {\end{list}}
 
+\usepackage{hyperref}
+\usepackage{parskip}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{\bf Project\\[2ex] 
-       \rm\normalsize ECS 256 --- Norm Matloff --- Winter 2014}
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black
+}
+
+\def\dashuline{\bgroup 
+  \ifdim\ULdepth=\maxdimen  % Set depth based on font, if not set already
+	  \settodepth\ULdepth{(j}\advance\ULdepth.4pt\fi
+  \markoverwith{\kern.15em
+	\vtop{\kern\ULdepth \hrule width .3em}%
+	\kern.15em}\ULon}
+\setlength\parindent{2em}
+
+\newcounter{foot}
+\setcounter{foot}{1}
+
+\author{Olga Prilepova, Christopher Patton, Alexander Rumbaugh, \\ John Chen, Thomas Provan}
+
 \date{\today}
-\author{\bf }
-
+\title{ECS256 - Homework II}
+	
 \begin{document}
 \maketitle
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 1} 
+\subsection*{Problem 1} 
 
 As suggested by the hint, in order to find the bias at $t=0.5$, we're going to be examining the value of $\beta$ as n goes to $\infty$. The idea behind this is that the proposed model will converge to some $\beta$ as the number of samples increases, to the point that it fits as closely as possible to the actual function. Of course, it isn't possible for the model to fit precisely, because the actual relationship isn't linear like the model is, so there will be some bias in the resulting model. 
 
@@ -39,41 +65,41 @@ The first thing to consider is model construction. The simplest way to construct
 
 \begin{equation}
 	E[(EY - g(X))^2]
-\end{equation}•
+\end{equation}
 
 For this problem, $g(X)=\beta X$ for all possible $\beta$, and the actual distribution of $EY$ is $X^{0.75}$, so we can rewrite this to minimizing the following with respect to $\beta$
 
 \begin{equation}
 	E[(X^{0.75} - \beta X)^2]
-\end{equation}•
+\end{equation}
 
 To actually find this value, we will first make a new variable $Q=(X^{0.75} - \beta X)^2$, and then use the continuous case of iterated expectations along X (eq 5.33) to find $EQ$
 
 \begin{equation}
 	EQ = \int _{-\infty} ^\infty f_X(t) \; E(Q | X = t)\; dt
-\end{equation}•
+\end{equation}
 
 \begin{equation}
 	E(Q | X = t) = E[(t^{0.75} - \beta t)^2] = (t^{0.75} - \beta t)^2
-\end{equation}•
+\end{equation}
 
 X is $U(0,1)$, so $f_X(t)$ is 1 between the values of 0 and 1, and is zero elsewhere. With this and the value of $E(Q | X = t)$, we can rewrite $EQ$ as the following.
 
 \begin{equation}
 	EQ = \int _0 ^1 (t^{0.75} - \beta t)^2 \; dt
-\end{equation}•
+\end{equation}
 
 From here it's a simple matter to minimize with respect to $\beta$. First, finish computing the integral to get the final function of $\beta$ to minimize.
 
 \begin{equation}
 	EQ = \frac{1}{3}(\beta^2 - \frac{24}{11}\beta + \frac{6}{5})
-\end{equation}•
+\end{equation}
 
 And then take the derivative of the function with respect to $\beta$.
 
 \begin{equation}
 	\frac{d\,EQ}{d\beta} = \frac{2}{3}\beta - \frac{8}{11}
-\end{equation}•
+\end{equation}
 
 And finally set that equal to zero and solve for $\beta$, which yields $\beta=\frac{12}{11}$ as the value that minimizes our function.
 
@@ -81,14 +107,14 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 \begin{equation}
 	Bias(0.5) = \beta 0.5 - 0.5^{0.75} \approx {\fbox {\parbox{0.5in}{-0.0491}}}
-\end{equation}•
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Problem 2}
+\subsection*{Problem 2}
 
 
-\section*{Problem 2.c}
+\subsection*{Problem 2.c}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
