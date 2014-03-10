@@ -68,7 +68,9 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
 }
 
 
-# Reduce parsimony, exhaustively trying all combinations of attributes.
+# Reduce parsimony, exhaustively trying all combinations of attributes. To do this,
+# we maximize/minimize the PAC over all subsets of the columns, in order of the 
+# size of the subsets. 
 prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
 {
   if (is.matrix(x))
