@@ -67,22 +67,51 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
   return (cols)
 }
 
-
-ksets <- function(S, k)
+kset <- function(S, k, i, current, e)
 {
-  # TODO 
+  if (length(current) == k)
+  {
+    e$sets <- append(e$sets, list(c(current)))
+    return()
+  }
+
+  if (i == length(S) + 1)
+  {
+    return()
+  }
+  
+  current <- append(current, S[i])
+  kset(S, k, i+1, current, e)
+
+  current <- current[!current==S[i]]
+  kset(S, k, i+1, current, e)
+
 }
 
 powerset <- function(S) 
 {
-  # TODO   
+  e <- new.env()
+  e$sets <- list(c(S))
+  for (k in length(S)-1 : 2)
+  {
+    kset(S, k, 0, c(), e)
+  }
+  for (s in S)
+  {
+    e$sets <- append(e$sets, c(s))
+  }
+  return (e$sets)
 }
 
 # Testing, testing ... 
 df <- read.csv("pima.csv", header=T)
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
 #parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
-guy <- as.matrix(df)
-parsimony <- prsm(guy[,9], guy[,1:8], predacc=aiclogit, k=0.01, printdel=T)
-print(parsimony)
+#print(parsimony)
+S = c(1,2,3,4)
+P <- powerset(S)
+for (col in powerset(S))
+{
+  print(col)
+}
 
