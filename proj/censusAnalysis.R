@@ -91,9 +91,19 @@ for (i in (2 : length(cur_headers))){
 new_df<-data.frame(new_mat)
 names(new_df)<-new_heads
 
-#################
+####### Use with various K for analysis ##########
 #k<-0.01
 #parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k, printdel=T)
+#print(parsimony)
 #parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k, printdel=T)
+#print(parsimony)
 #parsimony <- prsm(new_df$age, subset(new_df, select=-c(age)), k, crit="max", printdel=T)
 #print(parsimony)
+
+x<- names(new_df)
+new.headers <- gsub("-",".",x)
+names(new_df) <- new.headers
+
+fitSex <- lm(sex ~ Widowed + Craft.repair + Farming.fishing + Handlers.cleaners + Transport.moving + Not.in.family + Other.relative + Own.child + Unmarried + Wife, data=new_df)
+
+
