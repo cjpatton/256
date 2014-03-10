@@ -104,6 +104,32 @@ x<- names(new_df)
 new.headers <- gsub("-",".",x)
 names(new_df) <- new.headers
 
-fitSex <- lm(sex ~ Widowed + Craft.repair + Farming.fishing + Handlers.cleaners + Transport.moving + Not.in.family + Other.relative + Own.child + Unmarried + Wife, data=new_df)
+x<- names(new_df)
+new.headers <- gsub("_",".",x)
+names(new_df) <- new.headers
 
+fitSex <- lm(sex ~ Widowed + Craft.repair + Farming.fishing + Handlers.cleaners + Transport.moving + Not.in.family + Other.relative + Own.child + Unmarried + Wife, data=new_df)
+summary(fitSex)
+
+fitSalary <- lm(salary ~ capital.gain, data=new_df)
+summary(fitSalary)
+
+fitSalaryMore <- lm(salary ~ age + education.num + Exec.managerial + Not.in.family + Own.child + Unmarried + Wife + capital.gain + capital.loss + hours.per.week, data = new_df)
+summary(fitSalaryMore)
+
+fitAge <- lm(age ~ Self.emp.not.inc + Assoc.acdm + Never.married + Widowed + Own.child + hours.per.week + salary, data = new_df)
+summary(fitAge)
+
+### plot of variables maximally contributing to variation of y-value
+
+
+### Splitting into training and test sets ###
+
+## printing prediction plots, or residuals plots and the error
+
+### various k ###
+
+### train, validation, test
+
+### eliminating by column and seeing how much they contribute.
 

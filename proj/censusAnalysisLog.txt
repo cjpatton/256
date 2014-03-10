@@ -14,7 +14,9 @@
  $ hours_per_week: int  40 13 40 40 40 40 16 45 50 40 ...
  $ native_country: Factor w/ 42 levels "?","Cambodia",..: 40 40 40 40 6 40 24 40 40 40 ...
  $ salary        : Factor w/ 2 levels "<=50K",">50K": 1 1 1 1 1 1 1 2 2 2 ...
+> k=0.01
 > parsimony <- prsm(new_df$age, subset(new_df, select=-c(age)), k=0.01, crit="max", printdel=T)
+
 full outcome =  0.4279503 
 deleted         ? 
 new outcome  =  0.4279503 
@@ -216,11 +218,724 @@ deleted         Vietnam
 new outcome  =  0.3763436 
 deleted         Yugoslavia 
 new outcome  =  0.3763604 
-deleted         <=50K 
-new outcome  =  0.3763604 
+> 
 > print(parsimony)
 [1] "Self-emp-not-inc" "Assoc-acdm"       "Never-married"    "Widowed"         
-[5] "Own-child"        "hours_per_week"   ">50K"    
+[5] "Own-child"        "hours_per_week"   "salary" 
 
 
+>k=0.01
+> parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k, printdel=T)
+print(parsimony)
+
+full outcome =  19139.82 
+deleted         age 
+new outcome  =  19138.51 
+deleted         ? 
+new outcome  =  19138.51 
+deleted         Federal-gov 
+new outcome  =  19138.51 
+deleted         Local-gov 
+new outcome  =  19157.24 
+deleted         Never-worked 
+new outcome  =  19158.34 
+deleted         Private 
+new outcome  =  19156.7 
+deleted         Self-emp-inc 
+new outcome  =  19202.83 
+deleted         Self-emp-not-inc 
+new outcome  =  19260.56 
+deleted         State-gov 
+new outcome  =  19261.62 
+deleted         Without-pay 
+new outcome  =  19260.02 
+deleted         fnlwgt 
+new outcome  =  19303.59 
+deleted         10th 
+new outcome  =  19303.59 
+deleted         11th 
+new outcome  =  19303.59 
+deleted         12th 
+new outcome  =  19305.29 
+deleted         1st-4th 
+new outcome  =  19304.01 
+deleted         5th-6th 
+new outcome  =  19302.41 
+deleted         7th-8th 
+new outcome  =  19300.45 
+deleted         9th 
+new outcome  =  19299.57 
+deleted         Assoc-acdm 
+new outcome  =  19297.63 
+deleted         Assoc-voc 
+new outcome  =  19300.93 
+deleted         Bachelors 
+new outcome  =  19308.74 
+deleted         Doctorate 
+new outcome  =  19307.75 
+deleted         HS-grad 
+new outcome  =  19314.34 
+deleted         Masters 
+new outcome  =  19316.11 
+deleted         Preschool 
+new outcome  =  19314.46 
+deleted         Prof-school 
+new outcome  =  19318.44 
+deleted         Some-college 
+new outcome  =  19320.31 
+deleted         education_num 
+new outcome  =  19318.61 
+deleted         Divorced 
+new outcome  =  19318.61 
+deleted         Married-AF-spouse 
+new outcome  =  19317.63 
+deleted         Married-civ-spouse 
+new outcome  =  19316.33 
+deleted         Married-spouse-absent 
+new outcome  =  19319.61 
+deleted         Never-married 
+new outcome  =  19457.09 
+deleted         Separated 
+new outcome  =  19466.53 
+deleted         ?.1 
+new outcome  =  19466.53 
+deleted         Adm-clerical 
+new outcome  =  19625.31 
+deleted         Armed-Forces 
+new outcome  =  19638.08 
+deleted         Exec-managerial 
+new outcome  =  19688.44 
+deleted         Machine-op-inspct 
+new outcome  =  19873.75 
+deleted         Other-service 
+new outcome  =  19881.56 
+deleted         Priv-house-serv 
+new outcome  =  19952.87 
+deleted         Prof-specialty 
+new outcome  =  19951.12 
+deleted         Protective-serv 
+new outcome  =  20077.91 
+deleted         Sales 
+new outcome  =  20087.09 
+deleted         Tech-support 
+new outcome  =  20087.8 
+deleted         Husband 
+new outcome  =  20087.8 
+deleted         Amer-Indian-Eskimo 
+new outcome  =  20087.8 
+deleted         Asian-Pac-Islander 
+new outcome  =  20085.98 
+deleted         Black 
+new outcome  =  20085.46 
+deleted         Other 
+new outcome  =  20083.47 
+deleted         White 
+new outcome  =  20092.63 
+deleted         capital_gain 
+new outcome  =  20090.65 
+deleted         capital_loss 
+new outcome  =  20089.94 
+deleted         hours_per_week 
+new outcome  =  20287.81 
+deleted         ?.2 
+new outcome  =  20287.81 
+deleted         Cambodia 
+new outcome  =  20286.01 
+deleted         Canada 
+new outcome  =  20285.47 
+deleted         China 
+new outcome  =  20283.47 
+deleted         Columbia 
+new outcome  =  20282.59 
+deleted         Cuba 
+new outcome  =  20291.14 
+deleted         Dominican-Republic 
+new outcome  =  20291.69 
+deleted         Ecuador 
+new outcome  =  20289.69 
+deleted         El-Salvador 
+new outcome  =  20288.41 
+deleted         England 
+new outcome  =  20286.41 
+deleted         France 
+new outcome  =  20285.42 
+deleted         Germany 
+new outcome  =  20291.26 
+deleted         Greece 
+new outcome  =  20290.14 
+deleted         Guatemala 
+new outcome  =  20288.18 
+deleted         Haiti 
+new outcome  =  20286.33 
+deleted         Holand-Netherlands 
+new outcome  =  20285.68 
+deleted         Honduras 
+new outcome  =  20284.01 
+deleted         Hong 
+new outcome  =  20282.04 
+deleted         Hungary 
+new outcome  =  20280.78 
+deleted         India 
+new outcome  =  20291.2 
+deleted         Iran 
+new outcome  =  20293.46 
+deleted         Ireland 
+new outcome  =  20293.03 
+deleted         Italy 
+new outcome  =  20292.39 
+deleted         Jamaica 
+new outcome  =  20299.58 
+deleted         Japan 
+new outcome  =  20298.49 
+deleted         Laos 
+new outcome  =  20296.71 
+deleted         Mexico 
+new outcome  =  20301.15 
+deleted         Nicaragua 
+new outcome  =  20299.19 
+deleted         Outlying-US(Guam-USVI-etc) 
+new outcome  =  20297.89 
+deleted         Peru 
+new outcome  =  20296.58 
+deleted         Philippines 
+new outcome  =  20295.4 
+deleted         Poland 
+new outcome  =  20293.83 
+deleted         Portugal 
+new outcome  =  20292.25 
+deleted         Puerto-Rico 
+new outcome  =  20291.51 
+deleted         Scotland 
+new outcome  =  20291.51 
+deleted         South 
+new outcome  =  20289.51 
+deleted         Taiwan 
+new outcome  =  20288.02 
+deleted         Thailand 
+new outcome  =  20288.43 
+deleted         Trinadad&Tobago 
+new outcome  =  20291.32 
+deleted         United-States 
+new outcome  =  20306.01 
+deleted         Vietnam 
+new outcome  =  20304.92 
+deleted         Yugoslavia 
+new outcome  =  20302.97 
+deleted         <=50K 
+new outcome  =  20302.97 
+deleted         >50K 
+new outcome  =  20500.69 
+> print(parsimony)
+ [1] "Widowed"           "Craft-repair"      "Farming-fishing"  
+ [4] "Handlers-cleaners" "Transport-moving"  "Not-in-family"    
+ [7] "Other-relative"    "Own-child"         "Unmarried"        
+[10] "Wife"  
+
+>k=0.1
+> parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k, printdel=T)
+print(parsimony)
+
+full outcome =  20765.29 
+deleted         age 
+new outcome  =  21005.74 
+deleted         ? 
+new outcome  =  21002.59 
+deleted         Federal-gov 
+new outcome  =  21002.59 
+deleted         Local-gov 
+new outcome  =  21040.2 
+deleted         Never-worked 
+new outcome  =  21038.71 
+deleted         Private 
+new outcome  =  21041.7 
+deleted         Self-emp-inc 
+new outcome  =  21051.4 
+deleted         Self-emp-not-inc 
+new outcome  =  21095.06 
+deleted         State-gov 
+new outcome  =  21103.4 
+deleted         Without-pay 
+new outcome  =  21105.14 
+deleted         fnlwgt 
+new outcome  =  21113.68 
+deleted         10th 
+new outcome  =  21113.68 
+deleted         11th 
+new outcome  =  21113.68 
+deleted         12th 
+new outcome  =  21112.75 
+deleted         1st-4th 
+new outcome  =  21110.83 
+deleted         5th-6th 
+new outcome  =  21109.13 
+deleted         7th-8th 
+new outcome  =  21108.12 
+deleted         9th 
+new outcome  =  21106.13 
+deleted         Assoc-acdm 
+new outcome  =  21106.46 
+deleted         Assoc-voc 
+new outcome  =  21109.55 
+deleted         Bachelors 
+new outcome  =  21120.74 
+deleted         Doctorate 
+new outcome  =  21128.41 
+deleted         HS-grad 
+new outcome  =  21126.41 
+deleted         Masters 
+new outcome  =  21129.23 
+deleted         Preschool 
+new outcome  =  21142.93 
+deleted         Prof-school 
+new outcome  =  21147.34 
+deleted         Some-college 
+new outcome  =  21147.15 
+deleted         education_num 
+new outcome  =  22102.9 
+deleted         Divorced 
+new outcome  =  22102.9 
+deleted         Married-AF-spouse 
+new outcome  =  22117.09 
+deleted         Married-civ-spouse 
+new outcome  =  22150.9 
+deleted         Married-spouse-absent 
+new outcome  =  22149.14 
+deleted         Never-married 
+new outcome  =  22229.15 
+deleted         Separated 
+new outcome  =  22227.17 
+deleted         Widowed 
+new outcome  =  22239.7 
+deleted         ?.1 
+new outcome  =  22239.7 
+deleted         Adm-clerical 
+new outcome  =  22260.49 
+deleted         Armed-Forces 
+new outcome  =  22258.57 
+deleted         Craft-repair 
+new outcome  =  22263.03 
+deleted         Exec-managerial 
+new outcome  =  22875.43 
+deleted         Farming-fishing 
+new outcome  =  23147.06 
+deleted         Handlers-cleaners 
+new outcome  =  23272.35 
+deleted         Machine-op-inspct 
+new outcome  =  23378.26 
+deleted         Other-service 
+new outcome  =  23545.26 
+deleted         Priv-house-serv 
+new outcome  =  23555.71 
+deleted         Prof-specialty 
+new outcome  =  24247.85 
+deleted         Protective-serv 
+new outcome  =  24252 
+deleted         Sales 
+new outcome  =  24257.21 
+deleted         Tech-support 
+new outcome  =  24291.03 
+deleted         Transport-moving 
+new outcome  =  24399.4 
+deleted         Husband 
+new outcome  =  24399.4 
+deleted         Not-in-family 
+new outcome  =  25913.95 
+deleted         Other-relative 
+new outcome  =  26087.18 
+deleted         Own-child 
+new outcome  =  27389.79 
+deleted         Unmarried 
+new outcome  =  27457.62 
+deleted         Wife 
+new outcome  =  29035.56 
+deleted         Amer-Indian-Eskimo 
+new outcome  =  29035.56 
+deleted         Asian-Pac-Islander 
+new outcome  =  29051.6 
+deleted         Black 
+new outcome  =  29054.81 
+deleted         Other 
+new outcome  =  29053.45 
+deleted         White 
+new outcome  =  29192.16 
+deleted         sex 
+new outcome  =  30156.28 
+deleted         capital_loss 
+new outcome  =  30889.29 
+deleted         hours_per_week 
+new outcome  =  32308.93 
+deleted         ?.2 
+new outcome  =  32308.93 
+deleted         Cambodia 
+new outcome  =  32308 
+deleted         Canada 
+new outcome  =  32308.56 
+deleted         China 
+new outcome  =  32306.8 
+deleted         Columbia 
+new outcome  =  32322.92 
+deleted         Cuba 
+new outcome  =  32321.35 
+deleted         Dominican-Republic 
+new outcome  =  32343.64 
+deleted         Ecuador 
+new outcome  =  32343.18 
+deleted         El-Salvador 
+new outcome  =  32356.86 
+deleted         England 
+new outcome  =  32360.19 
+deleted         France 
+new outcome  =  32363.47 
+deleted         Germany 
+new outcome  =  32366.49 
+deleted         Greece 
+new outcome  =  32364.49 
+deleted         Guatemala 
+new outcome  =  32377.53 
+deleted         Haiti 
+new outcome  =  32379 
+deleted         Holand-Netherlands 
+new outcome  =  32377.42 
+deleted         Honduras 
+new outcome  =  32376.75 
+deleted         Hong 
+new outcome  =  32376.14 
+deleted         Hungary 
+new outcome  =  32374.14 
+deleted         India 
+new outcome  =  32383.16 
+deleted         Iran 
+new outcome  =  32385.37 
+deleted         Ireland 
+new outcome  =  32383.42 
+deleted         Italy 
+new outcome  =  32385.33 
+deleted         Jamaica 
+new outcome  =  32389.65 
+deleted         Japan 
+new outcome  =  32392.13 
+deleted         Laos 
+new outcome  =  32391.51 
+deleted         Mexico 
+new outcome  =  32506.04 
+deleted         Nicaragua 
+new outcome  =  32508.27 
+deleted         Outlying-US(Guam-USVI-etc) 
+new outcome  =  32511.25 
+deleted         Peru 
+new outcome  =  32512.09 
+deleted         Philippines 
+new outcome  =  32525 
+deleted         Poland 
+new outcome  =  32523.01 
+deleted         Portugal 
+new outcome  =  32522.67 
+deleted         Puerto-Rico 
+new outcome  =  32527.02 
+deleted         Scotland 
+new outcome  =  32525.25 
+deleted         South 
+new outcome  =  32523.31 
+deleted         Taiwan 
+new outcome  =  32532.84 
+deleted         Thailand 
+new outcome  =  32530.84 
+deleted         Trinadad&Tobago 
+new outcome  =  32529.43 
+deleted         United-States 
+new outcome  =  32555.72 
+deleted         Vietnam 
+new outcome  =  32568.77 
+deleted         Yugoslavia 
+new outcome  =  32568.63 
+There were 50 or more warnings (use warnings() to see the first 50)
+> print(parsimony)
+[1] "capital_gain"
+
+> k=0.01
+>  parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k, printdel=T)
+print(parsimony)
+
+full outcome =  20765.29 
+deleted         ? 
+new outcome  =  20763.02 
+deleted         Federal-gov 
+new outcome  =  20763.02 
+deleted         Local-gov 
+new outcome  =  20798.46 
+deleted         Never-worked 
+new outcome  =  20796.78 
+deleted         Private 
+new outcome  =  20795.88 
+deleted         Self-emp-inc 
+new outcome  =  20797.78 
+deleted         Self-emp-not-inc 
+new outcome  =  20864.45 
+deleted         State-gov 
+new outcome  =  20872.12 
+deleted         Without-pay 
+new outcome  =  20875.37 
+deleted         fnlwgt 
+new outcome  =  20890.32 
+deleted         10th 
+new outcome  =  20890.32 
+deleted         11th 
+new outcome  =  20890.32 
+deleted         12th 
+new outcome  =  20888.9 
+deleted         1st-4th 
+new outcome  =  20887.11 
+deleted         5th-6th 
+new outcome  =  20885.41 
+deleted         7th-8th 
+new outcome  =  20884.81 
+deleted         9th 
+new outcome  =  20882.81 
+deleted         Assoc-acdm 
+new outcome  =  20881.9 
+deleted         Assoc-voc 
+new outcome  =  20885.19 
+deleted         Bachelors 
+new outcome  =  20891.17 
+deleted         Doctorate 
+new outcome  =  20891.33 
+deleted         HS-grad 
+new outcome  =  20889.37 
+deleted         Masters 
+new outcome  =  20888.31 
+deleted         Preschool 
+new outcome  =  20900.89 
+deleted         Prof-school 
+new outcome  =  20902.23 
+deleted         Some-college 
+new outcome  =  20903.98 
+deleted         Divorced 
+new outcome  =  20903.98 
+deleted         Married-AF-spouse 
+new outcome  =  20923.14 
+deleted         Married-civ-spouse 
+new outcome  =  20959.05 
+deleted         Married-spouse-absent 
+new outcome  =  20957.46 
+deleted         Never-married 
+new outcome  =  21004.29 
+deleted         Separated 
+new outcome  =  21002.46 
+deleted         Widowed 
+new outcome  =  21004.14 
+deleted         ?.1 
+new outcome  =  21004.14 
+deleted         Adm-clerical 
+new outcome  =  21040.75 
+deleted         Armed-Forces 
+new outcome  =  21038.81 
+deleted         Craft-repair 
+new outcome  =  21045.84 
+deleted         Farming-fishing 
+new outcome  =  21164.42 
+deleted         Handlers-cleaners 
+new outcome  =  21179.55 
+deleted         Machine-op-inspct 
+new outcome  =  21178.36 
+deleted         Other-service 
+new outcome  =  21223.51 
+deleted         Priv-house-serv 
+new outcome  =  21230.09 
+deleted         Prof-specialty 
+new outcome  =  21404.5 
+deleted         Protective-serv 
+new outcome  =  21429.18 
+deleted         Sales 
+new outcome  =  21453.13 
+deleted         Tech-support 
+new outcome  =  21492.43 
+deleted         Transport-moving 
+new outcome  =  21491.55 
+deleted         Husband 
+new outcome  =  21491.55 
+deleted         Other-relative 
+new outcome  =  21683.53 
+deleted         Amer-Indian-Eskimo 
+new outcome  =  21683.53 
+deleted         Asian-Pac-Islander 
+new outcome  =  21687 
+deleted         Black 
+new outcome  =  21685.01 
+deleted         Other 
+new outcome  =  21683.95 
+deleted         White 
+new outcome  =  21697.63 
+deleted         sex 
+new outcome  =  21913.28 
+deleted         ?.2 
+new outcome  =  21913.28 
+deleted         Cambodia 
+new outcome  =  21916.94 
+deleted         Canada 
+new outcome  =  21917.73 
+deleted         China 
+new outcome  =  21917.64 
+deleted         Columbia 
+new outcome  =  21923.48 
+deleted         Cuba 
+new outcome  =  21924.04 
+deleted         Dominican-Republic 
+new outcome  =  21927.27 
+deleted         Ecuador 
+new outcome  =  21925.77 
+deleted         El-Salvador 
+new outcome  =  21924.87 
+deleted         England 
+new outcome  =  21925.83 
+deleted         France 
+new outcome  =  21926.64 
+deleted         Germany 
+new outcome  =  21929.93 
+deleted         Greece 
+new outcome  =  21930.63 
+deleted         Guatemala 
+new outcome  =  21928.73 
+deleted         Haiti 
+new outcome  =  21928.1 
+deleted         Holand-Netherlands 
+new outcome  =  21927.42 
+deleted         Honduras 
+new outcome  =  21925.68 
+deleted         Hong 
+new outcome  =  21923.68 
+deleted         Hungary 
+new outcome  =  21921.71 
+deleted         India 
+new outcome  =  21919.73 
+deleted         Iran 
+new outcome  =  21917.76 
+deleted         Ireland 
+new outcome  =  21916.7 
+deleted         Italy 
+new outcome  =  21920.72 
+deleted         Jamaica 
+new outcome  =  21919 
+deleted         Japan 
+new outcome  =  21918.51 
+deleted         Laos 
+new outcome  =  21916.67 
+deleted         Mexico 
+new outcome  =  21921.87 
+deleted         Nicaragua 
+new outcome  =  21921.55 
+deleted         Outlying-US(Guam-USVI-etc) 
+new outcome  =  21922.57 
+deleted         Peru 
+new outcome  =  21921.2 
+deleted         Philippines 
+new outcome  =  21923.15 
+deleted         Poland 
+new outcome  =  21921.15 
+deleted         Portugal 
+new outcome  =  21919.21 
+deleted         Puerto-Rico 
+new outcome  =  21918.04 
+deleted         Scotland 
+new outcome  =  21916.06 
+deleted         South 
+new outcome  =  21921.8 
+deleted         Taiwan 
+new outcome  =  21920.42 
+deleted         Thailand 
+new outcome  =  21919.59 
+deleted         Trinadad&Tobago 
+new outcome  =  21917.83 
+deleted         United-States 
+new outcome  =  21944.93 
+deleted         Vietnam 
+new outcome  =  21953.61 
+deleted         Yugoslavia 
+new outcome  =  21951.68 
+There were 50 or more warnings (use warnings() to see the first 50)
+> print(parsimony)
+ [1] "age"             "education_num"   "Exec-managerial" "Not-in-family"  
+ [5] "Own-child"       "Unmarried"       "Wife"            "capital_gain"   
+ [9] "capital_loss"    "hours_per_week" 
+
+
+> fitSex <- lm(sex ~ Widowed + Craft.repair + Farming.fishing + Handlers.cleaners + Transport.moving + Not.in.family + Other.relative + Own.child + Unmarried + Wife, data=new_df)
+> summary(fitSex)
+
+Call:
+lm(formula = sex ~ Widowed + Craft.repair + Farming.fishing + 
+    Handlers.cleaners + Transport.moving + Not.in.family + Other.relative + 
+    Own.child + Unmarried + Wife, data = new_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.02771 -0.22486 -0.07249  0.22549  0.92751 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)        0.072494   0.003360   21.57   <2e-16 ***
+Widowed            0.253205   0.011353   22.30   <2e-16 ***
+Craft.repair      -0.203757   0.005885  -34.62   <2e-16 ***
+Farming.fishing   -0.224545   0.011122  -20.19   <2e-16 ***
+Handlers.cleaners -0.268416   0.009565  -28.06   <2e-16 ***
+Transport.moving  -0.208758   0.008911  -23.43   <2e-16 ***
+Not.in.family      0.420779   0.004905   85.79   <2e-16 ***
+Other.relative     0.412595   0.011385   36.24   <2e-16 ***
+Own.child          0.420585   0.005736   73.33   <2e-16 ***
+Unmarried          0.702012   0.006733  104.27   <2e-16 ***
+Wife               0.936630   0.009252  101.23   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.3427 on 32550 degrees of freedom
+Multiple R-squared:  0.4698,	Adjusted R-squared:  0.4696 
+F-statistic:  2884 on 10 and 32550 DF,  p-value: < 2.2e-16
+
+> fitSalary <- lm(salary ~ capital.gain, data=new_df)
+> summary(fitSalary)
+
+Call:
+lm(formula = salary ~ capital.gain, data = new_df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.7610 -0.2269 -0.2269 -0.2269  0.7731 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  2.269e-01  2.334e-03   97.19   <2e-16 ***
+capital.gain 1.293e-05  3.128e-07   41.34   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4168 on 32559 degrees of freedom
+Multiple R-squared:  0.04988,	Adjusted R-squared:  0.04985 
+F-statistic:  1709 on 1 and 32559 DF,  p-value: < 2.2e-16
+
+> fitAge <- lm(age ~ Self.emp.not.inc + Assoc.acdm + Never.married + Widowed + Own.child + hours.per.week + salary, data = new_df)
+> summary(fitAge)
+
+Call:
+lm(formula = age ~ Self.emp.not.inc + Assoc.acdm + Never.married + 
+    Widowed + Own.child + hours.per.week + salary, data = new_df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-34.789  -7.345  -1.500   6.119  67.097 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       44.927608   0.230145 195.215  < 2e-16 ***
+Self.emp.not.inc   4.313808   0.224466  19.218  < 2e-16 ***
+Assoc.acdm        -1.475503   0.335395  -4.399 1.09e-05 ***
+Never.married    -10.851233   0.154146 -70.396  < 2e-16 ***
+Widowed           16.070178   0.354766  45.298  < 2e-16 ***
+Own.child         -8.221388   0.194804 -42.203  < 2e-16 ***
+hours.per.week    -0.073794   0.005135 -14.371  < 2e-16 ***
+salary             2.904975   0.150546  19.296  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 10.77 on 32553 degrees of freedom
+Multiple R-squared:  0.3765,	Adjusted R-squared:  0.3764 
+F-statistic:  2808 on 7 and 32553 DF,  p-value: < 2.2e-16
 
