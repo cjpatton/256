@@ -1,37 +1,63 @@
-% 
-% file: sample.tex 
-% author: Phil Rogaway
-% History: 
-%   Oct 14, 2003 - created
-%   Apr 04, 2005 - last revised 
-%
-% This is LaTeX template to get you started using LaTeX
-% for making problem-set solutions.
-%
- 
-\documentclass[11pt]{article}
+\documentclass[letter]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{ulem}
+\usepackage{graphics}
+\usepackage{sidecap}
+\usepackage{wrapfig}
+\usepackage[toc,page]{appendix}
+\usepackage{caption}
+\usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage{graphicx}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\usepackage{url,graphicx,tabularx,array,geometry,amsmath,tikz}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 \usepackage{listings}
-\setlength{\oddsidemargin}{0in}
-\setlength{\evensidemargin}{0in}
-\setlength{\textheight}{9in}
-\setlength{\textwidth}{6.5in}
-\setlength{\topmargin}{-0.5in}
+\usetikzlibrary{arrows}
+\newenvironment{myindentpar}[1]% %indent whole paragraph when needed
+ {\begin{list}{}%
+         {\setlength{\leftmargin}{#1}}%
+         \item[]%
+ }
+ {\end{list}}
 
+\usepackage{hyperref}
+\usepackage{parskip}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{\bf Project\\[2ex] 
-       \rm\normalsize ECS 256 --- Norm Matloff --- Winter 2014}
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black
+}
+
+\def\dashuline{\bgroup 
+  \ifdim\ULdepth=\maxdimen  % Set depth based on font, if not set already
+	  \settodepth\ULdepth{(j}\advance\ULdepth.4pt\fi
+  \markoverwith{\kern.15em
+	\vtop{\kern\ULdepth \hrule width .3em}%
+	\kern.15em}\ULon}
+\setlength\parindent{2em}
+
+\newcounter{foot}
+\setcounter{foot}{1}
+
+\author{Olga Prilepova, Christopher Patton, Alexander Rumbaugh, \\ John Chen, Thomas Provan}
+
 \date{\today}
-\author{\bf }
-
+\title{ECS256 - Homework II}
+	
 \begin{document}
 \maketitle
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 1} 
+\subsection*{Problem 1} 
 
 As suggested by the hint, in order to find the bias at $t=0.5$, we're going to be examining the value of $\beta$ as n goes to $\infty$. The idea behind this is that the proposed model will converge to some $\beta$ as the number of samples increases, to the point that it fits as closely as possible to the actual function. Of course, it isn't possible for the model to fit precisely, because the actual relationship isn't linear like the model is, so there will be some bias in the resulting model. 
 
@@ -39,41 +65,41 @@ The first thing to consider is model construction. The simplest way to construct
 
 \begin{equation}
 	E[(EY - g(X))^2]
-\end{equation}•
+\end{equation}
 
 For this problem, $g(X)=\beta X$ for all possible $\beta$, and the actual distribution of $EY$ is $X^{0.75}$, so we can rewrite this to minimizing the following with respect to $\beta$
 
 \begin{equation}
 	E[(X^{0.75} - \beta X)^2]
-\end{equation}•
+\end{equation}
 
 To actually find this value, we will first make a new variable $Q=(X^{0.75} - \beta X)^2$, and then use the continuous case of iterated expectations along X (eq 5.33) to find $EQ$
 
 \begin{equation}
 	EQ = \int _{-\infty} ^\infty f_X(t) \; E(Q | X = t)\; dt
-\end{equation}•
+\end{equation}
 
 \begin{equation}
 	E(Q | X = t) = E[(t^{0.75} - \beta t)^2] = (t^{0.75} - \beta t)^2
-\end{equation}•
+\end{equation}
 
 X is $U(0,1)$, so $f_X(t)$ is 1 between the values of 0 and 1, and is zero elsewhere. With this and the value of $E(Q | X = t)$, we can rewrite $EQ$ as the following.
 
 \begin{equation}
 	EQ = \int _0 ^1 (t^{0.75} - \beta t)^2 \; dt
-\end{equation}•
+\end{equation}
 
 From here it's a simple matter to minimize with respect to $\beta$. First, finish computing the integral to get the final function of $\beta$ to minimize.
 
 \begin{equation}
 	EQ = \frac{1}{3}(\beta^2 - \frac{24}{11}\beta + \frac{6}{5})
-\end{equation}•
+\end{equation}
 
 And then take the derivative of the function with respect to $\beta$.
 
 \begin{equation}
 	\frac{d\,EQ}{d\beta} = \frac{2}{3}\beta - \frac{8}{11}
-\end{equation}•
+\end{equation}
 
 And finally set that equal to zero and solve for $\beta$, which yields $\beta=\frac{12}{11}$ as the value that minimizes our function.
 
@@ -81,14 +107,14 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 \begin{equation}
 	Bias(0.5) = \beta 0.5 - 0.5^{0.75} \approx {\fbox {\parbox{0.5in}{-0.0491}}}
-\end{equation}•
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Problem 2}
+\subsection*{Problem 2}
 
 
-\section*{Problem 2.c}
+\subsection*{Problem 2.c}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
@@ -247,11 +273,78 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 \\
 
-For large p - large n data set we used the census dataset \\ (https://archive.ics.uci.edu/ml/datasets/Adult), which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". This makes sense. If we were to look at only one column in order to predict in a person is making over 50K a year, the capital gain variable would be most informative. At k=0.01 there are many more explanatory variables that enhance the predictions:  "age", "education num", "Exec-managerial", "Not-in-family", "Own-child", "Unmarried", "Wife", "capital gain", "capital loss", "hours per week".
+For large p - large n data set we used the census dataset \\ (https://archive.ics.uci.edu/ml/datasets/Adult), which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
+\begin{verbatim}
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  2.269e-01  2.334e-03   97.19   <2e-16 ***
+capital.gain 1.293e-05  3.128e-07   41.34   <2e-16 ***
+---
 
-Another interesting variable that can be of interest for predictions is "sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft-repair", "Farming-fishing", "Handlers-cleaners", "Transport-moving", "Not-in-family", "Other-relative", "Own-child", "Unmarried", "Wife". Some of them make perfect sense, such as "Wife" variable. If somebody identified as a wife in 1994 Census it is very likely that the person was female. "Widowed" variable makes sense too, and we expect to see a strong negative correlation between identifying as widowed and being female. 
+\end{verbatim}
 
-With the continuously defined variable an interesting one to predict was "Age". After running our parsimony function with k=0.01, the variables that explain the variance in "Age" are "Self-emp-not-inc", "Assoc-acdm", "Never-married", "Widowed", "Own-child", "hours per week", "salary".   
+This makes sense. If we were to look at only one column in order to predict in a person is making over 50K a year, the capital gain variable would be most informative. At k=0.01 there are many more explanatory variables that enhance the predictions:  "age", "education.num", "Exec.managerial", "Not.in.family", "Own.child", "Unmarried", "Wife", "capital.gain", "capital.loss", "hours.per.week".
+
+\begin{verbatim}
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     -3.507e-01  1.284e-02 -27.323   <2e-16 ***
+age              3.349e-03  1.602e-04  20.910   <2e-16 ***
+education.num    4.195e-02  7.820e-04  53.650   <2e-16 ***
+Exec.managerial  1.259e-01  6.036e-03  20.861   <2e-16 ***
+Not.in.family   -2.774e-01  4.918e-03 -56.396   <2e-16 ***
+Own.child       -2.439e-01  6.692e-03 -36.448   <2e-16 ***
+Unmarried       -2.826e-01  6.702e-03 -42.167   <2e-16 ***
+Wife             8.008e-02  9.369e-03   8.547   <2e-16 ***
+capital.gain     8.576e-06  2.655e-07  32.304   <2e-16 ***
+capital.loss     1.004e-04  4.836e-06  20.768   <2e-16 ***
+hours.per.week   3.472e-03  1.665e-04  20.858   <2e-16 ***
+---
+\end{verbatim}
+
+Another interesting variable that can be of interest for predictions is "sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife". Some of them make perfect sense, such as "Wife" variable. If somebody identified as a wife in 1994 Census it is very likely that the person was female. "Craft.repair", "Farming.fishing", and  "Transport.moving" variables makes sense too, and we expect to see a strong negative correlation between those jobs and being female in 1994.
+
+\begin{verbatim}
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)        0.072494   0.003360   21.57   <2e-16 ***
+Widowed            0.253205   0.011353   22.30   <2e-16 ***
+Craft.repair      -0.203757   0.005885  -34.62   <2e-16 ***
+Farming.fishing   -0.224545   0.011122  -20.19   <2e-16 ***
+Handlers.cleaners -0.268416   0.009565  -28.06   <2e-16 ***
+Transport.moving  -0.208758   0.008911  -23.43   <2e-16 ***
+Not.in.family      0.420779   0.004905   85.79   <2e-16 ***
+Other.relative     0.412595   0.011385   36.24   <2e-16 ***
+Own.child          0.420585   0.005736   73.33   <2e-16 ***
+Unmarried          0.702012   0.006733  104.27   <2e-16 ***
+Wife               0.936630   0.009252  101.23   <2e-16 ***
+---
+
+\end{verbatim}
+
+Fitting the linear regression model to the data works as predicted, which supports out intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
+
+With the continuously defined variable an interesting one to predict was "Age". After running our parsimony function with k=0.01, the variables that explain the variance in "Age" are "Self.emp.not.inc", "Assoc.acdm", "Never.married", "Widowed", "Own.child", "hours.per.week", "salary".   
+
+\begin{verbatim}
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       44.927608   0.230145 195.215  < 2e-16 ***
+Self.emp.not.inc   4.313808   0.224466  19.218  < 2e-16 ***
+Assoc.acdm        -1.475503   0.335395  -4.399 1.09e-05 ***
+Never.married    -10.851233   0.154146 -70.396  < 2e-16 ***
+Widowed           16.070178   0.354766  45.298  < 2e-16 ***
+Own.child         -8.221388   0.194804 -42.203  < 2e-16 ***
+hours.per.week    -0.073794   0.005135 -14.371  < 2e-16 ***
+salary             2.904975   0.150546  19.296  < 2e-16 ***
+---
+\end{verbatim}
+
+ \includegraphics[scale=0.5]{ageResidCensus.png}
+ 
+ \includegraphics[scale=0.5]{ageNormResidCensus.png}
+
+ \includegraphics[scale=0.5]{cookResidCensus.png}
 
 In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
 
