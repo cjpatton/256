@@ -146,7 +146,8 @@ powerset <- function(S)
 }
 
 # Testing, testing ... 
-df <- read.csv("pima.csv", header=T)
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
-parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
+#parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
+df <- read.csv("cadata.csv", header=T)
+parsimony <- prsmpwr(df$median_house_value, subset(df, select=-c(median_house_value)), k=0.01, predacc=ar2, crit="max", printdel=T)
 print(parsimony)
