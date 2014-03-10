@@ -16,6 +16,8 @@ leave1out01 <- function(Y, X)
 leave1outHelper <- function(Y, X, i)
 {
 
+	X1 <- as.matrix(X)
+
 	y <- NULL
 	x <- NULL
 
@@ -23,27 +25,41 @@ leave1outHelper <- function(Y, X, i)
 
 	if(i > 1){
 		y <- Y[1:(i-1)]
-		x <- X[1:(i-1),]
+		x <- X1[1:(i-1),]
 	}
 	if(i < n){
 		#print(i)
 		#print(n)
 		#print(dim(X))
 		y <- c(y, Y[(i+1):n])
-		x <- rbind(x, X[(i+1):n,])
+		x <- rbind(x, X1[(i+1):n,])
 	}
 
 	
-	fit <<- glm(y ~ x, family = binomial)
+	fit <- glm(y ~ x, family = binomial)
 	
-	left <- c(1, X[i,]) # Add a value for the intercept to multiply against
+	left <- c(1, X1[i,]) # Add a value for the intercept to multiply against
 	gt <- Y[i]
 
 	predict <- sum(left * fit["coefficients"][[1]])
 
 	if(predict > 0.5){
+		if(gt == 1){
+			return(1)
+		}
+		return(0)
+	}
+	
+	if(gt == 0)
+	{
 		return(1)
 	}
-
 	return(0)
 }
+
+df <- read.csv("pima.csv", header=T)
+#parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
+#parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
+guy <- as.matrix(df)
+parsimony <- prsm(guy[,9], guy[,1:8], predacc=leave1out01, crit="max", k=0.01, printdel=T)
+print(parsimony)

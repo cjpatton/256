@@ -7,17 +7,17 @@
 # and R is the number of attributes per sample. The columns to use for the 
 # calculation is given by the vector 'cols'. 'y' is the response variable. 
 # return the some error metric. (Calls lm().) 
-ar2 <- function(y, x, cols)
+ar2 <- function(y, x)
 {
-  a <- summary(lm(y ~ ., data=subset(x, select=cols)))
+  a <- summary(lm(y ~ ., data=x))
   return(a$adj.r.squared)
 }
 
 # Same as ar2(), but logistic linear regression. 'y' is an indicator 
 # random variable (in {0,1}). (Calls glm().)
-aiclogit <- function(y, x, cols)
+aiclogit <- function(y, x)
 {
-  a = glm(formula = y ~ ., data=subset(x, select=cols), family = binomial)
+  a = glm(formula = y ~ ., data=x, family = binomial)
   return (a$aic)
 }
 
@@ -33,7 +33,7 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
   }
   orig_cols <- colnames(x)
   cols <- orig_cols 
-  pac <- predacc(y, x, cols)
+  pac <- predacc(y, x)
   if (printdel) 
   {
     cat("full outcome = ", pac, "\n")
@@ -42,7 +42,7 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
   for (col in orig_cols)
   {
     new_cols <- setdiff(cols, col)
-    new_pac <- predacc(y, x, new_cols)
+    new_pac <- predacc(y, subset(x, select=new_cols))
     if (crit == "max" & (new_pac >= pac | new_pac >= (1-k)*pac)) # ar2() case 
     {
       cols <- new_cols
