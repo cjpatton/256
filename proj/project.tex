@@ -89,7 +89,7 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 
 \section*{Problem 2.c}
-Our next data set explores house value in California. Kelley Pace and Ronald Barry used 1990 census data to divide California into geographic block groups with population 1425.5 persons on average. There are 20640 entries.
+Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
 
@@ -159,7 +159,7 @@ Latitude       -4.258e+04  6.733e+02 -63.240  < 2e-16 ***
 Longitude      -4.282e+04  7.130e+02 -60.061  < 2e-16 ***
 --- 
 \end{verbatim}
-The significance testing approach would not delete any predictors. This data set has a large size (20640) so it makes sense that the predictors are all deemed significant.
+The significance testing approach deletes no predictors. This data set has a large size (20640) so it makes sense that the predictors are all deemed significant.
 
 Here is a summary of the comparison of methods:
 
@@ -173,9 +173,13 @@ Adjusted RSquared & 0.6321316 & 0.6218261 & 0.6369649 \\
 \hline
 \end{tabular}
 
-Next we will discuss latitude and longitude. Looking at the full lm() summary above, latitude and longitude both have negative coefficient values. This says if we travel east or north, on average house value decreases. However using a model that says blocks at this longitude on average have the same house value seems crazy.  Blocks with similar longitudes aren't necessarily close in distance. In a large state like California there are expensive and inexpensive neighborhoods all over the state. 
+Before discussing conclusions about the data, we address latitude and longitude. Looking at the full summary above, latitude and longitude both have negative coefficient values. This says if we travel east or north, on average house value decreases. However a real estate expert would think you are crazy hearing that statement.
 
-So we will also remove latitude and longitude and make conclusions about the data. Here is the summary of the lm() call:
+The problem arises with using coordinate data in a linear regression model. Without any interaction terms we are assuming the statement above. We would risk overfitting if we attempted to make a complex formula involving coordinates. 
+
+A block's location is clearly important. We can see what blocks are close to one another, and proximity to oceans or mountains. Using location data effectively can lead to powerful models, however our model is not set up to do this. But we can plot our data atop a map which we will show shortly.
+
+We remove latitude and longitude and use the predictors kept by our Parsimony package. Here is the summary of the regression:
 \begin{verbatim}
 Coefficients:
                 Estimate Std. Error t value Pr(>|t|)    
@@ -191,9 +195,11 @@ Next looking at age, we see it also positively affects house value. One would ex
 
 Moving onto population, we see it negatively affects house value. With this data set each block has approximately similar geographic size, so blocks with higher population can be assumed to be denser. From our model we can conclude less dense areas have higher housing value. 
 
-Finally we we look at households which positively affects house value. This is a bit surprising since population had a negative coefficient. 
+Finally we look at number of households which positively affects house value. This is a bit surprising since population had a negative coefficient. One possible explanation is that our model is detecting large suburban areas which are all houses. Areas with more apartment complexes would fewer number of households and also lower housing value.
 
-Since we had coordinates, we decided to plot our data on a map of California using R's ggmap library. First we looked at a map of California as a whole, then zoomed into the Bay Area and the Greater Los Angeles area.
+Parsimony simplified our model down to four predictors. While we lost the data about rooms, we still have a model we can clearly understand.  
+
+Now we make use of our coordinate data using R's ggmap library. First we looked at a map of California as a whole, then zoomed into the Bay Area and the Greater Los Angeles area.
 
 \newpage
 \begin{figure}[H]
@@ -201,10 +207,11 @@ Since we had coordinates, we decided to plot our data on a map of California usi
 \includegraphics[scale=.54]{bayarea.png}
 \includegraphics[scale=.7]{losangeles.png}
 \end{figure}
-The visualization helps us see how housing value is clustered in the state. As one might expect, rural areas generally have lower housing value than metropolitan areas. Within the metropolitan areas there are visible divisions as well.
+
+The visualization helps us see how housing value is clustered in the state. As one might expect, rural areas generally have lower housing value than metropolitan areas. Within the metropolitan areas there are visible divisions as well. 
 
 \newpage
-Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can test our Parsimony package just fine.
+Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can still test our Parsimony package.
 
 Here is the summary of results using Parsimony:
 
@@ -217,7 +224,6 @@ Columns Deleted& V1,V3,V4,V6,V9 & V1,V2,V3,V4,V6,V9 & V4 \\
 AIC & 8575.803 & 8728.906 & 8475.2 \\
 \hline
 \end{tabular}
-
 
 We also tested the various methods against a validation training set. We looked at the probability of correctly identifying a class 1 or not class 1. Also if we identified something as class 1, what was the probability it was actually class 1 and the same for not class 1.
 
@@ -237,7 +243,7 @@ P(Correct ID $|$ guess not class 1) & 0.9466937 & 0.9463744 & 0.9470267  \\
 \hline
 \end{tabular}
 
-The results for for the different methods are very close and it is hard to detect much difference in the accuracy levels. There were slightly fewer false positives and there was a slightly better detection of negatives for the Parsimony models. By simplifying the model, there is a possibility of increased accuracy during validation runs.
+The results for the different methods are very close and it is hard to detect much difference in the accuracy levels. There were slightly fewer false positives and there was a slightly better detection of negatives for the Parsimony models. By simplifying the model, there is a possibility of increased accuracy during validation runs.
 \\
 \\
 
