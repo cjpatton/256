@@ -35,7 +35,7 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
     cat("full outcome = ", pac, "\n")
   }
 
-  for (col in orig_cols) 
+  for (col in orig_cols)
   {
     new_cols <- setdiff(cols, col)
     new_pac <- predacc(y, x, new_cols)
@@ -63,8 +63,20 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
   return (cols)
 }
 
+
+ksets <- function(S, k)
+{
+  # TODO 
+}
+
+powerset <- function(S) 
+{
+  # TODO   
+}
+
 # Testing, testing ... 
-df <- read.csv("pima.csv", header=T)
-#parsimony <- prsm(df$age, subset(df, select=-c(age)), k=0.01, crit="max")
-parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01)
+#df <- read.csv("pima.csv", header=T)
+#parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
+parsimony <- prsm(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
 print(parsimony)
+
