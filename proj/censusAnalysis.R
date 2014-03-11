@@ -76,15 +76,6 @@ for (i in (2 : length(cur_headers))){
 new_df<-data.frame(new_mat)
 names(new_df)<-new_heads
 
-####### Use with various K for analysis ##########
-#k<-0.01
-#parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k, printdel=T)
-#print(parsimony)
-#parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k, printdel=T)
-#print(parsimony)
-#parsimony <- prsm(new_df$age, subset(new_df, select=-c(age)), k, crit="max", printdel=T)
-#print(parsimony)
-
 x<- names(new_df)
 new.headers <- gsub("-",".",x)
 names(new_df) <- new.headers
@@ -93,16 +84,55 @@ x<- names(new_df)
 new.headers <- gsub("_",".",x)
 names(new_df) <- new.headers
 
-fitSex <- lm(sex ~ Widowed + Craft.repair + Farming.fishing + Handlers.cleaners + Transport.moving + Not.in.family + Other.relative + Own.child + Unmarried + Wife, data=new_df)
+####### Use with various K for analysis ##########
+
+## logistic
+use.k<-0.01
+parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k=use.k, printdel=T)
+print(parsimony)
+use.k<-0.05
+parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k=use.k, printdel=T)
+print(parsimony)
+use.k<-0.01
+parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k=use.k, printdel=T)
+print(parsimony)
+use.k<-0.05
+parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k=use.k, printdel=T)
+print(parsimony)
+
+## continuous
+use.k<-0.01
+parsimony <- prsm(new_df$age, subset(new_df, select=-c(age)), crit="max", k=use.k, printdel=T)
+print(parsimony)
+use.k<-0.05
+parsimony <- prsm(new_df$age, subset(new_df, select=-c(age)), crit="max", k=use.k, printdel=T)
+print(parsimony)
+
+
+## logisic
+fitSex <- glm(sex ~ Widowed + Craft.repair + Farming.fishing + Handlers.cleaners + Transport.moving + Not.in.family + Other.relative + Own.child + Unmarried + Wife, family=binomial, data=new_df)
 summary(fitSex)
 
-fitSalary <- lm(salary ~ capital.gain, data=new_df)
+fitSalary <- glm(salary ~ capital.gain, family=binomial, data=new_df)
 summary(fitSalary)
 
-fitSalaryMore <- lm(salary ~ age + education.num + Exec.managerial + Not.in.family + Own.child + Unmarried + Wife + capital.gain + capital.loss + hours.per.week, data = new_df)
+## continuous
+fitSalaryMore <- glm(salary ~ age + education.num + Exec.managerial + Not.in.family + Own.child + Unmarried + Wife + capital.gain + capital.loss + hours.per.week, family=binomial, data = new_df)
 summary(fitSalaryMore)
 
+
+fitSexAll <- glm(sex ~ ., family=binomial, data=new_df)
+summary(fitSex)
+
+fitSalaryAll <- glm(salary ~ ., family=binomial, data=new_df)
+summary(fitSalary)
+
+
 fitAge <- lm(age ~ Self.emp.not.inc + Assoc.acdm + Never.married + Widowed + Own.child + hours.per.week + salary, data = new_df)
+summary(fitAge)
+plot(fitAge)
+
+fitAgeAll <- lm(age ~ ., data = new_df)
 summary(fitAge)
 plot(fitAge)
 
@@ -112,59 +142,11 @@ data.test = new_df[test.set.index,]
 data.train = new_df[-test.set.index,]
 
 
-##Fitting each variable
-SS.fit.salary = lm(age ~ salary, data=data.train)
-predicted.values.SS.fit.salary = predict(SS.fit.salary,newdata=data.test)
-mean((predicted.values.SS.fit.salary-data.test$age)^2)
-
-
-SS.fit.hours.per.week = lm(age ~ hours.per.week, data=data.train)
-predicted.values.SS.fit.hours.per.week = predict(SS.fit.hours.per.week,newdata=data.test)
-mean((predicted.values.SS.fit.hours.per.week-data.test$age)^2)
-
-
-SS.fit.Self.emp.not.inc = lm(age ~ Self.emp.not.inc, data=data.train)
-predicted.values.SS.fit.Self.emp.not.inc = predict(SS.fit.Self.emp.not.inc,newdata=data.test)
-mean((predicted.values.SS.fit.Self.emp.not.inc-data.test$age)^2)
-
-
-SS.fit.Assoc.acdm = lm(age ~ Assoc.acdm, data=data.train)
-predicted.values.SS.fit.Assoc.acdm = predict(SS.fit.Assoc.acdm,newdata=data.test)
-mean((predicted.values.SS.fit.Assoc.acdm-data.test$age)^2)
-
-
-SS.fit.Never.married = lm(age ~ Never.married, data=data.train)
-predicted.values.SS.fit.Never.married = predict(SS.fit.Never.married,newdata=data.test)
-mean((predicted.values.SS.fit.Never.married-data.test$age)^2)
-
-
-SS.fit.Widowed = lm(age ~ Widowed, data=data.train)
-predicted.values.SS.fit.Widowed = predict(SS.fit.Widowed,newdata=data.test)
-mean((predicted.values.SS.fit.Widowed-data.test$age)^2)
-
-
-SS.fit.Own.child = lm(age ~ Own.child, data=data.train)
-predicted.values.SS.fit.Own.child = predict(SS.fit.Own.child,newdata=data.test)
-mean((predicted.values.SS.fit.Own.child-data.test$age)^2)
-
-
-##plotting smoothing splines 
-par(mfrow=c(4,2))
-plot(SS.fit.salary, se=T)
-plot(SS.fit.hours.per.week, se=T)
-plot(SS.fit.Self.emp.not.inc, se=T)
-plot(SS.fit.Assoc.acdm, se=T)
-plot(SS.fit.Never.married, se=T)
-plot(SS.fit.Widowed, se=T)
-plot(SS.fit.Own.child, se=T)
-par(mfrow=c(1,1))
-
-
 SS.fit.all = lm(age ~ Self.emp.not.inc + Assoc.acdm + Never.married + Widowed + Own.child + hours.per.week + salary, data=data.train)
 predicted.values.SS.fit.all = predict(SS.fit.all,newdata=data.test)
 mean((predicted.values.SS.fit.all-data.test$age)^2)
 
-plot(data.test$age ~ predicted.values.SS.fit.all, xlab="predicted age", ylab="actual age", main="predicted vs actual age of 15% test test")
+plot(data.test$age ~ predicted.values.SS.fit.all, xlab="predicted age", ylab="actual age", main="predicted vs actual age of 15% test")
 abline(0,1)
 
 ### plot of variables maximally contributing to variation of y-value
@@ -202,14 +184,14 @@ contribution <- function(y, x, listOfCols, predacc=ar2, printdel=F)
 	        contrib = prev_outcome-pac
 	        results = c(results, contrib)
 	        headers = c(headers,col)
-	        cat("contribution to age = ", contrib, "\n")
+	        cat("contribution = ", contrib, "\n")
 	        prev_outcome=pac
 	      }
 	  }
   }
 
   par(mar=c(7.1,4.1,4.1,2.1))
-  barplot(results, ylab = "contribution", space=0, main="PAC delta contributions")
+  barplot(results, ylab = "contribution to age", space=0, main="PAC delta contributions")
   axis(1, las=2, at=(1:length(results)-0.5), labels=headers)
 }
 
