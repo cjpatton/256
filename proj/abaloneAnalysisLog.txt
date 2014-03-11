@@ -120,4 +120,164 @@ AIC: 2150.7
 
 Number of Fisher Scoring iterations: 19
 
+> fitInfantFew <- glm(is.infant ~ length + diameter + whole.weight + viscerra.weight + rings, family=binomial, data=new_df)
+> summary(fitInfantFew)
+
+Call:
+glm(formula = is.infant ~ length + diameter + whole.weight + 
+    viscerra.weight + rings, family = binomial, data = new_df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1152  -0.6003  -0.2021   0.6760   3.8447  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       0.24232    0.36395   0.666   0.5055    
+length           18.40196    2.58765   7.111 1.15e-12 ***
+diameter        -10.09432    3.17903  -3.175   0.0015 ** 
+whole.weight     -3.19818    0.60799  -5.260 1.44e-07 ***
+viscerra.weight -14.73903    2.30888  -6.384 1.73e-10 ***
+rings            -0.21063    0.02154  -9.778  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5244.9  on 4176  degrees of freedom
+Residual deviance: 3306.3  on 4171  degrees of freedom
+AIC: 3318.3
+
+Number of Fisher Scoring iterations: 6
+
+> k<-0.01
+> parsimony <- prsm(new_df$shell.weight, subset(new_df, select=-c(shell.weight)), predacc=ar2, crit="max", k, printdel=T)
+full outcome =  0.9535425 
+deleted         is.male 
+new outcome  =  0.9535533 
+deleted         is.infant 
+new outcome  =  0.9535152 
+deleted         length 
+new outcome  =  0.9534878 
+deleted         diameter 
+new outcome  =  0.9522429 
+deleted         height 
+new outcome  =  0.9512495 
+deleted         viscerra.weight 
+new outcome  =  0.9466513 
+deleted         rings 
+new outcome  =  0.9440963 
+> print(parsimony)
+[1] "whole.weight"   "shucked.weight"
 > 
+> k<-0.05
+> parsimony <- prsm(new_df$shell.weight, subset(new_df, select=-c(shell.weight)), predacc=ar2, crit="max", k, printdel=T)
+full outcome =  0.9535425 
+deleted         is.male 
+new outcome  =  0.9535533 
+deleted         is.infant 
+new outcome  =  0.9535152 
+deleted         length 
+new outcome  =  0.9534878 
+deleted         diameter 
+new outcome  =  0.9522429 
+deleted         height 
+new outcome  =  0.9512495 
+deleted         shucked.weight 
+new outcome  =  0.9326063 
+deleted         viscerra.weight 
+new outcome  =  0.9301709 
+deleted         rings 
+new outcome  =  0.9126831 
+> print(parsimony)
+[1] "whole.weight"
+
+> fitShellWeight <- lm(shell.weight ~ ., data=new_df)
+> summary(fitShellWeight)
+
+Call:
+lm(formula = shell.weight ~ ., data = new_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.26637 -0.01033 -0.00069  0.01001  0.32046 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     -0.0443613  0.0040131 -11.054  < 2e-16 ***
+is.male         -0.0001797  0.0011398  -0.158   0.8748    
+is.infant        0.0024960  0.0014105   1.770   0.0769 .  
+length          -0.0491599  0.0247275  -1.988   0.0469 *  
+diameter         0.1991783  0.0303911   6.554 6.29e-11 ***
+height           0.1243307  0.0210423   5.909 3.73e-09 ***
+whole.weight     0.4907459  0.0066497  73.800  < 2e-16 ***
+shucked.weight  -0.4142876  0.0100650 -41.161  < 2e-16 ***
+viscerra.weight -0.3567707  0.0169549 -21.042  < 2e-16 ***
+rings            0.0016347  0.0002103   7.772 9.64e-15 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.03 on 4167 degrees of freedom
+Multiple R-squared:  0.9536,	Adjusted R-squared:  0.9535 
+F-statistic:  9525 on 9 and 4167 DF,  p-value: < 2.2e-16
+
+> 
+> fitShellWeightFew <- lm(shell.weight ~ length + diameter + height + whole.weight + shucked.weight + viscerra.weight + rings, data=new_df)
+> summary(fitShellWeightFew)
+
+Call:
+lm(formula = shell.weight ~ length + diameter + height + whole.weight + 
+    shucked.weight + viscerra.weight + rings, data = new_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.26705 -0.01031 -0.00054  0.01000  0.32085 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     -0.0414577  0.0036391 -11.392  < 2e-16 ***
+length          -0.0459397  0.0246856  -1.861   0.0628 .  
+diameter         0.1933419  0.0302548   6.390 1.84e-10 ***
+height           0.1220157  0.0210114   5.807 6.83e-09 ***
+whole.weight     0.4910539  0.0066494  73.849  < 2e-16 ***
+shucked.weight  -0.4147682  0.0100407 -41.309  < 2e-16 ***
+viscerra.weight -0.3600765  0.0168684 -21.346  < 2e-16 ***
+rings            0.0015706  0.0002082   7.545 5.54e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.03001 on 4169 degrees of freedom
+Multiple R-squared:  0.9536,	Adjusted R-squared:  0.9535 
+F-statistic: 1.224e+04 on 7 and 4169 DF,  p-value: < 2.2e-16
+
+> fitShellWeightFew <- lm(shell.weight ~ diameter + height + whole.weight + shucked.weight + viscerra.weight + rings, data=new_df)
+> summary(fitShellWeightFew)
+
+Call:
+lm(formula = shell.weight ~ diameter + height + whole.weight + 
+    shucked.weight + viscerra.weight + rings, data = new_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.26877 -0.01033 -0.00061  0.00979  0.32072 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     -0.0441281  0.0033452 -13.191  < 2e-16 ***
+diameter         0.1429197  0.0134669  10.613  < 2e-16 ***
+height           0.1209977  0.0210105   5.759 9.08e-09 ***
+whole.weight     0.4916699  0.0066431  74.012  < 2e-16 ***
+shucked.weight  -0.4166794  0.0099910 -41.705  < 2e-16 ***
+viscerra.weight -0.3632970  0.0167844 -21.645  < 2e-16 ***
+rings            0.0015771  0.0002082   7.575 4.41e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.03002 on 4170 degrees of freedom
+Multiple R-squared:  0.9536,	Adjusted R-squared:  0.9535 
+F-statistic: 1.427e+04 on 6 and 4170 DF,  p-value: < 2.2e-16
+
+> summary(fitShellWeightFew)$adj.r.squared
+[1] 0.9534878
+
+

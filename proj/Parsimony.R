@@ -25,7 +25,7 @@ aiclogit <- function(y, x)
 # a predictor error criterion value. if 'crit' is "min", then we minimize 
 # the PAC; if 'crit' is "max", then we maximize the PAC. Return a vector of
 # column names corresponding to the new parsimony for 'y'. 
-prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
+prsm <- function(y, x, k=0.01, predacc=ar2, crit="max", printdel=F) 
 {
   if (is.matrix(x))
   {
@@ -71,7 +71,7 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
 # Reduce parsimony, exhaustively trying all combinations of attributes. To do this,
 # we maximize/minimize the PAC over all subsets of the columns, in order of the 
 # size of the subsets. 
-prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
+prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="max", printdel=F) 
 {
   if (is.matrix(x))
   {
@@ -159,8 +159,13 @@ powerset <- function(S)
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
 #df <- read.csv("pima.csv", header=T)
 #parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
-df <- read.csv("cadata.csv", header=T)
-parsimony <- prsmpwr(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
+df <- read.csv("abalone.csv", header=T)
+
+parsimony <- prsmpwr(df$rings, subset(df, select=-c(rings)), k=0.01, predacc=ar2, crit="max", printdel=T)
 print(parsimony)
-parsimony <- prsm(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
+parsimony <- prsm(df$rings, subset(df, select=-c(rings)), k=0.01, predacc=ar2, crit="max", printdel=T)
+print(parsimony)
+#parsimony <- prsmpwr(df$is_infant, subset(df, select=-c(is_infant)), k=0.01, predacc=aiclogit, crit="min", printdel=T)
+#print(parsimony)
+#parsimony <- prsm(df$is_infant, subset(df, select=-c(is_infant)), k=0.01, predacc=aiclogit, crit="min", printdel=T)
 print(parsimony)
