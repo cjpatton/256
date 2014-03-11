@@ -11,7 +11,7 @@ ar2 <- function(y, x)
 # random variable. (Calls glm().)
 aiclogit <- function(y, x)
 {
-  a = glm(formula = y ~ ., data=x, family = binomial)
+  a = glm(formula = y ~ ., data=x, family = binomial, control=list(maxit=500))
   return (a$aic)
 }
 
@@ -21,7 +21,7 @@ aiclogit <- function(y, x)
 # a predictor error criterion value. if 'crit' is "min", then we minimize 
 # the PAC; if 'crit' is "max", then we maximize the PAC. Return a vector of
 # column names corresponding to the new parsimony for 'y'. 
-prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
+prsm <- function(y, x, k=0.01, predacc=ar2, crit="max", printdel=F) 
 {
   if (is.matrix(x))
   {

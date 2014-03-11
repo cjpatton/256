@@ -63,10 +63,12 @@
 	
 \begin{document}
 \maketitle
+\tableofcontents
 
+\pagebreak
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 1} 
+\section{Problem 1} 
 
 As suggested by the hint, in order to find the bias at $t=0.5$, we're going to be examining the value of $\beta$ as n goes to $\infty$. The idea behind this is that the proposed model will converge to some $\beta$ as the number of samples increases, to the point that it fits as closely as possible to the actual function. Of course, it isn't possible for the model to fit precisely, because the actual relationship isn't linear like the model is, so there will be some bias in the resulting model. 
 
@@ -120,7 +122,7 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Problem 2.a}
+\section{Problem 2.a}
 
 For convenience, we give the call forms of the important routines:
 \begin{itemize}
@@ -128,7 +130,8 @@ For convenience, we give the call forms of the important routines:
   \item prediction accuracy criteria: \texttt{ar2(y, x)}, \texttt{aiclogit(y, x)}
 \end{itemize}
 
-Our implementation of \texttt{prsm()}\footnote{See \texttt{Parsimony.R} in the project folder.} 
+Our implementation of \texttt{prsm()}\footnote{See \texttt{Parsimony.R} in the project folder.
+The code is also listed in the appendix of this document.} 
 honors the program's specification. We first calculated the PAC ("prediction accuracy criterion")
 with all predictor variables. Next, we removed the first attribute from the predictor variables 
 and recalculated the PAC with the new parsimony. If the PAC has improved, or has only degraded 
@@ -155,26 +158,34 @@ which the attributes are successively removed determines the resulting PAC value
 parsimony.
 
 To address this apparent problem, we implemented an exhaustive search version, called 
-\texttt{prsmpwr()}, which minimizes the PAC (or maximizes in the case of continuous 
+\texttt{prsmpwr()}\footnote{The code is listed in the appendix.}, which minimizes the 
+PAC (or maximizes in the case of continuous 
 regression) over all subsets of the attributes. We iterate over the power set of the 
 predictor variables from smallest to largest. We accept the new parsimony if the PAC
 is less than $(1+k)\cdot\text{PAC}^*$; however, we only accept a new $\text{PAC}^*$  
 if it is strictly less than the old target.
 
+We tested this method against \text{prsm()} over many of the data sets we discuss in proceeding
+sections. Obviously, this wouldn't be feasible for higher dimensional data. If there are $p$ 
+predictor variables, than there are $2^p - 1$ subsets of predictor variables. Nevertheless, our 
+results for the lower dimensional data were encouraging. The following run results were identical
+for both the parsimony and optimal PAC: 
+\begin{itemize}
+  \item In the pima data set \cite{pima}, classifying diabetes patient, predicting age. 
+  \item In California house data set \cite{cadata}, predicting median house value, population, 
+        and household size. 
+  \item In the Abalone data \cite{abalone}, predicting the number of rings, the total weight, 
+        and classifying speciment as male. 
+\end{itemize}
+In fact, the only instance in which \texttt{prsm()} had a sub-optimal solution was when we ran 
+logistic regression to classify an abalone as an infant. 
+\begin{enumerate}
+  \item[\texttt{prsm()}] PAC=\texttt{2150.704} \\ parsimony=\texttt{c(`is\_male`, `length`, `viscerra\_weight`, `rings`)}
+  \item[\texttt{prsmpwr()}] PAC=\texttt{2139.02} \\  parsimony=\texttt{c(`is\_male`, `length`, `whole\_weight`, `viscerra\_weight`, `rings`)}
+\end{enumerate}
 
 
-
-
-
-
-
-
-
-
-%\lstinputlisting{figures/prsm_fig.R}
-
-
-\subsection*{Problem 2.b}
+\section{Problem 2.b}
 
 First, the results requested from the simulated data in tabular form. The variables listed in the table are the variables that were selected by the specified method for each run.
 
@@ -270,9 +281,9 @@ Perhaps this suggests another model, where we use these two models to cover each
 
 
 
-\section*{Problem 2.c}
+\section{Problem 2.c}
 
-\subsection*{Abalone, ~\cite{abalone} (continuous and logistic, small $p$, small $n$)}
+\subsection{Abalone, ~\cite{abalone} (continuous and logistic, small $p$, small $n$)}
 
 The Abalone data set is fairly small in the number of observations and dimensions. The only variable that wasn't numeric was Sex. We changed the nominal Sex variable from F,M,I (Male, Female or Infant) into is.male and is.infant (each 0-1 valued). For logistic regression we used is.infant variable as the response variable.
 
@@ -306,7 +317,7 @@ Shell Weight was chosen as the response variable for continuous case analysis.
 
 Our parsimony function performs almost as well as the significance testing approach and it is using only 2 explanatory variables. It works very well for this small and very straightforward data set.
 
-\subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$)}
+\subsection{Median House Values \cite{cadata} (continuous, small $p$, large $n$)}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
@@ -431,7 +442,7 @@ The visualization helps us see how housing value is clustered in the state. As o
 
 
 
-\subsection*{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)}
+\subsection{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)}
 Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can still test our Parsimony package.
 
 Here is the summary of results using Parsimony:
@@ -469,7 +480,7 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 
 
-\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
+\subsection{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
 Here we are analyzing Census data which contains 32561 observations, 13 variable vectors and is based on the 1994 Census. There are several categorical variables in this data set. In order to accommodate regression modeling each categorical vector was split into 0-1 valued vectors for each category. According to the website from which the data set was taken the goal was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
@@ -667,7 +678,7 @@ fwd           0.208747   0.054731   3.814 0.000187 ***
  
 %%%%%%%%%%%%%%%%%%
 
-\section*{Problem 2.d}
+\section{Problem 2.d}
 
 See \texttt{Leave.R} for the code.
 
@@ -710,5 +721,16 @@ new outcome  =  0.7630208
     \bibitem{automobile} Automobile Data Set. $p = 26 \rightarrow 70$ after factor variables expanded into their own 0-1 vectors, $n = 205 \rightarrow 194$ after NA removal. Stored locally in \textbf{imports-85.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Automobile}
     
 \end{thebibliography} 
+
+
+\begin{appendices}
+
+Our implementation of of \texttt{prsm()}, \texttt{ar2()}, and \texttt{aiclogit()}. 
+\lstinputlisting{figures/prsm_fig.R}
+
+Our implementation of an exhaustive parsimony minimizer (\texttt{prsmpwr()}).
+\lstinputlisting{figures/prsmpwr_fig.R}
+
+\end{appendices}
  
 \end{document}
