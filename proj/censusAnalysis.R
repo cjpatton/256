@@ -84,6 +84,14 @@ x<- names(new_df)
 new.headers <- gsub("_",".",x)
 names(new_df) <- new.headers
 
+x<- names(new_df)
+new.headers <- gsub("\\?","v",x)
+names(new_df) <- new.headers
+
+#remove NA columns
+
+new_df<-subset(new_df, select=-c(v))
+
 ####### Use with various K for analysis ##########
 
 ## logistic
@@ -93,6 +101,7 @@ print(parsimony)
 use.k<-0.05
 parsimony <- prsm(new_df$sex, subset(new_df, select=-c(sex)), predacc=aiclogit, k=use.k, printdel=T)
 print(parsimony)
+
 use.k<-0.01
 parsimony <- prsm(new_df$salary, subset(new_df, select=-c(salary)), predacc=aiclogit, k=use.k, printdel=T)
 print(parsimony)
@@ -122,10 +131,10 @@ summary(fitSalaryMore)
 
 
 fitSexAll <- glm(sex ~ ., family=binomial, data=new_df)
-summary(fitSex)
+summary(fitSexAll)
 
 fitSalaryAll <- glm(salary ~ ., family=binomial, data=new_df)
-summary(fitSalary)
+summary(fitSalaryAll)
 
 
 fitAge <- lm(age ~ Self.emp.not.inc + Assoc.acdm + Never.married + Widowed + Own.child + hours.per.week + salary, data = new_df)
@@ -133,8 +142,8 @@ summary(fitAge)
 plot(fitAge)
 
 fitAgeAll <- lm(age ~ ., data = new_df)
-summary(fitAge)
-plot(fitAge)
+summary(fitAgeAll)
+plot(fitAgeAll)
 
 test.set.index = sample(c(1:dim(new_df)[1]),dim(new_df)[1]*.1)
 
