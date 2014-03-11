@@ -228,6 +228,22 @@ Perhaps this suggests another model, where we use these two models to cover each
 
 \section*{Problem 2.c}
 
+\subsection*{Abalone, ~\cite{abalone} (continuous and logistic, small $p$, small $n$)}
+
+The Abalone dataset is fairly small in the number of observations and dimensions. 
+
+\begin{center}
+    \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    	
+    Columns Retained & is.male, length, viscerra.weight, rings & is.male, shell.weight & length, diameter, whole.weight, viscerra.weight, rings\\ \hline
+    
+    AIC & 2150.704 & 2303.834 & 3318.3\\ \hline
+    
+    \end{tabular}
+\end{center}
+
 
 \subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$)}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
@@ -601,6 +617,34 @@ AIC: 130.24
 \end{verbatim}
  %End John Chen's Section
  
+%%%%%%%%%%%%%%%%%%
+
+\section*{Problem 2.d}
+
+See \texttt{Leave.R} for the code.
+
+Our results are below. The only potentially interesting difference is that this PAC discards one additional variable, Genetics or Pedigree. (depending on where the label came from) This was the biggest loss the Leave-One-Out PAC took, but it still cost less than a percent of accuracy. Perhaps it was just outside of the  k-value range for \textbf{aiclogit} to throw it out, or this PAC is slightly compressed compared to \textbf{aiclogit}.
+
+\begin{verbatim}
+> leaveTest()
+full outcome =  0.7682292 
+deleted         blood_pressure 
+new outcome  =  0.7669271 
+deleted         skin_thickness 
+new outcome  =  0.7669271 
+deleted         insulin 
+new outcome  =  0.7695312 
+deleted         pedigree 
+new outcome  =  0.7630208 
+deleted         age 
+new outcome  =  0.7630208 
+[1] "pregnancies"     "plasma"          "body_mass_index"
+\end{verbatim}
+
+
+
+
+%%%%%%%%%%%%%%%%%%
 
 
 \begin{thebibliography}{99}
