@@ -596,10 +596,20 @@ See \texttt{Leave.R} for the code.
 Our results are below. The only potentially interesting difference is that this PAC discards one additional variable, Genetics or Pedigree. (depending on where the label came from) This was the biggest loss the Leave-One-Out PAC took, but it still cost less than a percent of accuracy. Perhaps it was just outside of the  k-value range for \textbf{aiclogit} to throw it out, or this PAC is slightly compressed compared to \textbf{aiclogit}.
 
 \begin{verbatim}
-
+> leaveTest()
+full outcome =  0.7682292 
+deleted         blood_pressure 
+new outcome  =  0.7669271 
+deleted         skin_thickness 
+new outcome  =  0.7669271 
+deleted         insulin 
+new outcome  =  0.7695312 
+deleted         pedigree 
+new outcome  =  0.7630208 
+deleted         age 
+new outcome  =  0.7630208 
+[1] "pregnancies"     "plasma"          "body_mass_index"
 \end{verbatim}
-
-
 
 
 
