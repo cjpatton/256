@@ -368,11 +368,19 @@ F-statistic: 144.5 on 18 and 174 DF,  p-value: < 2.2e-16
 \end{frame}
 
 \begin{frame}
+\frametitle{Top Predictors - Price}
+\begin{itemize}
+  \item Engine specifications, machinery
+  \item Adds Value: Luxury Brands (BMW, Porsche)
+  \item Reduces Value: Front-based Engine (Found in lower-end vehicles), economy brands (Mitsubishi, Plymouth)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
 \frametitle{Parsimony: Auto Safety}
 \begin{itemize}
-  \item itemized item 1
-  \item itemized item 2
-  \item itemized item 3
+  \item Each auto is rated from -3 to 3 by insurers.  -3 is safest, 3 is least safe.
+  \item Use logistic regression to determine attributes of safe vehicles
 \end{itemize}
 
 %Slide 4
@@ -402,6 +410,16 @@ Residual deviance: 110.24  on 183  degrees of freedom
 AIC: 130.24
 \end{verbatim}
 }
+\end{frame}
+
+\begin{frame}
+\frametitle{Top Predictors - Safety}
+\begin{itemize}
+  \item A negative z is a safer vehicle.
+  \item The larger four-doored vehicles tend to be safer than two-doored ones.
+  \item Sporty, rear-wheel drive vehicles tend to be more risky.
+  \item prsm() unsuited for dimension reduction in this case - not enough data points. Plymouth)
+\end{itemize}
 \end{frame}
 % End John's Section--------------------------------------------------------------
 
