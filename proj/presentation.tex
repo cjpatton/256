@@ -19,7 +19,137 @@ John Chen, \texttt{jhochen@ucdavis.edu}}
 
 \begin{frame}{Introduction}
 %This is the introduction.
+
+
+
+
 \end{frame}
+
+
+% Begin Chris' Section--------------------------------------------------------------
+%\author[Christopher Patton]{C. Patton, A. Rumbaugh, T. Provan, O. Prilepova, J. Chen}
+
+
+% Thomas' Section--------------------------------------------------------------
+
+% Theme: Problem 2b Parsimony on Simulated Data
+\author[Thomas Provan]{C. Patton, A. Rumbaugh, T. Provan, O. Prilepova, J. Chen}
+
+\begin{frame}
+\frametitle{Testing Parsimony on Simulated Data}
+%Slide 1
+
+Predictors: $X = X_1,..., X_{10}$
+
+Response: $Y$ drawn from $U(m_{Y;X}(t) - 1, m_{Y;X}(t) + 1)$
+
+\vspace{1 mm}
+
+\hspace{8 mm} where $m_{Y,X}(t) = t_1 + t_2 + t_3 + 0.1t_4 + 0.01t_5$
+
+\vspace{1 mm}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Testing Parsimony on Simulated Data}
+%Slide 2
+
+\begin{tabular}{| l  r | c | c | c |}
+
+\hline
+
+	&&	prsm(k=0.01)&	prsm(k=0.05)&	sig test	\\
+\hline
+
+n=100&	Run 1&	$X_1 ,X_2, X_3, X_9$&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+
+\hline
+
+n=1000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$	\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
+	
+\hline
+			
+n=10K&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+
+\hline
+			
+n=100K&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+
+\hline
+
+\end{tabular}
+
+
+\end{frame}
+
+\begin{frame}[shrink=8]
+\center
+\frametitle{Testing Parsimony on Simulated Data}
+
+\begin{tabular}{| l | c | c | c | c | c | c | c | c | c | c |}
+
+
+
+\hline
+\textbf{k=0.01}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&			1&	1&	1&	0.24&	0.11&	0.14&	0.21&	0.22&	0.26&	0.28 	\\
+N = 1000&			1&	1&	1&	0.08&	0&	0&	0&	0&	0&	0	\\
+N = 10K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 100K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+\hline		
+
+\\
+								
+									\\		
+\hline					
+\textbf{k=0.05}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&			1&	1&	0.99&	0.1&	0.02&	0.05&	0.04&	0.03&	0.07&	0.02	\\
+N = 1000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 10K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 100K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+\hline
+
+
+\end{tabular}
+
+
+\end{frame}
+
+\begin{frame}[shrink=8]
+\center
+\frametitle{Testing Parsimony on Simulated Data}
+\begin{tabular}{| l | c | c | c | c | c | c | c | c | c | c |}
+		
+\hline
+\textbf{Sig Test}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&		1&	1&	1&	0.14&	0.03&	0.05&	0.05&	0.03&	0.09&	0.04	\\
+N = 1000&		1&	1&	1&	0.31&	0.02&	0.05&	0.05&	0.05&	0.02&	0.04	\\
+N = 10K&		1&	1&	1&	1&	0.04&	0.01&	0.07&	0.07&	0.03&	0.06	\\
+N = 100K&		1&	1&	1&	1&	0.35&	0.06&	0.09&	0.03&	0.05&	0.03	\\
+N = 1M&		1&	1&	1&	1&	1&	0.05&	0.03&	0.08&	0.02&	0.03	\\
+\hline
+\end{tabular}
+\end{frame}
+
+
+% End Thomas' Section--------------------------------------------------------------
+
+
 
 % Alex's Section -----------------------------------------------------------------
 \author[Alex Rumbaugh]{C. Patton, A. Rumbaugh, T. Provan, O. Prilepova, J. Chen}
@@ -157,155 +287,11 @@ Households       152.700      3.344   45.66   <2e-16 ***
 \end{figure}
 
 \end{frame}
+
 % End Olga's Section--------------------------------------------------------------
 
-% Begin Chris' Section--------------------------------------------------------------
-\author[Christopher Patton]{C. Patton, A. Rumbaugh, T. Provan, O. Prilepova, J. Chen}
-
-\begin{frame}
-\frametitle{}
-%Slide 1
-\end{frame}
-
-\begin{frame}
-\frametitle{}
-%Slide 2
-\end{frame}
-
-\begin{frame}
-\frametitle{}
-%Slide 3
-\end{frame}
-
-\begin{frame}
-\frametitle{}
-%Slide 4
-\end{frame}
-
-\begin{frame}
-\frametitle{}
-%Slide 5
-\end{frame}
-
-% End Chris' Section--------------------------------------------------------------
-% Thomas' Section--------------------------------------------------------------
-
-% Theme: Problem 2b Parsimony on Simulated Data
-\author[Thomas Provan]{C. Patton, A. Rumbaugh, T. Provan, O. Prilepova, J. Chen}
-
-\begin{frame}
-\frametitle{Testing Parsimony on Simulated Data}
-%Slide 1
-
-Predictors: $X = X_1,..., X_10$
-
-Response: $Y$ drawn from $U(m_{Y;X}(t) - 1, m_{Y;X}(t) + 1)$
-
-\vspace{1 mm}
-
-\hspace{8 mm} where $m_{Y,X}(t) = t_1 + t_2 + t_3 + 0.1t_4 + 0.01t_5$
-
-\vspace{1 mm}
 
 
-\end{frame}
-
-\begin{frame}
-\frametitle{Testing Parsimony on Simulated Data}
-%Slide 2
-
-\begin{tabular}{| l  r | c | c | c |}
-
-\hline
-
-	&&	prsm(k=0.01)&	prsm(k=0.05)&	sig test	\\
-\hline
-
-n=100&	Run 1&	$X_1 ,X_2, X_3, X_9$&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
-	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
-	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
-
-\hline
-
-n=1000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$	\\
-	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
-	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
-	
-\hline
-			
-n=10K&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
-	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
-	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
-
-\hline
-			
-n=100K&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
-	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
-	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
-
-\hline
-
-\end{tabular}
-
-
-\end{frame}
-
-\begin{frame}[shrink=8]
-\center
-\frametitle{Testing Parsimony on Simulated Data}
-
-\begin{tabular}{| l | c | c | c | c | c | c | c | c | c | c |}
-
-
-
-\hline
-\textbf{k=0.01}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
-\hline
-N = 100&			1&	1&	1&	0.24&	0.11&	0.14&	0.21&	0.22&	0.26&	0.28 	\\
-N = 1000&			1&	1&	1&	0.08&	0&	0&	0&	0&	0&	0	\\
-N = 10K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
-N = 100K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
-N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
-\hline		
-
-\\
-								
-									\\		
-\hline					
-\textbf{k=0.05}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
-\hline
-N = 100&			1&	1&	0.99&	0.1&	0.02&	0.05&	0.04&	0.03&	0.07&	0.02	\\
-N = 1000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
-N = 10K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
-N = 100K&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
-N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
-\hline
-
-
-\end{tabular}
-
-
-\end{frame}
-
-\begin{frame}[shrink=8]
-\center
-\frametitle{Testing Parsimony on Simulated Data}
-\begin{tabular}{| l | c | c | c | c | c | c | c | c | c | c |}
-		
-\hline
-\textbf{Sig Test}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
-\hline
-N = 100&		1&	1&	1&	0.14&	0.03&	0.05&	0.05&	0.03&	0.09&	0.04	\\
-N = 1000&		1&	1&	1&	0.31&	0.02&	0.05&	0.05&	0.05&	0.02&	0.04	\\
-N = 10K&		1&	1&	1&	1&	0.04&	0.01&	0.07&	0.07&	0.03&	0.06	\\
-N = 100K&		1&	1&	1&	1&	0.35&	0.06&	0.09&	0.03&	0.05&	0.03	\\
-N = 1M&		1&	1&	1&	1&	1&	0.05&	0.03&	0.08&	0.02&	0.03	\\
-\hline
-\end{tabular}
-\end{frame}
-
-
-% End Thomas' Section--------------------------------------------------------------
 % John's Section--------------------------------------------------------------
 
 \author[John Chen]{C. Patton, A. Rumbaugh, T. Provan, O. Prilepova, J. Chen}
