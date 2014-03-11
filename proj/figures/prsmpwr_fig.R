@@ -1,7 +1,7 @@
 # Reduce parsimony, exhaustively trying all combinations of attributes. To do this,
 # we maximize/minimize the PAC over all subsets of the columns, in order of the 
 # size of the subsets. 
-prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
+prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="max", printdel=F) 
 {
   if (is.matrix(x))
   {
@@ -22,19 +22,25 @@ prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
     if (crit == "max" & (new_pac >= pac | new_pac >= (1-k)*pac)) # ar2() case 
     {
       cols <- new_cols
-      pac <- new_pac
+      if (new_pac >= pac)
+      {
+        pac <- new_pac
+      }
       if (printdel)
       {
-        cat("new outcome  = ", pac, "\n")
+        cat("new outcome  = ", new_pac, "\n")
       }
     }
     else if (crit == "min" & (new_pac <= pac | new_pac <= (1+k)*pac)) # aiclogit() case
     {
       cols <- new_cols
-      pac <- new_pac
+      if (new_pac <= pac)
+      {
+        pac <- new_pac
+      }
       if (printdel)
       {
-        cat("new outcome  = ", pac, "\n")
+        cat("new outcome  = ", new_pac, "\n")
       }
     }
   }
