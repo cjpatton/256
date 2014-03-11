@@ -384,6 +384,102 @@ Since many of the explanatory variables are categorical and age is not correlate
 
 Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data ~\ref{fig:predVsActualCensus}. Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
 
+In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we cna produce and visualize the contribution of each variable in the most to least significance order  ~\ref{fig:ageContrib}.
+
+\begin{figure}
+\includegraphics[scale=0.5]{ageContrib.png}
+\caption{}
+ \label{fig:ageContrib}
+\end{figure}
+
 In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
 
+\newpage
+% Begin John Chen's Section
+
+% Parsimony: Price Prediction (Linear)
+
+% Table of Parsimonious Variables
+Lorem Ipsum Dolorum
+Lorem Ipsum Dolorum
+Lorem Ipsum Dolorum
+Lorem Ipsum Dolorum
+Lorem Ipsum Dolorum
+Here were the results of running prsm(): \\
+
+\begin{center}
+    \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    
+    Columns Retained & ohcv, twelve-cylinders, engine.size, stroke, compression.ratio, peak.rpm & engine.size & bmw, dodge, `mercedes-benz`, mitsubishi, plymouth, porsche, saab, std, front, wheel.base, length, width, height, curb.weight, dohc, ohc, engine.size, peak.rpm\\ \hline
+    
+    AIC & 0.8676842 & 0.7888274 & 0.9308\\ \hline
+    
+    \end{tabular}
+\end{center}
+
+% Significance Testing Results
+Summary of Significance Testing:\\
+\begin{verbatim}
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -5.360e+04  1.308e+04  -4.097 6.40e-05 ***
+audi         1.628e+03  1.134e+03   1.436  0.15273    
+bmw          8.537e+03  9.493e+02   8.992 4.02e-16 ***
+dodge       -1.409e+03  9.491e+02  -1.484  0.13952    
+mitsubishi  -2.507e+03  8.165e+02  -3.071  0.00248 ** 
+plymouth    -1.390e+03  9.871e+02  -1.408  0.16096    
+porsche      3.259e+03  2.497e+03   1.305  0.19345    
+saab         2.994e+03  1.154e+03   2.593  0.01031 *  
+std         -1.303e+03  5.721e+02  -2.277  0.02399 *  
+front       -1.292e+04  2.976e+03  -4.343 2.38e-05 ***
+wheel.base   1.644e+02  8.338e+01   1.972  0.05022 .  
+length      -1.543e+02  4.576e+01  -3.372  0.00092 ***
+width        9.632e+02  2.354e+02   4.092 6.55e-05 ***
+height      -1.879e+01  1.279e+02  -0.147  0.88334    
+curb.weight  3.625e+00  1.246e+00   2.909  0.00411 ** 
+dohc         1.512e+03  8.983e+02   1.683  0.09422 .  
+ohc          1.082e+03  5.095e+02   2.124  0.03511 *  
+engine.size  9.950e+01  1.111e+01   8.954 5.10e-16 ***
+peak.rpm     1.107e+00  4.399e-01   2.517  0.01274 *  
+\end{verbatim}
+
+% Parsimony: Is this car relatively safe? (Logistic)
+
+In the logistic regression case, we seek to find most effective variable, when it comes to determining how safe a car is.\\
+% Table of Parsimonious Variables
+
+Here are the results of running prsm():\\
+\begin{center}
+    \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    
+    Columns Retained & ohcv, twelve-cylinders, engine.size, stroke, compression.ratio, peak.rpm & engine.size & bmw, dodge, `mercedes-benz`, mitsubishi, plymouth, porsche, saab, std, front, wheel.base, length, width, height, curb.weight, dohc, ohc, engine.size, peak.rpm\\ \hline
+    
+    AIC & 0.8676842 & 0.7888274 & 0.9308\\ \hline
+    
+    \end{tabular}
+\end{center}
+
+
+% Significance Testing
+
+\begin{verbatim}
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   0.806479   0.074888  10.769  < 2e-16 ***
+audi          0.590168   0.140289   4.207 4.05e-05 ***
+saab          0.323690   0.140778   2.299 0.022618 *  
+volkswagen    0.241768   0.105225   2.298 0.022715 *  
+diesel       -0.165675   0.093946  -1.764 0.079483 .  
+std          -0.002151   0.069947  -0.031 0.975495    
+`four-doors` -0.674964   0.049956 -13.511  < 2e-16 ***
+`4wd`        -0.038044   0.126373  -0.301 0.763724    
+fwd           0.208747   0.054731   3.814 0.000187 ***
+`1bbl`       -0.313088   0.106989  -2.926 0.003864 ** 
+
+\end{verbatim}
+ %End John Chen's Section
 \end{document}
