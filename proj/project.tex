@@ -472,7 +472,7 @@ AIC & 8575.803 & 8728.906 & 8475.2 \\
 \hline
 \end{tabular}
 
-We also tested the various methods against a validation training set. We looked at the probability of correctly identifying a class 1 or not class 1. Also if we identified something as class 1, what was the probability it was actually class 1 and the same for not class 1.
+We also tested the various methods against a validation training set. We looked at the conditional accuracy of our model, the probability that it correctly identified members of a given class, and the true positive and negative rates of our model.
 
 Here is a summary of the results:
 
@@ -480,13 +480,13 @@ Here is a summary of the results:
 \hline
 Method&Parsimony (k=0.01) & Parsimony (k=0.05) & Significance Testing \\
 \hline
-P(Correct ID $|$ class 1) & 0.9862345 & 0.9861474 & 0.9864959 \\
+P($ \hat{x} == 1  | x == 1$) & 0.9862345 & 0.9861474 & 0.9864959 \\ %Correct ID $|$ class 1  % Conditional Accuracy 
+\hline 											% Probability that the model is correct given that it is in class 1
+P($ \hat{x} == 0  | x == 0$) & 0.9285242 & 0.9285242 & 0.9169424 \\ %Correct ID $|$ not class 1 % Conditional Accuracy (negative)
 \hline
-P(Correct ID $|$ not class 1) & 0.9285242 & 0.9285242 & 0.9169424 \\
+P($ x == 1  | \hat{x} == 1$) & 0.981276 & 0.9812744 & 0.9783135 \\ %Correct ID $|$ guess class 1 % True Positive
 \hline
-P(Correct ID $|$ guess class 1) & 0.981276 & 0.9812744 & 0.9783135 \\
-\hline
-P(Correct ID $|$ guess not class 1) & 0.9466937 & 0.9463744 & 0.9470267  \\
+P($ x == 0  | \hat{x} == 0$) & 0.9466937 & 0.9463744 & 0.9470267  \\ %Correct ID $|$ guess not class 1 % True Negative
 \hline
 \end{tabular}
 
@@ -783,6 +783,9 @@ Our implementation of of \texttt{prsm()}, \texttt{ar2()}, and \texttt{aiclogit()
 
 Our implementation of an exhaustive parsimony minimizer (\texttt{prsmpwr()}).
 \lstinputlisting{figures/prsmpwr_fig.R}
+
+Implementation of \textbf{leave1out01()}
+\lstinputlisting{figures/Leave_fig.R}
 
 \end{appendices}
  
