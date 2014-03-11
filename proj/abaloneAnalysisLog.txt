@@ -1,0 +1,123 @@
+> k<-0.01
+> parsimony <- prsm(new_df$is.infant, subset(new_df, select=-c(is.infant)), predacc=aiclogit, crit="min", k, printdel=T)
+full outcome =  2120.841 
+deleted         diameter 
+new outcome  =  2130.275 
+deleted         height 
+new outcome  =  2136.857 
+deleted         whole.weight 
+new outcome  =  2146.616 
+deleted         shucked.weight 
+new outcome  =  2145.747 
+deleted         shell.weight 
+new outcome  =  2150.704 
+Warning messages:
+1: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+2: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+3: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+4: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+5: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+6: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+7: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+8: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+9: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+> print(parsimony)
+[1] "is.male"         "length"          "viscerra.weight" "rings"          
+> 
+> k<-0.05
+> parsimony <- prsm(new_df$is.infant, subset(new_df, select=-c(is.infant)), predacc=aiclogit, crit="min", k, printdel=T)
+full outcome =  2120.841 
+deleted         length 
+new outcome  =  2147.1 
+deleted         diameter 
+new outcome  =  2147.255 
+deleted         height 
+new outcome  =  2150.499 
+deleted         whole.weight 
+new outcome  =  2159.735 
+deleted         shucked.weight 
+new outcome  =  2157.85 
+deleted         viscerra.weight 
+new outcome  =  2263.281 
+deleted         rings 
+new outcome  =  2303.834 
+Warning messages:
+1: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+2: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+3: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+4: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+5: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+6: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+7: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+8: glm.fit: fitted probabilities numerically 0 or 1 occurred 
+> print(parsimony)
+[1] "is.male"      "shell.weight"
+> 
+> fitInfant <- glm(is.infant ~ ., family=binomial, data=new_df)
+Warning message:
+glm.fit: fitted probabilities numerically 0 or 1 occurred 
+> summary(fitInfant)
+
+Call:
+glm(formula = is.infant ~ ., family = binomial, data = new_df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.5343  -0.2229   0.0000   0.3829   3.7331  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       3.01578    0.58852   5.124 2.99e-07 ***
+is.male         -20.59427  376.07535  -0.055 0.956329    
+length           15.79345    3.13064   5.045 4.54e-07 ***
+diameter        -12.85323    3.86596  -3.325 0.000885 ***
+height           -7.96259    3.96529  -2.008 0.044636 *  
+whole.weight     -6.27217    1.95951  -3.201 0.001370 ** 
+shucked.weight    5.60632    2.24599   2.496 0.012555 *  
+viscerra.weight -12.38140    2.85498  -4.337 1.45e-05 ***
+shell.weight      5.50980    2.89223   1.905 0.056775 .  
+rings            -0.15578    0.02763  -5.638 1.72e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5244.9  on 4176  degrees of freedom
+Residual deviance: 2100.8  on 4167  degrees of freedom
+AIC: 2120.8
+
+Number of Fisher Scoring iterations: 19
+
+> 
+> fitInfantFew <- glm(is.infant ~ is.male + length + viscerra.weight + rings , family=binomial, data=new_df)
+Warning message:
+glm.fit: fitted probabilities numerically 0 or 1 occurred 
+> summary(fitInfantFew)
+
+Call:
+glm(formula = is.infant ~ is.male + length + viscerra.weight + 
+    rings, family = binomial, data = new_df)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.4813  -0.2415   0.0000   0.3936   3.5088  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       3.43064    0.46517   7.375 1.64e-13 ***
+is.male         -20.58464  375.65003  -0.055  0.95630    
+length            3.85370    1.35356   2.847  0.00441 ** 
+viscerra.weight -22.56838    1.79105 -12.601  < 2e-16 ***
+rings            -0.20594    0.02355  -8.743  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5244.9  on 4176  degrees of freedom
+Residual deviance: 2140.7  on 4172  degrees of freedom
+AIC: 2150.7
+
+Number of Fisher Scoring iterations: 19
+
+> 
