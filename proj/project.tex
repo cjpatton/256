@@ -130,7 +130,7 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 %\lstinputlisting{figures/prsm_fig.R}
 
 
-\subsection*{Problem 2.b}
+\section*{Problem 2.b}
 
 First, the results requested from the simulated data in tabular form. The variables listed in the table are the variables that were selected by the specified method for each run.
 
@@ -587,6 +587,24 @@ fwd           0.208747   0.054731   3.814 0.000187 ***
 \end{verbatim}
  %End John Chen's Section
  
+%%%%%%%%%%%%%%%%%%
+
+\section{Problem 2.d}
+
+See \texttt{Leave.R} for the code.
+
+Our results are below. The only potentially interesting difference is that this PAC discards one additional variable, Genetics or Pedigree. (depending on where the label came from) This was the biggest loss the Leave-One-Out PAC took, but it still cost less than a percent of accuracy. Perhaps it was just outside of the  k-value range for \textbf{aiclogit} to throw it out, or this PAC is slightly compressed compared to \textbf{aiclogit}.
+
+\begin{verbatim}
+
+\end{verbatim}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%
 
 \section{Datasets Used}
 
