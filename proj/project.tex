@@ -114,6 +114,104 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 \subsection*{Problem 2}
 
 
+
+
+\subsection*{Problem 2.b}
+
+First, the results requested from the simulated data in tabular form. The variables listed in the table are the variables that were selected by the specified method for each run.
+
+
+\begin{tabular}{| l  r | c | c | c |}
+
+\hline
+
+	&&	prsm(k=0.01)&	prsm(k=0.05)&	sig test	\\
+\hline
+
+n=100&	Run 1&	$X_1 ,X_2, X_3, X_9$&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+
+\hline
+
+n=1000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$	\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
+	
+\hline
+			
+n=10000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+
+\hline
+			
+n=100000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+
+\hline
+
+\end{tabular}
+
+
+As the table shows, each method consistently keeps the most important 3 $X_i$'s in all of our test runs. The smaller k value seems to be less willing to discard variables at low n values, indicated by it selecting the irrelevant X9 variable, but at higher n values it seems to consistently discard the unimportant variables. The sig test, on the other hand, appears to become more willing to accept irrelevant X's as we increase n. However, it is also worth noting that it starts consistently picking out the relevant, but weakly influencing variable X4, which the parsimony methods seems to always discard at high values of n, and rarely pick up at low values.
+
+However, this analysis felt insufficient to us. Three runs isn't nearly enough to see any patterns, and some results may be pure chance! For example, notice how the only completely irrelevant value it chose was $X_9$. Each of these trials were independent from each other, so the methods should have been no more likely to select $X_9$ from any of the five irrelevant variables. This indicated to us that this is not enough trials to show us anything about the data. To investigate further, we ran each analysis method 100 times on distinct samples of our data, and then compiled the following tables. The value in the table is the proportion of our 100 trials that each method selected the particular variable $X_i$.
+
+\begin{tabular}{| r | c | c | c | c | c | c | c | c | c | c |}
+
+
+
+\hline
+\textbf{prsm(k=0.01)}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&			1&	1&	1&	0.24&	0.11&	0.14&	0.21&	0.22&	0.26&	0.28 	\\
+N = 1000&			1&	1&	1&	0.08&	0&	0&	0&	0&	0&	0	\\
+N = 10000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 100000&		1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+\hline		
+
+\\
+								
+									\\		
+\hline					
+\textbf{prsm(k=0.05)}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&			1&	1&	0.99&	0.1&	0.02&	0.05&	0.04&	0.03&	0.07&	0.02	\\
+N = 1000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 10000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 100000&		1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+\hline
+\\
+
+								
+											\\
+\hline
+\textbf{Sig Test}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&		1&	1&	1&	0.14&	0.03&	0.05&	0.05&	0.03&	0.09&	0.04	\\
+N = 1000&		1&	1&	1&	0.31&	0.02&	0.05&	0.05&	0.05&	0.02&	0.04	\\
+N = 10000&		1&	1&	1&	1&	0.04&	0.01&	0.07&	0.07&	0.03&	0.06	\\
+N = 100000&	1&	1&	1&	1&	0.35&	0.06&	0.09&	0.03&	0.05&	0.03	\\
+N = 1M&		1&	1&	1&	1&	1&	0.05&	0.03&	0.08&	0.02&	0.03	\\
+\hline
+\end{tabular}
+
+This gives us a much more complete picture of the situation. As we suggested earlier, it appears that all of the methods very easily find that $X_1$, $X_2$, and $X_3$ are important to the model, and select them in every simulated dataset. (with one exception) This is still an uninteresting conclusion, but now it's much more solidly demonstrated than from just three dataruns. More interesting is the behavior of the other columns, which we previously could not say much about, since we only had the three simulations.
+
+First, we will examine the behavior of methods on the two weakly influencing variables, $X_4$ and $X_5$. The \textbf{prsm} methods seem to be more likely to pick up on these weakly influencing variables at low $n$ values, but discard them completely at higher $n$ values. Additionally, it seems as if setting lower tolerance values increases \textbf{prsm}'s ability to pick up on these weakly influencing values. However, this only seems to take place at reasonable $n$. At $n=100$, \textbf{prsm} seems to lose the weakly influencing variables regardless of k value. We did test $k=0.005$ briefly to explore this. At $n=100$, \textbf{prsm} didn't select the weak values any more often than the irrelevant variables, but at $n=1000$ it selected the weak variable $X_4$ significantly more often than the irrelevant variables. As with other $k$ values, however, this proportion dropped as $n$ increased. The significance test, on the otherhand, started to pick up the weakly influencing variables as $n$ increased. For the highest $n$, the significance test always selected the weakly relevant variables. 
+
+Now we will look at the second group, the irrelevant variables. \textbf{prsm} very quickly discarded all of the irrelevant variables as $n$ increased. For both $k$ values we looked at (and the smaller $k$ we examined briefly), \textbf{prsm} selected none of the irrelevant variables by $n=1000$. Significance testing, however, never fully stopped selecting irrelevant variables. Even at our highest $n$, the significance test still selected irrelevant variables as part of the predictor, and with roughly the same probability as it had at lower $n$. Increasing $n$ seems to have no impact on significance test's likelyhood to select one of the irrelevant variables.
+
+Between the two, this allows us to draw some interesting contrast between the two models. The \textbf{prsm} models very quickly zero in on the most critical variables for creating it's estimate and remove irrelevant variables with a comparatively low sample size, but can lose subtle variables with small impacts on the distribution. In contrast, significance testing will consistently find relevant variables, getting better at finding and including subtle effects as $n$ increases, but at the cost of being unable to fully exclude irrelevant variables at any point.
+
+Perhaps this suggests another model, where we use these two models to cover each others weaknesses. \textbf{prsm} is very good at finding the most relelvant variables, and seems to be able to easily point out the most important variables for a model to consider. But if we need to consider finer aspects, perhaps we could use the Sig Test method (or something similar and a little more sophisticates) to aid in finding subtle variables to add to the \textbf{prsm}'s list.
+
+
+
 \subsection*{Problem 2.c}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
