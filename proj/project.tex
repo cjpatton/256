@@ -296,8 +296,7 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 
 
-For large p - large n data set we used the census dataset \\ (https://archive.ics.uci.edu/ml/datasets/Adult),
-\subsection*{Census, 1994 (continuous and logistic, large $p$, large $n$)}
+\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
 Census data which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
@@ -491,4 +490,12 @@ fwd           0.208747   0.054731   3.814 0.000187 ***
 
 \end{verbatim}
  %End John Chen's Section
+ 
+
+\section{Datasets Used}
+
+\begin{thebibliography}{99}
+    \bibitem{census} Dataset based on Census of 1994. $p=14 \rightarrow 110, n=32561$ \url{(https://archive.ics.uci.edu/ml/datasets/Adult} 
+\end{thebibliography} 
+ 
 \end{document}
