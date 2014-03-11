@@ -66,7 +66,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Problem 1} 
+\section*{Problem 1} 
 
 As suggested by the hint, in order to find the bias at $t=0.5$, we're going to be examining the value of $\beta$ as n goes to $\infty$. The idea behind this is that the proposed model will converge to some $\beta$ as the number of samples increases, to the point that it fits as closely as possible to the actual function. Of course, it isn't possible for the model to fit precisely, because the actual relationship isn't linear like the model is, so there will be some bias in the resulting model. 
 
@@ -120,7 +120,7 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Problem 2.a\footnote{See \texttt{Parsimony.R} in the project folder.}}
+\section*{Problem 2.a\footnote{See \texttt{Parsimony.R} in the project folder.}}
 
 
 
@@ -130,7 +130,106 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 %\lstinputlisting{figures/prsm_fig.R}
 
 
-\subsection*{Problem 2.c}
+\subsection*{Problem 2.b}
+
+First, the results requested from the simulated data in tabular form. The variables listed in the table are the variables that were selected by the specified method for each run.
+
+
+\begin{tabular}{| l  r | c | c | c |}
+
+\hline
+
+	&&	prsm(k=0.01)&	prsm(k=0.05)&	sig test	\\
+\hline
+
+n=100&	Run 1&	$X_1 ,X_2, X_3, X_9$&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$	\\
+
+\hline
+
+n=1000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$	\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3$		\\
+	
+\hline
+			
+n=10000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+
+\hline
+			
+n=100000&	Run 1&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4$		\\
+	&	Run 2&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+	&	Run 3&	$X_1, X_2, X_3$&		$X_1, X_2, X_3$&		$X_1, X_2, X_3, X_4, X_9$		\\
+
+\hline
+
+\end{tabular}
+
+
+As the table shows, each method consistently keeps the most important 3 $X_i$'s in all of our test runs. The smaller k value seems to be less willing to discard variables at low n values, indicated by it selecting the irrelevant X9 variable, but at higher n values it seems to consistently discard the unimportant variables. The sig test, on the other hand, appears to become more willing to accept irrelevant X's as we increase n. However, it is also worth noting that it starts consistently picking out the relevant, but weakly influencing variable X4, which the parsimony methods seems to always discard at high values of n, and rarely pick up at low values.
+
+However, this analysis felt insufficient to us. Three runs isn't nearly enough to see any patterns, and some results may be pure chance! For example, notice how the only completely irrelevant value it chose was $X_9$. Each of these trials were independent from each other, so the methods should have been no more likely to select $X_9$ from any of the five irrelevant variables. This indicated to us that this is not enough trials to show us anything about the data. To investigate further, we ran each analysis method 100 times on distinct samples of our data, and then compiled the following tables. The value in the table is the proportion of our 100 trials that each method selected the particular variable $X_i$.
+
+\begin{tabular}{| r | c | c | c | c | c | c | c | c | c | c |}
+
+
+
+\hline
+\textbf{prsm(k=0.01)}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&			1&	1&	1&	0.24&	0.11&	0.14&	0.21&	0.22&	0.26&	0.28 	\\
+N = 1000&			1&	1&	1&	0.08&	0&	0&	0&	0&	0&	0	\\
+N = 10000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 100000&		1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+\hline		
+
+\\
+								
+									\\		
+\hline					
+\textbf{prsm(k=0.05)}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&			1&	1&	0.99&	0.1&	0.02&	0.05&	0.04&	0.03&	0.07&	0.02	\\
+N = 1000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 10000&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 100000&		1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+N = 1M&			1&	1&	1&	0&	0&	0&	0&	0&	0&	0	\\
+\hline
+\\
+
+								
+											\\
+\hline
+\textbf{Sig Test}&	$X_1$&	$X_2$&	$X_3$&	$X_4$&	$X_5$&	$X_6$&	$X_7$&	$X_8$&	$X_9$&	$X_{10}$\\
+\hline
+N = 100&		1&	1&	1&	0.14&	0.03&	0.05&	0.05&	0.03&	0.09&	0.04	\\
+N = 1000&		1&	1&	1&	0.31&	0.02&	0.05&	0.05&	0.05&	0.02&	0.04	\\
+N = 10000&		1&	1&	1&	1&	0.04&	0.01&	0.07&	0.07&	0.03&	0.06	\\
+N = 100000&	1&	1&	1&	1&	0.35&	0.06&	0.09&	0.03&	0.05&	0.03	\\
+N = 1M&		1&	1&	1&	1&	1&	0.05&	0.03&	0.08&	0.02&	0.03	\\
+\hline
+\end{tabular}
+
+This gives us a much more complete picture of the situation. As we suggested earlier, it appears that all of the methods very easily find that $X_1$, $X_2$, and $X_3$ are important to the model, and select them in every simulated dataset. (with one exception) This is still an uninteresting conclusion, but now it's much more solidly demonstrated than from just three dataruns. More interesting is the behavior of the other columns, which we previously could not say much about, since we only had the three simulations.
+
+First, we will examine the behavior of methods on the two weakly influencing variables, $X_4$ and $X_5$. The \textbf{prsm} methods seem to be more likely to pick up on these weakly influencing variables at low $n$ values, but discard them completely at higher $n$ values. Additionally, it seems as if setting lower tolerance values increases \textbf{prsm}'s ability to pick up on these weakly influencing values. However, this only seems to take place at reasonable $n$. At $n=100$, \textbf{prsm} seems to lose the weakly influencing variables regardless of k value. We did test $k=0.005$ briefly to explore this. At $n=100$, \textbf{prsm} didn't select the weak values any more often than the irrelevant variables, but at $n=1000$ it selected the weak variable $X_4$ significantly more often than the irrelevant variables. As with other $k$ values, however, this proportion dropped as $n$ increased. The significance test, on the otherhand, started to pick up the weakly influencing variables as $n$ increased. For the highest $n$, the significance test always selected the weakly relevant variables. 
+
+Now we will look at the second group, the irrelevant variables. \textbf{prsm} very quickly discarded all of the irrelevant variables as $n$ increased. For both $k$ values we looked at (and the smaller $k$ we examined briefly), \textbf{prsm} selected none of the irrelevant variables by $n=1000$. Significance testing, however, never fully stopped selecting irrelevant variables. Even at our highest $n$, the significance test still selected irrelevant variables as part of the predictor, and with roughly the same probability as it had at lower $n$. Increasing $n$ seems to have no impact on significance test's likelyhood to select one of the irrelevant variables.
+
+Between the two, this allows us to draw some interesting contrast between the two models. The \textbf{prsm} models very quickly zero in on the most critical variables for creating it's estimate and remove irrelevant variables with a comparatively low sample size, but can lose subtle variables with small impacts on the distribution. In contrast, significance testing will consistently find relevant variables, getting better at finding and including subtle effects as $n$ increases, but at the cost of being unable to fully exclude irrelevant variables at any point.
+
+Perhaps this suggests another model, where we use these two models to cover each others weaknesses. \textbf{prsm} is very good at finding the most relelvant variables, and seems to be able to easily point out the most important variables for a model to consider. But if we need to consider finer aspects, perhaps we could use the Sig Test method (or something similar and a little more sophisticates) to aid in finding subtle variables to add to the \textbf{prsm}'s list.
+
+
+
+\section*{Problem 2.c}
+
+
+\subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$)}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
@@ -252,7 +351,10 @@ Now we make use of our coordinate data using R's ggmap library. First we looked 
 
 The visualization helps us see how housing value is clustered in the state. As one might expect, rural areas generally have lower housing value than metropolitan areas. Within the metropolitan areas there are visible divisions as well. 
 
-\newpage
+
+
+
+\subsection*{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)}
 Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can still test our Parsimony package.
 
 Here is the summary of results using Parsimony:
@@ -289,7 +391,9 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 \\
 
-For large p - large n data set we used the census dataset \\ (https://archive.ics.uci.edu/ml/datasets/Adult), which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
+
+\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
+Census data which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
@@ -340,6 +444,7 @@ Wife               0.936630   0.009252  101.23   <2e-16 ***
 
 Fitting the linear regression model to the data works as predicted, which supports out intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
 
+
 With the continuously defined variable an interesting one to predict was "Age". After running our parsimony function with k=0.01, the variables that explain the variance in "Age" are "Self.emp.not.inc", "Assoc.acdm", "Never.married", "Widowed", "Own.child", "hours.per.week", "salary".   
 
 \begin{verbatim}
@@ -356,21 +461,50 @@ salary             2.904975   0.150546  19.296  < 2e-16 ***
 ---
 \end{verbatim}
 
+\begin{figure}
  \includegraphics[scale=0.5]{figures/ageResidCensus.png}
+ \caption{}
+ \label{fig:ageResidCensus}
+\end{figure}
  
+ \begin{figure}
  \includegraphics[scale=0.5]{figures/ageNormResidCensus.png}
+ \caption{}
+  \label{fig:ageNormResidCensus}
+\end{figure}
 
+\begin{figure}
  \includegraphics[scale=0.5]{figures/cookResidCensus.png}
+ \caption{}
+  \label{fig:cookResidCensus}
+\end{figure}
+
+Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit ~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observation that have a very big impact on the model~\ref{fig:cookResidCensus}.
+
+\begin{figure}
+\includegraphics[scale=0.5]{figures/predVsActualCensus.png}
+\caption{}
+ \label{fig:predVsActualCensus}
+\end{figure}
+
+Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data ~\ref{fig:predVsActualCensus}. Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
+
+In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we cna produce and visualize the contribution of each variable in the most to least significance order  ~\ref{fig:ageContrib}.
+
+\begin{figure}
+\includegraphics[scale=0.5]{figures/ageContrib.png}
+\caption{}
+ \label{fig:ageContrib}
+\end{figure}
 
 In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
 
-\newpage
 % Begin John Chen's Section
 
 % Parsimony: Price Prediction (Linear)
 
 % Table of Parsimonious Variables
-For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.  The data set contains 193 instances, with 25 attributes each.  The attributes keep track of various specifications of cars that were attending a 1985 auto fair.  We will seek to determine which variables are the strongest predictors of a vehicle's price and safeness.
+For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.
 
 Here were the results of running prsm(): \\
 
@@ -452,4 +586,23 @@ fwd           0.208747   0.054731   3.814 0.000187 ***
 
 \end{verbatim}
  %End John Chen's Section
+ 
+
+
+\begin{thebibliography}{99}
+    
+     \bibitem{pima} Instances of diabetes in the Pima Indians. $p=9, n=769$ Stored locally in \textbf{pima.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/} 
+  
+    \bibitem{census} Adult Data Set, compiled from Census of 1994. $p=14 \rightarrow 110$ after factor variables expanded into their own 0-1 vectors, $n=32561$ Stored locally in \textbf{census.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Adult} 
+    
+    \bibitem{cadata} California Housing Data.  $p = 8, n=20640$. Stored locally in \textbf{cadata.csv}. Downloaded from \url{http://lib.stat.cmu.edu/datasets/houses.zip}
+	
+	\bibitem{shuttle} Shuttle Data.  $p = 9, n = 58000 \rightarrow 43500$ for training, $14500$ for testing. Stored locally in \textbf{shuttle\_training.csv} and \textbf{shuttle\_testing.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Statlog+\%28Shuttle\%29}
+    
+    \bibitem{abalone} Abalone Data Set. $p = 8, n = 4177$. Stored locally in \textbf{abalone.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Abalone}
+    
+    \bibitem{automobile} Automobile Data Set. $p = 26 \rightarrow 70$ after factor variables expanded into their own 0-1 vectors, $n = 205 \rightarrow 194$ after NA removal. Stored locally in \textbf{imports-85.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Automobile}
+    
+\end{thebibliography} 
+ 
 \end{document}

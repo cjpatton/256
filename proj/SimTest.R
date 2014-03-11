@@ -35,6 +35,26 @@ SimTest <- function(n)
 	return(ret)
 }
 
+SimTestK <- function(n, k)
+{
+
+	X <- matrix(runif(n * 10), n)
+	
+	Y <- genY(X)
+
+	xFrame <- as.data.frame(X)
+
+	pred <- prsm(Y, xFrame, k=k, crit="max")
+
+
+	#print(summary(lm(Y ~ X)))
+
+	ret <- list(X, Y, pred)
+
+	return(ret)
+}
+
+
 threeRuns <- function(n)
 {
 	
@@ -117,6 +137,54 @@ multiTest <- function(m, n)
 	ret <- list(prop1, prop5, propSig)
 
 	names(ret) <- c("prsm(k=0.01)", "prsm(k=0.05)", "signif")
+
+	return(ret)
+}
+
+multiTestK <- function(m, n, k)
+{
+
+	count <- rep(0, 10)
+	
+	countSig <- rep(0, 10)
+
+	names(countSig) <- paste("X", 1:10, sep="")
+	names(count) <- paste("V", 1:10, sep="")
+
+	#print(count)
+
+	for(i in 1:m){
+
+		result <- SimTestK(n, k)
+
+		for(i in result[[3]]){
+			count[i] <- count[i] + 1
+			#print(count[i])
+		}
+		
+
+		Y <- result[[2]]
+		X <- result[[1]]
+
+		prRes <- summary(lm(Y~X))["coefficients"][[1]][,4]
+		sigRes <- prRes[prRes < 0.05]
+
+		for(i in names(sigRes))
+		{
+			if(i != "(Intercept)"){
+				countSig[i] <- countSig[i] + 1
+				#print(countSig[i])
+			}
+		}
+
+	}
+
+	propSig <- countSig / m
+	prop <- count / m
+
+	ret <- list(prop, propSig)
+
+	names(ret) <- c("prsm(k)", "signif")
 
 	return(ret)
 }
