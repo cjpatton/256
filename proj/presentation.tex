@@ -334,6 +334,20 @@ Goals:
   \item What are traits that increase price?\\
   \item What are the ones that decrease it?\\
 \end{itemize}
+
+\tiny{
+\begin{center}
+    \begin{tabular}{ | l |  p{2.5cm} |  p{2.5cm} | p{2.5cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    
+    Columns Retained & ohcv, twelve-cylinders, engine.size, stroke, compression.ratio, peak.rpm & engine.size & bmw, dodge, `mercedes-benz`, mitsubishi, plymouth, porsche, saab, std, front, wheel.base, length, width, height, curb.weight, dohc, ohc, engine.size, peak.rpm\\ \hline
+    
+    AIC & 0.8676842 & 0.7888274 & 0.9308\\ \hline
+    
+    \end{tabular}
+\end{center}
+}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -382,7 +396,19 @@ F-statistic: 144.5 on 18 and 174 DF,  p-value: < 2.2e-16
   \item Each auto is rated from -3 to 3 by insurers.  -3 is safest, 3 is least safe.
   \item Use logistic regression to determine attributes of safe vehicles
 \end{itemize}
-
+\tiny{
+\begin{center}
+\begin{tabular}{ | l |  p{2.5cm} |  p{2.5cm} | p{2.5cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    	
+    Columns Retained & saab, toyota, volkswagen, turbo, two-doors, hatchback, sedan, 4wd, rwd, rear, wheel.base, length, width, height, curb.weight, l, ohc, ohcf ,ohcv, five-cylinders, four-cylinders, three-cylinders, twelve-cylinders, engine.size, 2bbl, idi, mfi, mpfi, spdi, bore, stroke, compression.ratio, horsepower, peak.rpm, city.mpg, highway.mpg & saab, toyota, volkswagen, turbo, two-doors, hatchback, sedan, 4wd, rwd, rear, wheel.base, length, width, height, curb.weight, l, ohc, ohcf ,ohcv, five-cylinders, four-cylinders, three-cylinders, twelve-cylinders, engine.size, 2bbl, idi, mfi, mpfi, spdi, bore, stroke, compression.ratio, horsepower, peak.rpm, city.mpg, highway.mpg & audi, saab, volkswagen, diesel, std, four-doors, 4wd, fwd, 1bbl\\ \hline
+    
+    AIC & 74 & 74 & 130.24\\ \hline
+    
+    \end{tabular}
+\end{center}
+}
 %Slide 4
 \end{frame}
 
