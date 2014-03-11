@@ -59,7 +59,7 @@
 \author{Olga Prilepova, Christopher Patton, Alexander Rumbaugh, \\ John Chen, Thomas Provan}
 
 \date{\today}
-\title{ECS256 - Final project}
+\title{ECS256 - Homework II}
 	
 \begin{document}
 \maketitle
@@ -120,51 +120,7 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Problem 2.a}
-
-For convenience, we give the call forms of the important routines:
-\begin{itemize}
-  \item \texttt{prsm(y,x,k=0.01,predacc=ar2,crit="max",printdel=F)} 
-  \item prediction accuracy criteria: \texttt{ar2(y, x)}, \texttt{aiclogit(y, x)}
-\end{itemize}
-
-Our implementation of \texttt{prsm()}\footnote{See \texttt{Parsimony.R} in the project folder.} 
-honors the program's specification. We first calculated the PAC ("prediction accuracy criterion")
-with all predictor variables. Next, we removed the first attribute from the predictor variables 
-and recalculated the PAC with the new parsimony. If the PAC has improved, or has only degraded 
-marginally, we accept it as our new target PAC and the set of attributes as our new parsimony.
-We repeat this procedure for the next attribute, using the modified parsmony. This process is 
-repeated for all attributes. For continuous regression, we used the adjusted $R^2$ for the PAC; 
-for logstic regression, we used the AIC.
-
-One of our goals in this project was to validate this greedy approach to reducing parsimony. 
-Let $\text{PAC}^*$ be our target prediction accuracy criterion. Using AIC in logistic regression,
-the goal of \texttt{prsm()} is to find a smallest subset of the predictor variables with minimal
-PAC value, but no greater than $(1+k)\cdot\text{PAC}^*$. (The goal is analogous for continuous regession 
-with adjusted $R^2$, except we maximize this value.) 
-
-It's easy to see that \texttt{prsm()} will not find
-the optimal parsimony in general. Suppose we start with predictor variables 
-$\{X^{(1)}, X^{(2)}, X^{(3)}, X^{(4)}, X^{(5)}\}$ 
-and response variable $Y$. Suppose at some point we remove $X^{(2)}$ from the parsimony,
-since $\texttt{aiclogit}(Y, \{X^{(1)}, X^{(3)}, X^{(4)}, X^{(5)}\}) < (1+k)\cdot\text{PAC}^*$.  
-If the optimal parsiomny includes $X^{(2)}$, but excludes variables we would delete later on, 
-then we won't ever reach it. We affectively cut off a branch of computation that would have 
-lead to a better, if not globablly optimal solution. Intuitively, we see that the order in 
-which the attributes are successively removed determines the resulting PAC value and 
-parsimony.
-
-To address this apparent problem, we implemented an exhaustive search version, called 
-\texttt{prsmpwr()}, which minimizes the PAC (or maximizes in the case of continuous 
-regression) over all subsets of the attributes. We iterate over the power set of the 
-predictor variables from smallest to largest. We accept the new parsimony if the PAC
-is less than $(1+k)\cdot\text{PAC}^*$; however, we only accept a new $\text{PAC}^*$  
-if it is strictly less than the old target.
-
-
-
-
-
+\section*{Problem 2.a\footnote{See \texttt{Parsimony.R} in the project folder.}}
 
 
 
@@ -217,7 +173,7 @@ As the table shows, each method consistently keeps the most important 3 $X_i$'s 
 
 However, this analysis felt insufficient to us. Three runs isn't nearly enough to see any patterns, and some results may be pure chance! For example, notice how the only completely irrelevant value it chose was $X_9$. Each of these trials were independent from each other, so the methods should have been no more likely to select $X_9$ from any of the five irrelevant variables. This indicated to us that this is not enough trials to show us anything about the data. To investigate further, we ran each analysis method 100 times on distinct samples of our data, and then compiled the following tables. The value in the table is the proportion of our 100 trials that each method selected the particular variable $X_i$.
 
-\begin{tabular}{| l | c | c | c | c | c | c | c | c | c | c |}
+\begin{tabular}{| r | c | c | c | c | c | c | c | c | c | c |}
 
 
 
@@ -272,7 +228,7 @@ Perhaps this suggests another model, where we use these two models to cover each
 
 \section*{Problem 2.c}
 
-\subsection*{Abalone, ~\cite{abalone} (continuous and logistic, small $p$, small $n$)}
+\subsection*{Abalone, ~\cite{abalone} (continuous and logistic, small $p$, small $n$) \footnote{See \texttt{abaloneAnalysis.R} and \texttt{abaloneAnalysisLog.txt} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 
 The Abalone data set is fairly small in the number of observations and dimensions. The only variable that wasn't numeric was Sex. We changed the nominal Sex variable from F,M,I (Male, Female or Infant) into is.male and is.infant (each 0-1 valued). For logistic regression we used is.infant variable as the response variable.
 
@@ -306,7 +262,7 @@ Shell Weight was chosen as the response variable for continuous case analysis.
 
 Our parsimony function performs almost as well as the significance testing approach and it is using only 2 explanatory variables. It works very well for this small and very straightforward data set.
 
-\subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$)}
+\subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$) \footnote{See \texttt{cadata.R} and \texttt{plotmap.R} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
@@ -431,7 +387,7 @@ The visualization helps us see how housing value is clustered in the state. As o
 
 
 
-\subsection*{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)}
+\subsection*{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)\footnote{See \texttt{shuttle.R} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can still test our Parsimony package.
 
 Here is the summary of results using Parsimony:
@@ -454,13 +410,13 @@ Here is a summary of the results:
 \hline
 Method&Parsimony (k=0.01) & Parsimony (k=0.05) & Significance Testing \\
 \hline
-P($ \hat{x} == 1  | x == 1$) & 0.9862345 & 0.9861474 & 0.9864959 \\ %Correct ID $|$ class 1  % Conditional Accuracy 
-\hline 											% Probability that the model is correct given that it is in class 1
-P($ \hat{x} == 0  | x == 0$) & 0.9285242 & 0.9285242 & 0.9169424 \\ %Correct ID $|$ not class 1 % Conditional Accuracy (negative)
+P(Correct ID $|$ class 1) & 0.9862345 & 0.9861474 & 0.9864959 \\
 \hline
-P($ x == 1  | \hat{x} == 1$) & 0.981276 & 0.9812744 & 0.9783135 \\ %Correct ID $|$ guess class 1 % True Positive
+P(Correct ID $|$ not class 1) & 0.9285242 & 0.9285242 & 0.9169424 \\
 \hline
-P($ x == 0  | \hat{x} == 0$) & 0.9466937 & 0.9463744 & 0.9470267  \\ %Correct ID $|$ guess not class 1 % True Negative
+P(Correct ID $|$ guess class 1) & 0.981276 & 0.9812744 & 0.9783135 \\
+\hline
+P(Correct ID $|$ guess not class 1) & 0.9466937 & 0.9463744 & 0.9470267  \\
 \hline
 \end{tabular}
 
@@ -469,7 +425,7 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 
 
-\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
+\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)\footnote{See \texttt{censusAnalysis.R} and \texttt{censusAnalysisLog.txt} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 Here we are analyzing Census data which contains 32561 observations, 13 variable vectors and is based on the 1994 Census. There are several categorical variables in this data set. In order to accommodate regression modeling each categorical vector was split into 0-1 valued vectors for each category. According to the website from which the data set was taken the goal was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
@@ -499,22 +455,36 @@ hours.per.week   3.472e-03  1.665e-04  20.858   <2e-16 ***
 ---
 \end{verbatim}
 
-Another interesting variable that can be of interest for predictions is "sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife". Some of them make perfect sense, such as the "Wife" variable. If somebody is identified as a wife in 1994 Census it is very likely that the person was female. "Craft.repair", "Farming.fishing", and  "Transport.moving" variables make sense too, and we expect to see a strong negative correlation between those jobs and being female in the 1994.
+Another interesting variable that can be of interest for predictions is "Sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife". Some of them make perfect sense, such as the "Wife" variable. If somebody is identified as a wife in 1994 Census it is very likely that the person was female. "Craft.repair", "Farming.fishing", and  "Transport.moving" variables make sense too, and we expect to see a strong negative correlation between those jobs and being female in the 1994.
+
+
+\begin{center}
+    \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    	
+    Columns Retained & "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife" & "Craft.repair", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife" & 34 reported significant\\ \hline
+    
+    AIC & 20500.69 & 22383.32  & 19140\\ \hline
+    
+    \end{tabular}
+\end{center}
+
 
 \begin{verbatim}
 Coefficients:
-                   Estimate Std. Error t value Pr(>|t|)    
-(Intercept)        0.072494   0.003360   21.57   <2e-16 ***
-Widowed            0.253205   0.011353   22.30   <2e-16 ***
-Craft.repair      -0.203757   0.005885  -34.62   <2e-16 ***
-Farming.fishing   -0.224545   0.011122  -20.19   <2e-16 ***
-Handlers.cleaners -0.268416   0.009565  -28.06   <2e-16 ***
-Transport.moving  -0.208758   0.008911  -23.43   <2e-16 ***
-Not.in.family      0.420779   0.004905   85.79   <2e-16 ***
-Other.relative     0.412595   0.011385   36.24   <2e-16 ***
-Own.child          0.420585   0.005736   73.33   <2e-16 ***
-Unmarried          0.702012   0.006733  104.27   <2e-16 ***
-Wife               0.936630   0.009252  101.23   <2e-16 ***
+                  Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       -9.11547    0.99672  -9.145   <2e-16 ***
+Widowed            1.44049    0.09539  15.102   <2e-16 ***
+Craft.repair      -2.49589    0.08198 -30.445   <2e-16 ***
+Farming.fishing   -2.63170    0.15941 -16.509   <2e-16 ***
+Handlers.cleaners -2.06744    0.09489 -21.787   <2e-16 ***
+Transport.moving  -2.61252    0.13222 -19.759   <2e-16 ***
+Not.in.family      9.25812    0.99701   9.286   <2e-16 ***
+Other.relative     9.26290    0.99924   9.270   <2e-16 ***
+Own.child          9.26914    0.99719   9.295   <2e-16 ***
+Unmarried         10.71474    0.99781  10.738   <2e-16 ***
+Wife              16.18651    1.22313  13.234   <2e-16 ***
 ---
 
 \end{verbatim}
@@ -537,6 +507,20 @@ hours.per.week    -0.073794   0.005135 -14.371  < 2e-16 ***
 salary             2.904975   0.150546  19.296  < 2e-16 ***
 ---
 \end{verbatim}
+
+\begin{center}
+    \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    	
+    Columns Retained & "Self.emp.not.inc", "Assoc.acdm", "Never.married", "Widowed", "Own.child", "hours.per.week", "salary" & "Never.married", "Widowed", "Own.child" & Many reported significant\\ \hline
+    
+    Adjusted RSquared & 0.3763604 & 0.3601  & 0.428\\ \hline
+    
+    \end{tabular}
+\end{center}
+
+The significance testing approach has a larger subset of explanatory variables than the parsimony function has selected and a slightly higher significance, which unfortunately is still not very high.
 
 \begin{figure}
  \includegraphics[scale=0.5]{figures/ageResidCensus.png}
@@ -579,6 +563,8 @@ In all of the performed analyses the country of origin doesn't seem to play much
 % Begin John Chen's Section
 \newpage
 % Parsimony: Price Prediction (Linear)
+
+\subsection*{Automobile Data Set~\cite{automobile} (continuous and logistic, large $p$, small $n$)\footnote{See \texttt{car\_analysis.R} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 
 % Table of Parsimonious Variables
 For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.  This data set contains 193 instances of automobile, with 25 categories of classification for each one.
@@ -653,7 +639,6 @@ Interestingly, changing k from 0.01 to 0.05 did nothing to the resulting set of 
 
 % Significance Testing
 
-\texttt{Summary of Significance Testing:}\\
 \begin{verbatim}
 Coefficients:
               Estimate Std. Error z value Pr(>|z|)    
@@ -676,34 +661,6 @@ AIC: 130.24
 \newpage
  %End John Chen's Section
  
-%%%%%%%%%%%%%%%%%%
-
-\section*{Problem 2.d}
-
-See \texttt{Leave.R} for the code.
-
-Our results are below. The only potentially interesting difference is that this PAC discards one additional variable, Genetics or Pedigree. (depending on where the label came from) This was the biggest loss the Leave-One-Out PAC took, but it still cost less than a percent of accuracy. Perhaps it was just outside of the  k-value range for \textbf{aiclogit} to throw it out, or this PAC is slightly compressed compared to \textbf{aiclogit}.
-
-\begin{verbatim}
-> leaveTest()
-full outcome =  0.7682292 
-deleted         blood_pressure 
-new outcome  =  0.7669271 
-deleted         skin_thickness 
-new outcome  =  0.7669271 
-deleted         insulin 
-new outcome  =  0.7695312 
-deleted         pedigree 
-new outcome  =  0.7630208 
-deleted         age 
-new outcome  =  0.7630208 
-[1] "pregnancies"     "plasma"          "body_mass_index"
-\end{verbatim}
-
-
-
-
-%%%%%%%%%%%%%%%%%%
 
 
 \begin{thebibliography}{99}
