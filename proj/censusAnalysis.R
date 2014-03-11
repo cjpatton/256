@@ -4,23 +4,8 @@ df <- read.csv("census.csv", header=T)
 
 #need to switch string values to numbers. Use following website suggestions
 #http://www.ats.ucla.edu/stat/stata/faq/destring.htm
-# bash commands:
-# wc -l census.csv returns 32562 lines including header
-# tail -32561 census.csv | cut -f2 -d"," | sort | uniq
-# gives the following categories:
-# ?
-# Federal-gov
-# Local-gov
-# Never-worked
-# Private
-# Self-emp-inc
-# Self-emp-not-inc
-# State-gov
-# Without-pay
-#mat <- matrix(0, nrow=2, ncol=5)
-#vec <- c("x","y")
-#data.frame(vec, mat)
 
+### the code below create a new data frame new_df that has only numberical values and 110 total columns
 
 ###init new data matrix for new data frame
 new_mat <- df[[1]] #will be concatenating with cbind
@@ -183,6 +168,55 @@ plot(data.test$age ~ predicted.values.SS.fit.all, xlab="predicted age", ylab="ac
 abline(0,1)
 
 ### plot of variables maximally contributing to variation of y-value
+
+contribution <- function(y, x, listOfCols, predacc=ar2, printdel=F) 
+{
+  if (is.matrix(x))
+  {
+    x <- data.frame(x)
+  }
+  orig_cols <- listOfCols
+  cols <- orig_cols 
+  pac <- predacc(y, x)
+  if (printdel) 
+  {
+    cat("full outcome = ", pac, "\n")
+  }
+
+
+  prev_outcome = pac
+  results = c()
+  headers = c()
+  for (col in listOfCols)
+  {
+  	if (col!=listOfCols[length(listOfCols)]){
+	    new_cols <- setdiff(cols, col)
+	    new_pac <- predacc(y, subset(x, select=new_cols))
+
+	      cols <- new_cols
+	      pac <- new_pac
+	      if (printdel)
+	      {
+	        cat("deleted        ", col, "\n")
+	        cat("new outcome  = ", pac, "\n")
+	        contrib = prev_outcome-pac
+	        results = c(results, contrib)
+	        headers = c(headers,col)
+	        cat("contribution to age = ", contrib, "\n")
+	        prev_outcome=pac
+	      }
+	  }
+  }
+
+  par(mar=c(7.1,4.1,4.1,2.1))
+  barplot(results, ylab = "contribution", space=0, main="PAC delta contributions")
+  axis(1, las=2, at=(1:length(results)-0.5), labels=headers)
+}
+
+#order picked on the basis of correlation between each explanatory variable and Y (sorted by magnitude of correlation)
+listOfCols <- c( "Never.married",  "Own.child", "Widowed",  "salary", "Self.emp.not.inc", "hours.per.week",  "Assoc.acdm", "Thailand")
+
+contribution(new_df$age, subset(new_df, select=-c(age)), listOfCols, printdel=T)
 
 
 ### Splitting into training and test sets ###

@@ -939,3 +939,48 @@ Residual standard error: 10.77 on 32553 degrees of freedom
 Multiple R-squared:  0.3765,	Adjusted R-squared:  0.3764 
 F-statistic:  2808 on 7 and 32553 DF,  p-value: < 2.2e-16
 
+
+#####to pick order:
+
+> cor(new_df$age, new_df$salary)
+[1] 0.2340371
+> cor(new_df$age, new_df$Self.emp.not.inc )
+[1] 0.1362523
+> cor(new_df$age, new_df$Assoc.acdm)
+[1] -0.01619577
+> cor(new_df$age, new_df$Never.married )
+[1] -0.534359
+> cor(new_df$age, new_df$Widowed)
+[1] 0.2651771
+> cor(new_df$age, new_df$Own.child)
+[1] -0.4329179
+> cor(new_df$age, new_df$ hours.per.week)
+[1] 0.06875571
+
+
+> contribution(new_df$age, subset(new_df, select=-c(age)), listOfCols, printdel=T)
+
+full outcome =  0.4279503 
+deleted         Never.married 
+new outcome  =  0.2815169 
+contribution  =  0.1464334 
+deleted         Own.child 
+new outcome  =  0.1514435 
+contribution  =  0.1300734 
+deleted         Widowed 
+new outcome  =  0.07165411 
+contribution  =  0.07978935 
+deleted         salary 
+new outcome  =  0.0218965 
+contribution  =  0.04975761 
+deleted         Self.emp.not.inc 
+new outcome  =  0.004947504 
+contribution  =  0.016949 
+deleted         hours.per.week 
+new outcome  =  0.0002396125 
+contribution  =  0.004707892 
+deleted         Assoc.acdm 
+new outcome  =  8.616189e-06 
+contribution  =  0.0002309963 
+contribution  =  -0.0002309963 
+
