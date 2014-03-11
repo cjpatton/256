@@ -28,6 +28,15 @@
 \usepackage{hyperref}
 \usepackage{parskip}
 
+\lstset{
+  basicstyle=\small,
+  stringstyle=\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1, 
+  numbersep=5pt,
+  language=R }
+
 \hypersetup{
     colorlinks,%
     citecolor=black,%
@@ -57,7 +66,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Problem 1} 
+\section*{Problem 1} 
 
 As suggested by the hint, in order to find the bias at $t=0.5$, we're going to be examining the value of $\beta$ as n goes to $\infty$. The idea behind this is that the proposed model will converge to some $\beta$ as the number of samples increases, to the point that it fits as closely as possible to the actual function. Of course, it isn't possible for the model to fit precisely, because the actual relationship isn't linear like the model is, so there will be some bias in the resulting model. 
 
@@ -111,9 +120,14 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Problem 2}
+\section*{Problem 2.a\footnote{See \texttt{Parsimony.R} in the project folder.}}
 
 
+
+
+
+
+%\lstinputlisting{figures/prsm_fig.R}
 
 
 \subsection*{Problem 2.b}
@@ -212,7 +226,10 @@ Perhaps this suggests another model, where we use these two models to cover each
 
 
 
-\subsection*{Problem 2.c}
+\section*{Problem 2.c}
+
+
+\subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$)}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
@@ -327,14 +344,17 @@ Now we make use of our coordinate data using R's ggmap library. First we looked 
 
 \newpage
 \begin{figure}[H]
-\includegraphics[scale=.54]{california.png}
-\includegraphics[scale=.54]{bayarea.png}
-\includegraphics[scale=.7]{losangeles.png}
+\includegraphics[scale=.54]{figures/california.png}
+\includegraphics[scale=.54]{figures/bayarea.png}
+\includegraphics[scale=.7]{figures/losangeles.png}
 \end{figure}
 
 The visualization helps us see how housing value is clustered in the state. As one might expect, rural areas generally have lower housing value than metropolitan areas. Within the metropolitan areas there are visible divisions as well. 
 
-\newpage
+
+
+
+\subsection*{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)}
 Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can still test our Parsimony package.
 
 Here is the summary of results using Parsimony:
@@ -371,7 +391,9 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 \\
 
-For large p - large n data set we used the census dataset \\ (https://archive.ics.uci.edu/ml/datasets/Adult), which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
+
+\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
+Census data which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
@@ -422,6 +444,7 @@ Wife               0.936630   0.009252  101.23   <2e-16 ***
 
 Fitting the linear regression model to the data works as predicted, which supports out intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
 
+
 With the continuously defined variable an interesting one to predict was "Age". After running our parsimony function with k=0.01, the variables that explain the variance in "Age" are "Self.emp.not.inc", "Assoc.acdm", "Never.married", "Widowed", "Own.child", "hours.per.week", "salary".   
 
 \begin{verbatim}
@@ -438,12 +461,143 @@ salary             2.904975   0.150546  19.296  < 2e-16 ***
 ---
 \end{verbatim}
 
- \includegraphics[scale=0.5]{ageResidCensus.png}
+\begin{figure}
+ \includegraphics[scale=0.5]{figures/ageResidCensus.png}
+ \caption{}
+ \label{fig:ageResidCensus}
+\end{figure}
  
- \includegraphics[scale=0.5]{ageNormResidCensus.png}
+ \begin{figure}
+ \includegraphics[scale=0.5]{figures/ageNormResidCensus.png}
+ \caption{}
+  \label{fig:ageNormResidCensus}
+\end{figure}
 
- \includegraphics[scale=0.5]{cookResidCensus.png}
+\begin{figure}
+ \includegraphics[scale=0.5]{figures/cookResidCensus.png}
+ \caption{}
+  \label{fig:cookResidCensus}
+\end{figure}
+
+Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit ~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observation that have a very big impact on the model~\ref{fig:cookResidCensus}.
+
+\begin{figure}
+\includegraphics[scale=0.5]{figures/predVsActualCensus.png}
+\caption{}
+ \label{fig:predVsActualCensus}
+\end{figure}
+
+Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data ~\ref{fig:predVsActualCensus}. Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
+
+In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we cna produce and visualize the contribution of each variable in the most to least significance order  ~\ref{fig:ageContrib}.
+
+\begin{figure}
+\includegraphics[scale=0.5]{figures/ageContrib.png}
+\caption{}
+ \label{fig:ageContrib}
+\end{figure}
 
 In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
 
+% Begin John Chen's Section
+
+% Parsimony: Price Prediction (Linear)
+
+% Table of Parsimonious Variables
+For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.
+
+Here were the results of running prsm(): \\
+
+\begin{center}
+    \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    
+    Columns Retained & ohcv, twelve-cylinders, engine.size, stroke, compression.ratio, peak.rpm & engine.size & bmw, dodge, `mercedes-benz`, mitsubishi, plymouth, porsche, saab, std, front, wheel.base, length, width, height, curb.weight, dohc, ohc, engine.size, peak.rpm\\ \hline
+    
+    AIC & 0.8676842 & 0.7888274 & 0.9308\\ \hline
+    
+    \end{tabular}
+\end{center}
+
+% Significance Testing Results
+Summary of Significance Testing:\\
+\begin{verbatim}
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -5.360e+04  1.308e+04  -4.097 6.40e-05 ***
+audi         1.628e+03  1.134e+03   1.436  0.15273    
+bmw          8.537e+03  9.493e+02   8.992 4.02e-16 ***
+dodge       -1.409e+03  9.491e+02  -1.484  0.13952    
+mitsubishi  -2.507e+03  8.165e+02  -3.071  0.00248 ** 
+plymouth    -1.390e+03  9.871e+02  -1.408  0.16096    
+porsche      3.259e+03  2.497e+03   1.305  0.19345    
+saab         2.994e+03  1.154e+03   2.593  0.01031 *  
+std         -1.303e+03  5.721e+02  -2.277  0.02399 *  
+front       -1.292e+04  2.976e+03  -4.343 2.38e-05 ***
+wheel.base   1.644e+02  8.338e+01   1.972  0.05022 .  
+length      -1.543e+02  4.576e+01  -3.372  0.00092 ***
+width        9.632e+02  2.354e+02   4.092 6.55e-05 ***
+height      -1.879e+01  1.279e+02  -0.147  0.88334    
+curb.weight  3.625e+00  1.246e+00   2.909  0.00411 ** 
+dohc         1.512e+03  8.983e+02   1.683  0.09422 .  
+ohc          1.082e+03  5.095e+02   2.124  0.03511 *  
+engine.size  9.950e+01  1.111e+01   8.954 5.10e-16 ***
+peak.rpm     1.107e+00  4.399e-01   2.517  0.01274 *  
+\end{verbatim}
+
+\newpage
+
+% Parsimony: Is this car relatively safe? (Logistic)
+
+For the logistic regression case, we seek to find most effective variable, when it comes to determining how safe a car is.  In the original data set, each car is assigned a safety rating ranging from -3 to 3.  This range of values was converted into a discreet indicator variable - 1 if the car is relatively safe, having scored 1 or higher on the original scale.
+
+% Table of Parsimonious Variables
+
+Here are the results of running prsm():\\
+\begin{center}
+    \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
+    \hline
+    Method & Parsimony (k = 0.01) & Parsimony (k = 0.05) & Significance Testing \\ \hline
+    	
+    Columns Retained & saab, toyota, volkswagen, turbo, two-doors, hatchback, sedan, 4wd, rwd, rear, wheel.base, length, width, height, curb.weight, l, ohc, ohcf ,ohcv, five-cylinders, four-cylinders, three-cylinders, twelve-cylinders, engine.size, 2bbl, idi, mfi, mpfi, spdi, bore, stroke, compression.ratio, horsepower, peak.rpm, city.mpg, highway.mpg & saab, toyota, volkswagen, turbo, two-doors, hatchback, sedan, 4wd, rwd, rear, wheel.base, length, width, height, curb.weight, l, ohc, ohcf ,ohcv, five-cylinders, four-cylinders, three-cylinders, twelve-cylinders, engine.size, 2bbl, idi, mfi, mpfi, spdi, bore, stroke, compression.ratio, horsepower, peak.rpm, city.mpg, highway.mpg & audi, saab, volkswagen, diesel, std, four-doors, 4wd, fwd, 1bbl\\ \hline
+    
+    AIC & 74 & 74 & 56\\ \hline
+    
+    \end{tabular}
+\end{center}
+
+
+% Significance Testing
+
+\begin{verbatim}
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   0.806479   0.074888  10.769  < 2e-16 ***
+audi          0.590168   0.140289   4.207 4.05e-05 ***
+saab          0.323690   0.140778   2.299 0.022618 *  
+volkswagen    0.241768   0.105225   2.298 0.022715 *  
+diesel       -0.165675   0.093946  -1.764 0.079483 .  
+std          -0.002151   0.069947  -0.031 0.975495    
+`four-doors` -0.674964   0.049956 -13.511  < 2e-16 ***
+`4wd`        -0.038044   0.126373  -0.301 0.763724    
+fwd           0.208747   0.054731   3.814 0.000187 ***
+`1bbl`       -0.313088   0.106989  -2.926 0.003864 ** 
+
+\end{verbatim}
+ %End John Chen's Section
+ 
+
+\section{Datasets Used}
+
+\begin{thebibliography}{99}
+    
+    \bibitem{census} Dataset based on Census of 1994. $p=14 \rightarrow 110, n=32561$ Stored locally in \textbf{census.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Adult} 
+    
+    \bibitem{cadata} California Housing Data.  $p = 8, n=20640$. Stored locally in \textbf{cadata.csv}. Downloaded from \url{http://lib.stat.cmu.edu/datasets/houses.zip}
+	
+	\bibitem{shuttle} Shuttle Data.  $p = 9, n = 58000$. 	Stored locally in \textbf{shuttle\_training.csv} and \textbf{shuttle\_testing.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Statlog+\%28Shuttle\%29}
+    
+\end{thebibliography} 
+ 
 \end{document}

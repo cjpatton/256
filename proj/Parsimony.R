@@ -2,7 +2,7 @@
 # ECS256, Norm Matloff
 # Winter 2014, UC Davis
 
-# Perform linear regression on the response variable y and a subset of the 
+# Perform linear regression on the response variable 'y' and a subset of the 
 # predictor variables. 'y' is a vector and 'x' is a data.frame. The columns 
 # Return the predictor accuracy criterion (PAC) value. (Calls lm().) 
 ar2 <- function(y, x)
@@ -11,11 +11,11 @@ ar2 <- function(y, x)
   return (a$adj.r.squared)
 }
 
-# Same as ar2(), but logistic linear regression. 'y' is an indicator 
+# Same signature as ar2(), but logistic linear regression. 'y' is an indicator 
 # random variable. (Calls glm().)
 aiclogit <- function(y, x)
 {
-  a = glm(formula = y ~ ., data=x, family = binomial)
+  a = glm(formula = y ~ ., data=x, family = binomial, control=list(maxit=500))
   return (a$aic)
 }
 
@@ -68,7 +68,9 @@ prsm <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
 }
 
 
-# Reduce parsimony, exhaustively trying all combinations of attributes.
+# Reduce parsimony, exhaustively trying all combinations of attributes. To do this,
+# we maximize/minimize the PAC over all subsets of the columns, in order of the 
+# size of the subsets. 
 prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F) 
 {
   if (is.matrix(x))
@@ -130,7 +132,8 @@ kset <- function(S, k, i, current, e)
   kset(S, k, i+1, current, e)
 }
 
-# Generate the power set of S. 
+# Generate the power set of S, ordered by decreasing 
+# subset size. 
 powerset <- function(S) 
 {
   e <- new.env()
@@ -148,8 +151,11 @@ powerset <- function(S)
 
 # Testing, testing ... 
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
-#parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
-df <- read.csv("abalone.csv", header=T)
-#parsimony <- prsmpwr(df$is_infant, subset(df, select=-c(is_infant)), k=0.01, predacc=aiclogit, crit="min", printdel=T)
-parsimony <- prsmpwr(df$is_infant, subset(df, select=-c(is_infant)), k=0.01, predacc=aiclogit, crit="min", printdel=T)
+df <- read.csv("pima.csv", header=T)
+parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
 print(parsimony)
+#df <- read.csv("cadata.csv", header=T)
+#parsimony <- prsmpwr(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
+#print(parsimony)
+#parsimony <- prsm(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
+#print(parsimony)
