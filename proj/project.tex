@@ -495,7 +495,7 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 
 
-\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
+\subsection{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
 Here we are analyzing Census data \footnote{See \texttt{censusAnalysis.R} and \texttt{censusAnalysisLog.txt} in the project folder. \texttt{Parsimony.R} has to be loaded first}
 which contains 32561 observations, 13 variable vectors and is based on the 1994 Census. There are several categorical variables in this data set. In order to accommodate regression modeling each categorical vector was split into 0-1 valued vectors for each category. According to the website from which the data set was taken the goal was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
@@ -635,8 +635,12 @@ In all of the performed analyses the country of origin doesn't seem to play much
 \newpage
 % Parsimony: Price Prediction (Linear)
 
+\subsection{Automobile Data Set~\cite{automobile} (continuous and logistic, large $p$, small $n$)}
+
 % Table of Parsimonious Variables
-For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.  This data set contains 193 instances of automobile, with 25 categories of classification for each one.
+For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data
+\footnote{See \texttt{car\_analysis.R} in the project folder. \texttt{Parsimony.R} has to be loaded first}
+set found on the UCI Machine Learning Repository.  This data set contains 193 instances of automobile, with 25 categories of classification for each one.
 
 We chose the price of each vehicle as our continuous response variable.  Calling \textbf{prsm()} gives us a list of the most accurate predictors of a vehicle's price.  The variables have been listed in the table below, along with the results of significance testing : \\
 \begin{center}
