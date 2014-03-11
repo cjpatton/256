@@ -393,7 +393,7 @@ The results for the different methods are very close and it is hard to detect mu
 
 
 \subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
-Census data which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
+Here we are analyzing Census data which contains 32561 observations, 13 variable vectors and is based on the 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 valued vectors for each category. According to the website from which the dataset was taken the goal was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
@@ -403,7 +403,7 @@ capital.gain 1.293e-05  3.128e-07   41.34   <2e-16 ***
 
 \end{verbatim}
 
-This makes sense. If we were to look at only one column in order to predict in a person is making over 50K a year, the capital gain variable would be most informative. At k=0.01 there are many more explanatory variables that enhance the predictions:  "age", "education.num", "Exec.managerial", "Not.in.family", "Own.child", "Unmarried", "Wife", "capital.gain", "capital.loss", "hours.per.week".
+This makes sense. If we were to look at only one column in order to predict if a person is making over 50K a year, the capital gain variable would be most informative. At k=0.01 there are many more explanatory variables that enhance the predictions:  "age", "education.num", "Exec.managerial", "Not.in.family", "Own.child", "Unmarried", "Wife", "capital.gain", "capital.loss", "hours.per.week".
 
 \begin{verbatim}
 Coefficients:
@@ -422,7 +422,7 @@ hours.per.week   3.472e-03  1.665e-04  20.858   <2e-16 ***
 ---
 \end{verbatim}
 
-Another interesting variable that can be of interest for predictions is "sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife". Some of them make perfect sense, such as "Wife" variable. If somebody identified as a wife in 1994 Census it is very likely that the person was female. "Craft.repair", "Farming.fishing", and  "Transport.moving" variables makes sense too, and we expect to see a strong negative correlation between those jobs and being female in 1994.
+Another interesting variable that can be of interest for predictions is "sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife". Some of them make perfect sense, such as the "Wife" variable. If somebody is identified as a wife in 1994 Census it is very likely that the person was female. "Craft.repair", "Farming.fishing", and  "Transport.moving" variables make sense too, and we expect to see a strong negative correlation between those jobs and being female in the 1994.
 
 \begin{verbatim}
 Coefficients:
@@ -442,7 +442,7 @@ Wife               0.936630   0.009252  101.23   <2e-16 ***
 
 \end{verbatim}
 
-Fitting the linear regression model to the data works as predicted, which supports out intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
+Fitting the linear regression model to the data works as predicted, which supports our intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
 
 
 With the continuously defined variable an interesting one to predict was "Age". After running our parsimony function with k=0.01, the variables that explain the variance in "Age" are "Self.emp.not.inc", "Assoc.acdm", "Never.married", "Widowed", "Own.child", "hours.per.week", "salary".   
@@ -479,7 +479,7 @@ salary             2.904975   0.150546  19.296  < 2e-16 ***
   \label{fig:cookResidCensus}
 \end{figure}
 
-Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit ~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observation that have a very big impact on the model~\ref{fig:cookResidCensus}.
+Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit as seen in Figures~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observations that have a very big impact on the model as Cook's distance plot shows (Figure~\ref{fig:cookResidCensus}).
 
 \begin{figure}
 \includegraphics[scale=0.5]{figures/predVsActualCensus.png}
@@ -487,9 +487,9 @@ Since many of the explanatory variables are categorical and age is not correlate
  \label{fig:predVsActualCensus}
 \end{figure}
 
-Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data ~\ref{fig:predVsActualCensus}. Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
+Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data (Figure~\ref{fig:predVsActualCensus}). Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
 
-In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we cna produce and visualize the contribution of each variable in the most to least significance order  ~\ref{fig:ageContrib}.
+In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we can produce and visualize the contribution of each variable in the most to least significance order as seen in Figure~\ref{fig:ageContrib}.
 
 \begin{figure}
 \includegraphics[scale=0.5]{figures/ageContrib.png}
@@ -497,7 +497,7 @@ In order to consider the contribution of explanatory variables to the variance o
  \label{fig:ageContrib}
 \end{figure}
 
-In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
+In all of the performed analyses the country of origin doesn't seem to play much of a role, or, perhaps, the country data is too sparse to be a good predictor of the outcome variables. Also it is interesting to point out that  education isn't highly correlated with the variables of interest when all of the explanatory variables are considered, since it didn't make it into the final models at k=0.01. It would be very interesting to compare these results with a more modern census information.
 
 % Begin John Chen's Section
 
@@ -606,15 +606,20 @@ Our results are below. The only potentially interesting difference is that this 
 
 %%%%%%%%%%%%%%%%%%
 
-\section{Datasets Used}
 
 \begin{thebibliography}{99}
     
-    \bibitem{census} Dataset based on Census of 1994. $p=14 \rightarrow 110, n=32561$ Stored locally in \textbf{census.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Adult} 
+     \bibitem{pima} Instances of diabetes in the Pima Indians. $p=9, n=769$ Stored locally in \textbf{pima.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/machine-learning-databases/pima-indians-diabetes/} 
+  
+    \bibitem{census} Adult Data Set, compiled from Census of 1994. $p=14 \rightarrow 110$ after factor variables expanded into their own 0-1 vectors, $n=32561$ Stored locally in \textbf{census.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Adult} 
     
     \bibitem{cadata} California Housing Data.  $p = 8, n=20640$. Stored locally in \textbf{cadata.csv}. Downloaded from \url{http://lib.stat.cmu.edu/datasets/houses.zip}
 	
-	\bibitem{shuttle} Shuttle Data.  $p = 9, n = 58000$. 	Stored locally in \textbf{shuttle\_training.csv} and \textbf{shuttle\_testing.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Statlog+\%28Shuttle\%29}
+	\bibitem{shuttle} Shuttle Data.  $p = 9, n = 58000 \rightarrow 43500$ for training, $14500$ for testing. Stored locally in \textbf{shuttle\_training.csv} and \textbf{shuttle\_testing.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Statlog+\%28Shuttle\%29}
+    
+    \bibitem{abalone} Abalone Data Set. $p = 8, n = 4177$. Stored locally in \textbf{abalone.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Abalone}
+    
+    \bibitem{automobile} Automobile Data Set. $p = 26 \rightarrow 70$ after factor variables expanded into their own 0-1 vectors, $n = 205 \rightarrow 194$ after NA removal. Stored locally in \textbf{imports-85.csv}. Downloaded from \url{https://archive.ics.uci.edu/ml/datasets/Automobile}
     
 \end{thebibliography} 
  

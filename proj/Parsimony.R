@@ -92,19 +92,25 @@ prsmpwr <- function(y, x, k=0.01, predacc=ar2, crit="min", printdel=F)
     if (crit == "max" & (new_pac >= pac | new_pac >= (1-k)*pac)) # ar2() case 
     {
       cols <- new_cols
-      pac <- new_pac
+      if (new_pac >= pac)
+      {
+        pac <- new_pac
+      }
       if (printdel)
       {
-        cat("new outcome  = ", pac, "\n")
+        cat("new outcome  = ", new_pac, "\n")
       }
     }
     else if (crit == "min" & (new_pac <= pac | new_pac <= (1+k)*pac)) # aiclogit() case
     {
       cols <- new_cols
-      pac <- new_pac
+      if (new_pac <= pac)
+      {
+        pac <- new_pac
+      }
       if (printdel)
       {
-        cat("new outcome  = ", pac, "\n")
+        cat("new outcome  = ", new_pac, "\n")
       }
     }
   }
@@ -151,11 +157,10 @@ powerset <- function(S)
 
 # Testing, testing ... 
 #parsimony <- prsm(df$insulin, subset(df, select=-c(insulin)), k=0.01, crit="max", printdel=T)
-df <- read.csv("pima.csv", header=T)
-parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
+#df <- read.csv("pima.csv", header=T)
+#parsimony <- prsmpwr(df$class, subset(df, select=-c(class)), predacc=aiclogit, k=0.01, printdel=T)
+df <- read.csv("cadata.csv", header=T)
+parsimony <- prsmpwr(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
 print(parsimony)
-#df <- read.csv("cadata.csv", header=T)
-#parsimony <- prsmpwr(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
-#print(parsimony)
-#parsimony <- prsm(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
-#print(parsimony)
+parsimony <- prsm(df$population, subset(df, select=-c(population)), k=0.01, predacc=ar2, crit="max", printdel=T)
+print(parsimony)
