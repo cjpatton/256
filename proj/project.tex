@@ -409,7 +409,7 @@ The results for the different methods are very close and it is hard to detect mu
 
 
 \subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
-Here we are analyzing Census data which contains 32561 observations, 13 variable vectors and is based on the 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 valued vectors for each category. According to the website from which the dataset was taken the goal was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
+Census data which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
@@ -419,7 +419,7 @@ capital.gain 1.293e-05  3.128e-07   41.34   <2e-16 ***
 
 \end{verbatim}
 
-This makes sense. If we were to look at only one column in order to predict if a person is making over 50K a year, the capital gain variable would be most informative. At k=0.01 there are many more explanatory variables that enhance the predictions:  "age", "education.num", "Exec.managerial", "Not.in.family", "Own.child", "Unmarried", "Wife", "capital.gain", "capital.loss", "hours.per.week".
+This makes sense. If we were to look at only one column in order to predict in a person is making over 50K a year, the capital gain variable would be most informative. At k=0.01 there are many more explanatory variables that enhance the predictions:  "age", "education.num", "Exec.managerial", "Not.in.family", "Own.child", "Unmarried", "Wife", "capital.gain", "capital.loss", "hours.per.week".
 
 \begin{verbatim}
 Coefficients:
@@ -438,7 +438,7 @@ hours.per.week   3.472e-03  1.665e-04  20.858   <2e-16 ***
 ---
 \end{verbatim}
 
-Another interesting variable that can be of interest for predictions is "sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife". Some of them make perfect sense, such as the "Wife" variable. If somebody is identified as a wife in 1994 Census it is very likely that the person was female. "Craft.repair", "Farming.fishing", and  "Transport.moving" variables make sense too, and we expect to see a strong negative correlation between those jobs and being female in the 1994.
+Another interesting variable that can be of interest for predictions is "sex", which can be only "Male" or "Female" in the scope of this census. With k=0.01 the following explanatory variables aren't eliminated: "Widowed", "Craft.repair", "Farming.fishing", "Handlers.cleaners", "Transport.moving", "Not.in.family", "Other.relative", "Own.child", "Unmarried", "Wife". Some of them make perfect sense, such as "Wife" variable. If somebody identified as a wife in 1994 Census it is very likely that the person was female. "Craft.repair", "Farming.fishing", and  "Transport.moving" variables makes sense too, and we expect to see a strong negative correlation between those jobs and being female in 1994.
 
 \begin{verbatim}
 Coefficients:
@@ -458,7 +458,7 @@ Wife               0.936630   0.009252  101.23   <2e-16 ***
 
 \end{verbatim}
 
-Fitting the linear regression model to the data works as predicted, which supports our intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
+Fitting the linear regression model to the data works as predicted, which supports out intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
 
 
 With the continuously defined variable an interesting one to predict was "Age". After running our parsimony function with k=0.01, the variables that explain the variance in "Age" are "Self.emp.not.inc", "Assoc.acdm", "Never.married", "Widowed", "Own.child", "hours.per.week", "salary".   
@@ -495,7 +495,7 @@ salary             2.904975   0.150546  19.296  < 2e-16 ***
   \label{fig:cookResidCensus}
 \end{figure}
 
-Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit as seen in Figures~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observations that have a very big impact on the model as Cook's distance plot shows (Figure~\ref{fig:cookResidCensus}).
+Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit ~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observation that have a very big impact on the model~\ref{fig:cookResidCensus}.
 
 \begin{figure}
 \includegraphics[scale=0.5]{figures/predVsActualCensus.png}
@@ -503,9 +503,9 @@ Since many of the explanatory variables are categorical and age is not correlate
  \label{fig:predVsActualCensus}
 \end{figure}
 
-Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data (Figure~\ref{fig:predVsActualCensus}). Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
+Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data ~\ref{fig:predVsActualCensus}. Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
 
-In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we can produce and visualize the contribution of each variable in the most to least significance order as seen in Figure~\ref{fig:ageContrib}.
+In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we cna produce and visualize the contribution of each variable in the most to least significance order  ~\ref{fig:ageContrib}.
 
 \begin{figure}
 \includegraphics[scale=0.5]{figures/ageContrib.png}
@@ -513,16 +513,16 @@ In order to consider the contribution of explanatory variables to the variance o
  \label{fig:ageContrib}
 \end{figure}
 
-In all of the performed analyses the country of origin doesn't seem to play much of a role, or, perhaps, the country data is too sparse to be a good predictor of the outcome variables. Also it is interesting to point out that  education isn't highly correlated with the variables of interest when all of the explanatory variables are considered, since it didn't make it into the final models at k=0.01. It would be very interesting to compare these results with a more modern census information.
+In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
 
 % Begin John Chen's Section
-
+\newpage
 % Parsimony: Price Prediction (Linear)
 
 % Table of Parsimonious Variables
-For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.
+For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.  This data set contains 193 instances of automobile, with 25 categories of classification for each one.
 
-Here were the results of running prsm(): \\
+We chose the price of each vehicle as our continuous response variable.  Calling \textbf{prsm()} gives us a list of the most accurate predictors of a vehicle's price.  The variables have been listed in the table below, along with the results of significance testing : \\
 
 \begin{center}
     \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
@@ -535,42 +535,47 @@ Here were the results of running prsm(): \\
     
     \end{tabular}
 \end{center}
-
+  The results of the running \textbf{prsm()} tells us that a vehicle's price is ultimately determined by its underlying components' ability to perform - especially that of the engine.  This is unsurprising, as the engine and transmission of an automobile are generally its most expensive components.  Running significance tests yielded a larger list of predictor variables. Significance testing shows that larger automobiles as well as luxury brands like BMW, Mitsubishi, and Porsche tend to command higher prices.\\
 % Significance Testing Results
-Summary of Significance Testing:\\
+\texttt{Summary of Significance Testing:}\\
 \begin{verbatim}
 Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept) -5.360e+04  1.308e+04  -4.097 6.40e-05 ***
-audi         1.628e+03  1.134e+03   1.436  0.15273    
-bmw          8.537e+03  9.493e+02   8.992 4.02e-16 ***
-dodge       -1.409e+03  9.491e+02  -1.484  0.13952    
-mitsubishi  -2.507e+03  8.165e+02  -3.071  0.00248 ** 
-plymouth    -1.390e+03  9.871e+02  -1.408  0.16096    
-porsche      3.259e+03  2.497e+03   1.305  0.19345    
-saab         2.994e+03  1.154e+03   2.593  0.01031 *  
-std         -1.303e+03  5.721e+02  -2.277  0.02399 *  
-front       -1.292e+04  2.976e+03  -4.343 2.38e-05 ***
-wheel.base   1.644e+02  8.338e+01   1.972  0.05022 .  
-length      -1.543e+02  4.576e+01  -3.372  0.00092 ***
-width        9.632e+02  2.354e+02   4.092 6.55e-05 ***
-height      -1.879e+01  1.279e+02  -0.147  0.88334    
-curb.weight  3.625e+00  1.246e+00   2.909  0.00411 ** 
-dohc         1.512e+03  8.983e+02   1.683  0.09422 .  
-ohc          1.082e+03  5.095e+02   2.124  0.03511 *  
-engine.size  9.950e+01  1.111e+01   8.954 5.10e-16 ***
-peak.rpm     1.107e+00  4.399e-01   2.517  0.01274 *  
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     -4.234e+04  1.125e+04  -3.764 0.000229 ***
+bmw              9.290e+03  8.611e+02  10.788  < 2e-16 ***
+dodge           -1.504e+03  8.532e+02  -1.762 0.079785 .  
+`mercedes-benz`  6.644e+03  1.003e+03   6.625 4.17e-10 ***
+mitsubishi      -2.628e+03  7.331e+02  -3.585 0.000438 ***
+plymouth        -1.628e+03  8.881e+02  -1.833 0.068485 .  
+porsche          4.053e+03  2.238e+03   1.811 0.071936 .  
+saab             2.413e+03  1.028e+03   2.347 0.020043 *  
+std             -1.109e+03  5.129e+02  -2.162 0.031973 *  
+front           -1.275e+04  2.663e+03  -4.785 3.63e-06 ***
+wheel.base       1.141e+02  7.390e+01   1.544 0.124355    
+length          -7.918e+01  4.225e+01  -1.874 0.062586 .  
+width            7.652e+02  2.029e+02   3.772 0.000222 ***
+height          -1.377e+02  1.164e+02  -1.183 0.238332    
+curb.weight      3.781e+00  1.118e+00   3.381 0.000890 ***
+dohc             1.569e+03  8.067e+02   1.944 0.053451 .  
+ohc              8.531e+02  4.575e+02   1.865 0.063911 .  
+engine.size      7.733e+01  1.035e+01   7.470 3.74e-12 ***
+peak.rpm         1.522e+00  3.938e-01   3.864 0.000157 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2128 on 174 degrees of freedom
+Multiple R-squared:  0.9373,	Adjusted R-squared:  0.9308 
+F-statistic: 144.5 on 18 and 174 DF,  p-value: < 2.2e-16  
 \end{verbatim}
 
 \newpage
 
 % Parsimony: Is this car relatively safe? (Logistic)
 
-For the logistic regression case, we seek to find most effective variable, when it comes to determining how safe a car is.  In the original data set, each car is assigned a safety rating ranging from -3 to 3.  This range of values was converted into a discreet indicator variable - 1 if the car is relatively safe, having scored 1 or higher on the original scale.
+For the logistic regression case, we seek to find most accurate predictors when it comes to determining how safe a car is.  In the original data set, each car is assigned a safety rating ranging from -3 to 3.  This range of values was converted into a discreet indicator variable: 1 if the car is relatively safe, having scored 1 or higher on the original scale, and 0 otherwise.
 
 % Table of Parsimonious Variables
-
-Here are the results of running prsm():\\
+\textbf{prsm()} determined the most accurate predictor variables as follows:\\
 \begin{center}
     \begin{tabular}{ | l |  p{4cm} |  p{4cm} | p{4cm} |}
     \hline
@@ -578,28 +583,36 @@ Here are the results of running prsm():\\
     	
     Columns Retained & saab, toyota, volkswagen, turbo, two-doors, hatchback, sedan, 4wd, rwd, rear, wheel.base, length, width, height, curb.weight, l, ohc, ohcf ,ohcv, five-cylinders, four-cylinders, three-cylinders, twelve-cylinders, engine.size, 2bbl, idi, mfi, mpfi, spdi, bore, stroke, compression.ratio, horsepower, peak.rpm, city.mpg, highway.mpg & saab, toyota, volkswagen, turbo, two-doors, hatchback, sedan, 4wd, rwd, rear, wheel.base, length, width, height, curb.weight, l, ohc, ohcf ,ohcv, five-cylinders, four-cylinders, three-cylinders, twelve-cylinders, engine.size, 2bbl, idi, mfi, mpfi, spdi, bore, stroke, compression.ratio, horsepower, peak.rpm, city.mpg, highway.mpg & audi, saab, volkswagen, diesel, std, four-doors, 4wd, fwd, 1bbl\\ \hline
     
-    AIC & 74 & 74 & 56\\ \hline
+    AIC & 74 & 74 & 130.24\\ \hline
     
     \end{tabular}
 \end{center}
 
+Interestingly, changing k from 0.01 to 0.05 did nothing to the resulting set of predictor variables.  It would appear that \textbf{prsm()} is not well suited toward classifying data sets with large \textbf{p} and small \textbf{n}.  Fortunately, significance testing yielded far more usable results.  Significance tests indicate that a car with four doors, front wheel drive, or was manufactured by Volkswagen tends to be higher safety rating, as rated by insurers.
 
 % Significance Testing
 
 \begin{verbatim}
 Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept)   0.806479   0.074888  10.769  < 2e-16 ***
-audi          0.590168   0.140289   4.207 4.05e-05 ***
-saab          0.323690   0.140778   2.299 0.022618 *  
-volkswagen    0.241768   0.105225   2.298 0.022715 *  
-diesel       -0.165675   0.093946  -1.764 0.079483 .  
-std          -0.002151   0.069947  -0.031 0.975495    
-`four-doors` -0.674964   0.049956 -13.511  < 2e-16 ***
-`4wd`        -0.038044   0.126373  -0.301 0.763724    
-fwd           0.208747   0.054731   3.814 0.000187 ***
-`1bbl`       -0.313088   0.106989  -2.926 0.003864 ** 
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)     2.5122     1.1216   2.240  0.02510 *  
+audi           20.3574  2027.3521   0.010  0.99199    
+saab           17.7446  1985.9220   0.009  0.99287    
+volkswagen      1.8112     0.9634   1.880  0.06011 .  
+diesel         -2.0155     1.2716  -1.585  0.11297    
+std            -0.4196     1.0765  -0.390  0.69668    
+`four-doors`   -5.9725     1.1293  -5.288 1.23e-07 ***
+`4wd`          -0.1377     2.1849  -0.063  0.94976    
+fwd             3.3028     1.1093   2.977  0.00291 ** 
+`1bbl`         -4.4965     1.4035  -3.204  0.00136 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 266.06  on 192  degrees of freedom
+Residual deviance: 110.24  on 183  degrees of freedom
+AIC: 130.24
 \end{verbatim}
  %End John Chen's Section
  
