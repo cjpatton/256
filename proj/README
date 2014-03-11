@@ -15,3 +15,5 @@ shuttle - Shuttle Data (https://archive.ics.uci.edu/ml/datasets/Statlog+%28Shutt
 * Columns in this table have string values. These should be transformed to binary classifiers: e.g.,
   occupation : {Teacher, GarbageMan, ... } => occupation_Teacher, occupation_GarbageMan, ... with 
   1 or 0 in the column. The dimension will then explode. 
+
+
