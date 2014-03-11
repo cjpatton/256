@@ -19,9 +19,9 @@ for (i in (2 : length(cur_headers))){
   } else if (cur_head == "num.doors") {
     labels <- levels(factor(df$num.doors))
   } else if (cur_head == "body.style") {
-    labels <- levels(factor(df$num.doors))
+    labels <- levels(factor(df$body.style))
   } else if (cur_head == "drive.wheels") {
-    labels <- levels(factor(df$num.doors))
+    labels <- levels(factor(df$drive.wheels))
   } else if (cur_head == "engine.location") {
     labels <- levels(factor(df$engine.location))
   } else if (cur_head == "engine.type") {
@@ -30,6 +30,15 @@ for (i in (2 : length(cur_headers))){
     labels <- levels(factor(df$num.cylinders))
   } else if (cur_head == "fuel.system") {
     labels <- levels(factor(df$fuel.system))
+  } else if (cur_head == "safety.rating") {  
+    #0 for unsafe, 1 for safe
+    createNewCols=FALSE
+    new_heads <- c(new_heads, cur_head)
+    newCol <- rep(0,nrow(df))
+    ones<-(df[i]>0)
+    newCol[ones]=1	
+    ###place into new matrix
+    new_mat<-cbind(new_mat,newCol)
   } else { #integer column
     createNewCols=FALSE
     new_heads <- c(new_heads, cur_head)
@@ -58,18 +67,37 @@ new_df<-data.frame(new_mat)
 names(new_df)<-new_heads
 
 #################
-k<-0.005
-parsimony <- prsm(new_df$price, subset(new_df, select=-c(price)), k, crit="max", printdel=T)
+
+# Parsimony: Car Price
+
+parsimony <- prsm(y=new_df$price, x=subset(new_df, select=-c(price)), k=0.01, predacc=ar2, crit="max", printdel=T)
 print(parsimony)
 
-fitPrice <- lm(new_df$price ~. , data=new_df[,2:66])
+parsimony <- prsm(new_df$price, subset(new_df, select=-c(price)), k = 0.01, crit="max", printdel=T)
+print(parsimony)
+
+parsimony <- prsm(new_df$price, subset(new_df, select=-c(price)), k = 0.05, crit="max", printdel=T)
+print(parsimony)
+
+#Find significant predictors
+fitPrice <- lm(price ~. , data=new_df)
 summary(fitPrice)
-#fitPrice2 <- lm(price ~ audi + bmw + dodge + mitsubishi + plymouth + porsche + saab + std + front + wheel.base + length + width + height + curb.weight + dohc + ohc + engine.size + peak.rpm, data=new_df)
 
-k<-0.01
-parsimony <- prsm(new_df$price, subset(new_df, select=-c(price)), k, crit="max", printdel=T)
+# Re-do, with only significant predictors.
+fitPrice <- lm(price ~ bmw + dodge + `mercedes-benz` + mitsubishi + plymouth + porsche + saab + std + front + wheel.base + length + width + height + curb.weight + dohc + ohc + engine.size + peak.rpm, data=new_df)
+summary(fitPrice)
+
+
+# Logit case
+
+parsimony <- prsm(new_df$safety.rating, subset(new_df, select=-c(safety.rating)), predacc=aiclogit, crit="min", k=0.01, printdel=T)
 print(parsimony)
 
-k<-0.05
-parsimony <- prsm(new_df$price, subset(new_df, select=-c(price)), k, crit="max", printdel=T)
+parsimony <- prsm(new_df$safety.rating, subset(new_df, select=-c(safety.rating)), predacc=aiclogit, crit="min", k=0.05, printdel=T)
 print(parsimony)
+
+fitSafety <- lm(safety.rating ~. , data = new_df)
+summary(fitSafety)
+
+fitSafety <- lm(safety.rating ~ audi + saab + volkswagen + diesel + std + `four-doors` + `4wd` + fwd + `1bbl`, data=new_df)
+summary(fitSafety)
