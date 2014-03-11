@@ -59,7 +59,7 @@
 \author{Olga Prilepova, Christopher Patton, Alexander Rumbaugh, \\ John Chen, Thomas Provan}
 
 \date{\today}
-\title{ECS256 - Homework II}
+\title{ECS256 - Final project}
 	
 \begin{document}
 \maketitle
@@ -120,7 +120,51 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Problem 2.a\footnote{See \texttt{Parsimony.R} in the project folder.}}
+\section*{Problem 2.a}
+
+For convenience, we give the call forms of the important routines:
+\begin{itemize}
+  \item \texttt{prsm(y,x,k=0.01,predacc=ar2,crit="max",printdel=F)} 
+  \item prediction accuracy criteria: \texttt{ar2(y, x)}, \texttt{aiclogit(y, x)}
+\end{itemize}
+
+Our implementation of \texttt{prsm()}\footnote{See \texttt{Parsimony.R} in the project folder.} 
+honors the program's specification. We first calculated the PAC ("prediction accuracy criterion")
+with all predictor variables. Next, we removed the first attribute from the predictor variables 
+and recalculated the PAC with the new parsimony. If the PAC has improved, or has only degraded 
+marginally, we accept it as our new target PAC and the set of attributes as our new parsimony.
+We repeat this procedure for the next attribute, using the modified parsmony. This process is 
+repeated for all attributes. For continuous regression, we used the adjusted $R^2$ for the PAC; 
+for logstic regression, we used the AIC.
+
+One of our goals in this project was to validate this greedy approach to reducing parsimony. 
+Let $\text{PAC}^*$ be our target prediction accuracy criterion. Using AIC in logistic regression,
+the goal of \texttt{prsm()} is to find a smallest subset of the predictor variables with minimal
+PAC value, but no greater than $(1+k)\cdot\text{PAC}^*$. (The goal is analogous for continuous regession 
+with adjusted $R^2$, except we maximize this value.) 
+
+It's easy to see that \texttt{prsm()} will not find
+the optimal parsimony in general. Suppose we start with predictor variables 
+$\{X^{(1)}, X^{(2)}, X^{(3)}, X^{(4)}, X^{(5)}\}$ 
+and response variable $Y$. Suppose at some point we remove $X^{(2)}$ from the parsimony,
+since $\texttt{aiclogit}(Y, \{X^{(1)}, X^{(3)}, X^{(4)}, X^{(5)}\}) < (1+k)\cdot\text{PAC}^*$.  
+If the optimal parsiomny includes $X^{(2)}$, but excludes variables we would delete later on, 
+then we won't ever reach it. We affectively cut off a branch of computation that would have 
+lead to a better, if not globablly optimal solution. Intuitively, we see that the order in 
+which the attributes are successively removed determines the resulting PAC value and 
+parsimony.
+
+To address this apparent problem, we implemented an exhaustive search version, called 
+\texttt{prsmpwr()}, which minimizes the PAC (or maximizes in the case of continuous 
+regression) over all subsets of the attributes. We iterate over the power set of the 
+predictor variables from smallest to largest. We accept the new parsimony if the PAC
+is less than $(1+k)\cdot\text{PAC}^*$; however, we only accept a new $\text{PAC}^*$  
+if it is strictly less than the old target.
+
+
+
+
+
 
 
 
@@ -173,7 +217,7 @@ As the table shows, each method consistently keeps the most important 3 $X_i$'s 
 
 However, this analysis felt insufficient to us. Three runs isn't nearly enough to see any patterns, and some results may be pure chance! For example, notice how the only completely irrelevant value it chose was $X_9$. Each of these trials were independent from each other, so the methods should have been no more likely to select $X_9$ from any of the five irrelevant variables. This indicated to us that this is not enough trials to show us anything about the data. To investigate further, we ran each analysis method 100 times on distinct samples of our data, and then compiled the following tables. The value in the table is the proportion of our 100 trials that each method selected the particular variable $X_i$.
 
-\begin{tabular}{| r | c | c | c | c | c | c | c | c | c | c |}
+\begin{tabular}{| l | c | c | c | c | c | c | c | c | c | c |}
 
 
 
@@ -603,6 +647,7 @@ Here are the results of running prsm():\\
 
 % Significance Testing
 
+\texttt{Summary of Significance Testing:}\\
 \begin{verbatim}
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
@@ -620,6 +665,34 @@ fwd           0.208747   0.054731   3.814 0.000187 ***
 \end{verbatim}
  %End John Chen's Section
  
+%%%%%%%%%%%%%%%%%%
+
+\section*{Problem 2.d}
+
+See \texttt{Leave.R} for the code.
+
+Our results are below. The only potentially interesting difference is that this PAC discards one additional variable, Genetics or Pedigree. (depending on where the label came from) This was the biggest loss the Leave-One-Out PAC took, but it still cost less than a percent of accuracy. Perhaps it was just outside of the  k-value range for \textbf{aiclogit} to throw it out, or this PAC is slightly compressed compared to \textbf{aiclogit}.
+
+\begin{verbatim}
+> leaveTest()
+full outcome =  0.7682292 
+deleted         blood_pressure 
+new outcome  =  0.7669271 
+deleted         skin_thickness 
+new outcome  =  0.7669271 
+deleted         insulin 
+new outcome  =  0.7695312 
+deleted         pedigree 
+new outcome  =  0.7630208 
+deleted         age 
+new outcome  =  0.7630208 
+[1] "pregnancies"     "plasma"          "body_mass_index"
+\end{verbatim}
+
+
+
+
+%%%%%%%%%%%%%%%%%%
 
 
 \begin{thebibliography}{99}
