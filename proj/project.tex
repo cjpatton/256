@@ -228,7 +228,7 @@ Perhaps this suggests another model, where we use these two models to cover each
 
 \section*{Problem 2.c}
 
-\subsection*{Abalone, ~\cite{abalone} (continuous and logistic, small $p$, small $n$)}
+\subsection*{Abalone, ~\cite{abalone} (continuous and logistic, small $p$, small $n$) \footnote{See \texttt{abaloneAnalysis.R} and \texttt{abaloneAnalysisLog.txt} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 
 The Abalone data set is fairly small in the number of observations and dimensions. The only variable that wasn't numeric was Sex. We changed the nominal Sex variable from F,M,I (Male, Female or Infant) into is.male and is.infant (each 0-1 valued). For logistic regression we used is.infant variable as the response variable.
 
@@ -262,7 +262,7 @@ Shell Weight was chosen as the response variable for continuous case analysis.
 
 Our parsimony function performs almost as well as the significance testing approach and it is using only 2 explanatory variables. It works very well for this small and very straightforward data set.
 
-\subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$)}
+\subsection*{Median House Values \cite{cadata} (continuous, small $p$, large $n$) \footnote{See \texttt{cadata.R} and \texttt{plotmap.R} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
@@ -387,7 +387,7 @@ The visualization helps us see how housing value is clustered in the state. As o
 
 
 
-\subsection*{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)}
+\subsection*{Space Shuttle \cite{shuttle} (logistic, small $p$, large $n$)\footnote{See \texttt{shuttle.R} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can still test our Parsimony package.
 
 Here is the summary of results using Parsimony:
@@ -410,13 +410,13 @@ Here is a summary of the results:
 \hline
 Method&Parsimony (k=0.01) & Parsimony (k=0.05) & Significance Testing \\
 \hline
-P($ \hat{x} == 1  | x == 1$) & 0.9862345 & 0.9861474 & 0.9864959 \\ %Correct ID $|$ class 1  % Conditional Accuracy 
-\hline 											% Probability that the model is correct given that it is in class 1
-P($ \hat{x} == 0  | x == 0$) & 0.9285242 & 0.9285242 & 0.9169424 \\ %Correct ID $|$ not class 1 % Conditional Accuracy (negative)
+P(Correct ID $|$ class 1) & 0.9862345 & 0.9861474 & 0.9864959 \\
 \hline
-P($ x == 1  | \hat{x} == 1$) & 0.981276 & 0.9812744 & 0.9783135 \\ %Correct ID $|$ guess class 1 % True Positive
+P(Correct ID $|$ not class 1) & 0.9285242 & 0.9285242 & 0.9169424 \\
 \hline
-P($ x == 0  | \hat{x} == 0$) & 0.9466937 & 0.9463744 & 0.9470267  \\ %Correct ID $|$ guess not class 1 % True Negative
+P(Correct ID $|$ guess class 1) & 0.981276 & 0.9812744 & 0.9783135 \\
+\hline
+P(Correct ID $|$ guess not class 1) & 0.9466937 & 0.9463744 & 0.9470267  \\
 \hline
 \end{tabular}
 
@@ -425,7 +425,7 @@ The results for the different methods are very close and it is hard to detect mu
 \\
 
 
-\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
+\subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)\footnote{See \texttt{censusAnalysis.R} and \texttt{censusAnalysisLog.txt} in the project folder. \texttt{Parsimony.R} has to be loaded first}}
 Here we are analyzing Census data which contains 32561 observations, 13 variable vectors and is based on the 1994 Census. There are several categorical variables in this data set. In order to accommodate regression modeling each categorical vector was split into 0-1 valued vectors for each category. According to the website from which the data set was taken the goal was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
 \begin{verbatim}
 Coefficients:
