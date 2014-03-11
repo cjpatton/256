@@ -66,7 +66,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 1} 
+\subsection*{Problem 1} 
 
 As suggested by the hint, in order to find the bias at $t=0.5$, we're going to be examining the value of $\beta$ as n goes to $\infty$. The idea behind this is that the proposed model will converge to some $\beta$ as the number of samples increases, to the point that it fits as closely as possible to the actual function. Of course, it isn't possible for the model to fit precisely, because the actual relationship isn't linear like the model is, so there will be some bias in the resulting model. 
 
@@ -120,7 +120,7 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Problem 2.a\footnote{See \texttt{Parsimony.R} in the project folder.}}
+\subsection*{Problem 2.a\footnote{See \texttt{Parsimony.R} in the project folder.}}
 
 
 
@@ -130,10 +130,7 @@ Now we can move on and compute the bias. The bias is simply $\hat{m}_{Y;X}(t) - 
 %\lstinputlisting{figures/prsm_fig.R}
 
 
-\section*{Problem 2.c}
-
-
-\subsection*{Median house values (continuous, small $p$, large $n$)}
+\subsection*{Problem 2.c}
 Our next data set explores house value throughout California derived from 1990 census data. The state is divided up into 20640 geographic blocks with average population 1425.
 
 We are interested in how the following variables affect median house value: median income, housing median age, total rooms, total bedrooms, population, households, latitude, and longitude.
@@ -255,10 +252,7 @@ Now we make use of our coordinate data using R's ggmap library. First we looked 
 
 The visualization helps us see how housing value is clustered in the state. As one might expect, rural areas generally have lower housing value than metropolitan areas. Within the metropolitan areas there are visible divisions as well. 
 
-
-
-
-\subsection*{Space shuttle (logistic, small $p$, large $n$)}
+\newpage
 Next we looked at space shuttle data taken from the UCI Machine Learning Repository. The goal was to predict the class given 8 predictors, with 43500 data points. Our logistic regression predicted whether or not the class was of type 1.  The description of the data set was very poor, however it matched our criterion for dimension, data points, and regression type. Because of the lack of sufficient description, few conclusions can be drawn from the data, but we can still test our Parsimony package.
 
 Here is the summary of results using Parsimony:
@@ -298,6 +292,7 @@ The results for the different methods are very close and it is hard to detect mu
 
 \subsection*{Census, 1994~\cite{census} (continuous and logistic, large $p$, large $n$)}
 Census data which contains 32561 observations, 13 variable vectors and is based on 1994 Census. There are several categorical variables in this dataset. In order to accommodate regression modeling each categorical vector was split into 0-1 values vectors for each category. According to the website from which the dataset was taken was to predict whether a given person would be making over 50K a year.  Our parsimony function at k=0.1 eliminated all but one explanatory variable, which turned out to be "capital gain". 
+
 \begin{verbatim}
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
@@ -348,7 +343,6 @@ Wife               0.936630   0.009252  101.23   <2e-16 ***
 
 Fitting the linear regression model to the data works as predicted, which supports out intuitive expectations of explanatory variable behavior. Naturally, the remaining variables are significant, however with large number of observations most variables are expected to be significant. 
 
-
 With the continuously defined variable an interesting one to predict was "Age". After running our parsimony function with k=0.01, the variables that explain the variance in "Age" are "Self.emp.not.inc", "Assoc.acdm", "Never.married", "Widowed", "Own.child", "hours.per.week", "salary".   
 
 \begin{verbatim}
@@ -365,50 +359,21 @@ salary             2.904975   0.150546  19.296  < 2e-16 ***
 ---
 \end{verbatim}
 
-\begin{figure}
  \includegraphics[scale=0.5]{figures/ageResidCensus.png}
- \caption{}
- \label{fig:ageResidCensus}
-\end{figure}
  
- \begin{figure}
  \includegraphics[scale=0.5]{figures/ageNormResidCensus.png}
- \caption{}
-  \label{fig:ageNormResidCensus}
-\end{figure}
 
-\begin{figure}
  \includegraphics[scale=0.5]{figures/cookResidCensus.png}
- \caption{}
-  \label{fig:cookResidCensus}
-\end{figure}
-
-Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit ~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observation that have a very big impact on the model~\ref{fig:cookResidCensus}.
-
-\begin{figure}
-\includegraphics[scale=0.5]{figures/predVsActualCensus.png}
-\caption{}
- \label{fig:predVsActualCensus}
-\end{figure}
-
-Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data ~\ref{fig:predVsActualCensus}. Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
-
-In order to consider the contribution of explanatory variables to the variance of age we sorted the 7 variables in order of their absolute correlation value with age. Then we adapted parsimony function to only work with this set and in the provided order so that we cna produce and visualize the contribution of each variable in the most to least significance order  ~\ref{fig:ageContrib}.
-
-\begin{figure}
-\includegraphics[scale=0.5]{figures/ageContrib.png}
-\caption{}
- \label{fig:ageContrib}
-\end{figure}
 
 In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
 
+\newpage
 % Begin John Chen's Section
 
 % Parsimony: Price Prediction (Linear)
 
 % Table of Parsimonious Variables
-For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.
+For the small n (n \textless 1000), large p (p \textgreater 15) case, we will use the automobile data set found on the UCI Machine Learning Repository.  The data set contains 193 instances, with 25 attributes each.  The attributes keep track of various specifications of cars that were attending a 1985 auto fair.  We will seek to determine which variables are the strongest predictors of a vehicle's price and safeness.
 
 Here were the results of running prsm(): \\
 
