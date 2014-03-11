@@ -119,6 +119,68 @@ summary(fitSalaryMore)
 
 fitAge <- lm(age ~ Self.emp.not.inc + Assoc.acdm + Never.married + Widowed + Own.child + hours.per.week + salary, data = new_df)
 summary(fitAge)
+plot(fitAge)
+
+test.set.index = sample(c(1:dim(new_df)[1]),dim(new_df)[1]*.1)
+
+data.test = new_df[test.set.index,]
+data.train = new_df[-test.set.index,]
+
+
+##Fitting each variable
+SS.fit.salary = lm(age ~ salary, data=data.train)
+predicted.values.SS.fit.salary = predict(SS.fit.salary,newdata=data.test)
+mean((predicted.values.SS.fit.salary-data.test$age)^2)
+
+
+SS.fit.hours.per.week = lm(age ~ hours.per.week, data=data.train)
+predicted.values.SS.fit.hours.per.week = predict(SS.fit.hours.per.week,newdata=data.test)
+mean((predicted.values.SS.fit.hours.per.week-data.test$age)^2)
+
+
+SS.fit.Self.emp.not.inc = lm(age ~ Self.emp.not.inc, data=data.train)
+predicted.values.SS.fit.Self.emp.not.inc = predict(SS.fit.Self.emp.not.inc,newdata=data.test)
+mean((predicted.values.SS.fit.Self.emp.not.inc-data.test$age)^2)
+
+
+SS.fit.Assoc.acdm = lm(age ~ Assoc.acdm, data=data.train)
+predicted.values.SS.fit.Assoc.acdm = predict(SS.fit.Assoc.acdm,newdata=data.test)
+mean((predicted.values.SS.fit.Assoc.acdm-data.test$age)^2)
+
+
+SS.fit.Never.married = lm(age ~ Never.married, data=data.train)
+predicted.values.SS.fit.Never.married = predict(SS.fit.Never.married,newdata=data.test)
+mean((predicted.values.SS.fit.Never.married-data.test$age)^2)
+
+
+SS.fit.Widowed = lm(age ~ Widowed, data=data.train)
+predicted.values.SS.fit.Widowed = predict(SS.fit.Widowed,newdata=data.test)
+mean((predicted.values.SS.fit.Widowed-data.test$age)^2)
+
+
+SS.fit.Own.child = lm(age ~ Own.child, data=data.train)
+predicted.values.SS.fit.Own.child = predict(SS.fit.Own.child,newdata=data.test)
+mean((predicted.values.SS.fit.Own.child-data.test$age)^2)
+
+
+##plotting smoothing splines 
+par(mfrow=c(4,2))
+plot(SS.fit.salary, se=T)
+plot(SS.fit.hours.per.week, se=T)
+plot(SS.fit.Self.emp.not.inc, se=T)
+plot(SS.fit.Assoc.acdm, se=T)
+plot(SS.fit.Never.married, se=T)
+plot(SS.fit.Widowed, se=T)
+plot(SS.fit.Own.child, se=T)
+par(mfrow=c(1,1))
+
+
+SS.fit.all = lm(age ~ Self.emp.not.inc + Assoc.acdm + Never.married + Widowed + Own.child + hours.per.week + salary, data=data.train)
+predicted.values.SS.fit.all = predict(SS.fit.all,newdata=data.test)
+mean((predicted.values.SS.fit.all-data.test$age)^2)
+
+plot(data.test$age ~ predicted.values.SS.fit.all, xlab="predicted age", ylab="actual age", main="predicted vs actual age of 15% test test")
+abline(0,1)
 
 ### plot of variables maximally contributing to variation of y-value
 

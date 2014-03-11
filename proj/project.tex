@@ -340,11 +340,33 @@ salary             2.904975   0.150546  19.296  < 2e-16 ***
 ---
 \end{verbatim}
 
+\begin{figure}
  \includegraphics[scale=0.5]{ageResidCensus.png}
+ \caption{}
+ \label{fig:ageResidCensus}
+\end{figure}
  
+ \begin{figure}
  \includegraphics[scale=0.5]{ageNormResidCensus.png}
+ \caption{}
+  \label{fig:ageNormResidCensus}
+\end{figure}
 
+\begin{figure}
  \includegraphics[scale=0.5]{cookResidCensus.png}
+ \caption{}
+  \label{fig:cookResidCensus}
+\end{figure}
+
+Since many of the explanatory variables are categorical and age is not correlated in any straightforward way with the explanatory variables the model cannot be a perfect fit ~\ref{fig:ageResidCensus},~\ref{fig:ageNormResidCensus}. In fact there are many observation that have a very big impact on the model~\ref{fig:cookResidCensus}.
+
+\begin{figure}
+\includegraphics[scale=0.5]{predVsActualCensus.png}
+\caption{}
+ \label{fig:predVsActualCensus}
+\end{figure}
+
+Since there are many more observations than we can visually assess, we decided to split the original dataset in training(90\%) and test(10\%) subsets and to fit the train data but report the predicted versus actual values in the test data ~\ref{fig:predVsActualCensus}. Now it is more clear that the age is clustered around 24, 32 and 40-45. The explanatory variables used aren't very good predictors for the person's age, unfortunately.
 
 In all of the performed analyses the countries of origin don't seem to play much role, or are too sparse to be good predictors of the outcome. Also it is interesting to point out that the education wasn't highly correlated with the variables of interest. It would be very interesting to compare these results with a more modern census information.
 
