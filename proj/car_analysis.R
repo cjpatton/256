@@ -96,7 +96,7 @@ print(parsimony)
 parsimony <- prsm(new_df$safety.rating, subset(new_df, select=-c(safety.rating)), predacc=aiclogit, crit="min", k=0.05, printdel=T)
 print(parsimony)
 
-fitSafety <- glm(safety.rating ~. , data = new_df, family=binomial, control=list(maxit=500))
+fitSafety <- lm(safety.rating ~. , data = new_df)
 summary(fitSafety)
 
 fitSafety <- glm(safety.rating ~ audi + saab + volkswagen + diesel + std + `four-doors` + `4wd` + fwd + `1bbl`, data = new_df, family=binomial, control=list(maxit=500))
